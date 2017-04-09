@@ -4,18 +4,20 @@
 #include "game.h"
 #include <SFML/Graphics.hpp>
 
+using namespace sf;
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
-	sf::CircleShape shape(300.f);
-	shape.setFillColor(sf::Color::Green);
+	RenderWindow window(VideoMode(600, 600), "SFML works!");
+	CircleShape shape(300.f);
+	shape.setFillColor(Color::Green);
 
 	while (window.isOpen())
 	{
-		sf::Event event;
+		Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			if (event.type == Event::Closed)
 				window.close();
 		}
 
