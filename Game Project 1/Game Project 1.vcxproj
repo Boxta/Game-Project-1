@@ -156,12 +156,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
+    <ClCompile Include="game.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game Project 1.cpp" />
-    <ClCompile Include="stdafx.cpp" />
+    <ClInclude Include="game.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
