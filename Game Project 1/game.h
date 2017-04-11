@@ -5,5 +5,5 @@
 #include <SFML/Graphics.hpp>
 #include <assert.h>
 
-StateManager mStateManager;
-//TestState mTestState;
+StateManager mStateManager = {};
+TestState mTestState = {};

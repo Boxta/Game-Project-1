@@ -1,11 +1,8 @@
 #include "TestState.h"
 
-
-
-TestState::TestState(StateManager* manager) :
+TestState::TestState() :
 	shape(300.0f)
 {
-	mManager = manager;
 	shape.setFillColor(sf::Color::Blue);
 }
 

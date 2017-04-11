@@ -5,9 +5,9 @@ class TestState :
 	public GameState
 {
 public:
-	TestState(StateManager* manager);
+	TestState();
 	~TestState();
-
+	
 	virtual void Draw(float dt, sf::RenderWindow& wnd);
 	virtual void Update(float dt);
 	virtual void HandleInput();

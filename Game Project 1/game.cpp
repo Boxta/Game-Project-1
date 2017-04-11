@@ -7,16 +7,16 @@ using namespace sf;
 
 int main()
 {
-	TestState mTestState(&mStateManager);
+	/*Add State To The State Stack*/
 	mStateManager.PushState(&mTestState);
 
-	//Create a window passing in the window size and title bar name
+	/*Create a SFML Window*/
 	RenderWindow window(VideoMode(600, 600), "SFML works!");
 
-	//Continue to loop while the window is open
+	/*Enter Game Loop*/
 	while (window.isOpen())
 	{
-		//Check for and process any events
+		/*Check for and Process Events*/
 		Event event;
 		while (window.pollEvent(event))
 		{
@@ -24,15 +24,15 @@ int main()
 				window.close();
 		}
 
-		//If No GameState Exists ERROR
+		/*Asser there is always a game state in the stack*/
 		assert(mStateManager.PeekState() != nullptr);
 
-		//Loop Through Game State Order
+		/*Cycle Functions on GameState at the top of the State Stack*/
 		mStateManager.PeekState()->HandleInput();
 		mStateManager.PeekState()->Update(1.0f);
 		mStateManager.PeekState()->Draw(1.0f, window);
 		
-		//Display Drawn Graphics
+		/*Display Graphics*/
 		window.display();
 	}
 

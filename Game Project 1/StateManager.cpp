@@ -9,7 +9,6 @@ void StateManager::PopState()
 {
 	if (!StateStack.empty())
 	{
-		delete StateStack.top();
 		StateStack.pop();
 	}
 }
@@ -36,6 +35,4 @@ StateManager::StateManager()
 
 StateManager::~StateManager()
 {
-	while (!StateStack.empty())
-		PopState();
 }
