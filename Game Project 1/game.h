@@ -5,5 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include <assert.h>
 
+/*The Games State Manager*/
 StateManager mStateManager = {};
+
+/*Game States*/
 TestState mTestState = {};

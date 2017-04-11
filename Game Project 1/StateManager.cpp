@@ -7,6 +7,7 @@ void StateManager::PushState(GameState* st)
 
 void StateManager::PopState()
 {
+	assert(StateStack.size() > 1);
 	if (!StateStack.empty())
 	{
 		StateStack.pop();

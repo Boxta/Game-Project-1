@@ -9,8 +9,12 @@ Virtual so as to let the Game use the GameState manager to call a consistent fun
 class GameState
 {
 public:
-	virtual void Draw(float dt, sf::RenderWindow& wnd) = 0;
-	virtual void Update(float dt) = 0;
+	/*The States KeyBoard and Mouse Handling Function*/
 	virtual void HandleInput() = 0;
+	/*The States Logic Update Function*/
+	virtual void Update(float dt) = 0;
+	/*The States Draw Function*/
+	virtual void Draw(float dt, sf::RenderWindow& wnd) = 0;
+
 };
 
