@@ -6,3 +6,4 @@
 #include <assert.h>
 
 StateManager mStateManager;
+//TestState mTestState;

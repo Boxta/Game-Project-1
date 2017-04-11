@@ -4,6 +4,9 @@
 #include "StateManager.h"
 #include <SFML/Graphics.hpp>
 
+/*
+Virtual so as to let the Game use the GameState manager to call a consistent function.
+*/
 class GameState
 {
 public:

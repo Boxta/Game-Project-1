@@ -7,7 +7,7 @@ using namespace sf;
 
 int main()
 {
-	TestState mTestState = { &mStateManager };
+	TestState mTestState(&mStateManager);
 	mStateManager.PushState(&mTestState);
 
 	//Create a window passing in the window size and title bar name
@@ -26,12 +26,13 @@ int main()
 
 		//If No GameState Exists ERROR
 		assert(mStateManager.PeekState() != nullptr);
+
+		//Loop Through Game State Order
 		mStateManager.PeekState()->HandleInput();
 		mStateManager.PeekState()->Update(1.0f);
 		mStateManager.PeekState()->Draw(1.0f, window);
 		
-
-		//Render the drawn item(s) to the window and display to the user
+		//Display Drawn Graphics
 		window.display();
 	}
 

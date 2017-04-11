@@ -5,12 +5,16 @@
 
 class GameState;
 
+/*
+A Game State Will Update, Draw and Handle Input.
+The Manager Handles the FILO Stack of Game States.
+The game will use the Game State on the top of the stack.
+*/
 class StateManager
 {
 public:
 
 	std::stack<GameState*> StateStack;
-	sf::RenderWindow* wnd;
 
 	void PushState(GameState* st);
 	void PopState();
