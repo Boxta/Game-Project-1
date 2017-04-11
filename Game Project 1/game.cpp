@@ -2,25 +2,21 @@
 //
 
 #include "game.h"
-#include <SFML/Graphics.hpp>
 
 using namespace sf;
 
 int main()
 {
+	TestState mTestState = { &mStateManager };
+	mStateManager.PushState(&mTestState);
+
 	//Create a window passing in the window size and title bar name
 	RenderWindow window(VideoMode(600, 600), "SFML works!");
-
-	//Create a SFML Circle shape passing in the radius
-	CircleShape shape(300.f);
-
-	//Set the color of the created shape
-	shape.setFillColor(Color::Green);
 
 	//Continue to loop while the window is open
 	while (window.isOpen())
 	{
-		//Check for any events
+		//Check for and process any events
 		Event event;
 		while (window.pollEvent(event))
 		{
@@ -28,11 +24,12 @@ int main()
 				window.close();
 		}
 
-		//Clear the window before drawing
-		window.clear();
-
-		//Draw the shape to the cleared window
-		window.draw(shape);
+		//If No GameState Exists ERROR
+		assert(mStateManager.PeekState() != nullptr);
+		mStateManager.PeekState()->HandleInput();
+		mStateManager.PeekState()->Update(1.0f);
+		mStateManager.PeekState()->Draw(1.0f, window);
+		
 
 		//Render the drawn item(s) to the window and display to the user
 		window.display();
