@@ -5,8 +5,19 @@
 #include <SFML/Graphics.hpp>
 #include <assert.h>
 
-/*The Games State Manager*/
-StateManager mStateManager = {};
+class Game
+{
+public:
+	StateManager mStateManager = {};
 
-/*Game States*/
-TestState mTestState = {};
+	/*Add State To The State Stack*/
+	TestState mTestState = {};
+	sf::RenderWindow Window;
+	Game();
+	void Initiate();
+	void Update();
+	void Draw();
+
+	~Game();
+};
+

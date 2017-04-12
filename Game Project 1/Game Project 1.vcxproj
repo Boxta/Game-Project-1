@@ -157,13 +157,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CmnTextureStore.cpp" />
-    <ClCompile Include="game.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="TestState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CmnTextureStore.h" />
-    <ClInclude Include="game.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="TestState.h" />
