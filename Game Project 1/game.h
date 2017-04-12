@@ -11,7 +11,7 @@ public:
 	StateManager mStateManager = {};
 
 	/*Add State To The State Stack*/
-	TestState mTestState = {};
+	TestState mTestState;
 	sf::RenderWindow Window;
 	Game();
 	void Initiate();

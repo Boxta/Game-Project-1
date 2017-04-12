@@ -4,16 +4,15 @@ using namespace sf;
 
 Game::Game()
 	:
-	Window(VideoMode(600, 600), "SFML works!")
+	Window(VideoMode(600, 600), "SFML works!"),
+	mTestState()
 {
 	Initiate();
 }
 
 void Game::Initiate()
 {
-
-	mStateManager.PushState(&mTestState);
-	
+	mStateManager.PushState(mTestState);
 
 	/*Enter Game Loop*/
 	while (Window.isOpen())

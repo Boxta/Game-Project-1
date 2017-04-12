@@ -17,13 +17,13 @@ public:
 	std::stack<GameState*> StateStack;
 
 	/*Add GameState to the top of the Stack*/
-	void PushState(GameState* st);
+	void PushState(GameState& st);
 	/*Remove GameState on the top of the Stack*/
 	void PopState();
 	/*Return GameState on the top of the Stack*/
 	GameState* PeekState();
 	/*Remove GameState on the top of the Stack and Add GameState to the top of the Stack*/
-	void ChangeState(GameState* st);
+	void ChangeState(GameState& st);
 
 	StateManager();
 	~StateManager();

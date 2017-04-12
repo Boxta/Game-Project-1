@@ -1,8 +1,8 @@
 #include "StateManager.h"
 
-void StateManager::PushState(GameState* st)
+void StateManager::PushState(GameState& st)
 {
-	StateStack.push(st);
+	StateStack.push(&st);
 }
 
 void StateManager::PopState()
@@ -21,12 +21,12 @@ GameState* StateManager::PeekState()
 	return StateStack.top();
 }
 
-void StateManager::ChangeState(GameState* st)
+void StateManager::ChangeState(GameState& st)
 {
 	if (!StateStack.empty())
 		StateStack.pop();
 
-	StateStack.push(st);
+	StateStack.push(&st);
 }
 
 StateManager::StateManager()
