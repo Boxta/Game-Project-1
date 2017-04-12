@@ -12,6 +12,7 @@ int main()
 
 	/*Create a SFML Window*/
 	RenderWindow window(VideoMode(600, 600), "SFML works!");
+	//window.setFramerateLimit(60);
 
 	/*Enter Game Loop*/
 	while (window.isOpen())
@@ -31,7 +32,7 @@ int main()
 		mStateManager.PeekState()->HandleInput();
 		mStateManager.PeekState()->Update(1.0f);
 		mStateManager.PeekState()->Draw(1.0f, window);
-		
+
 		/*Display Graphics*/
 		window.display();
 	}

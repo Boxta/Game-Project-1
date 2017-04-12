@@ -3,7 +3,7 @@
 TestState::TestState() :
 	shape(300.0f)
 {
-	shape.setFillColor(sf::Color::Blue);
+	shape.setFillColor(sf::Color::Green);
 }
 
 
@@ -25,7 +25,7 @@ void TestState::Draw(float dt, sf::RenderWindow& wnd)
 {
 
 	//Clear the window before drawing
-	wnd.clear();
+	//wnd.clear();
 	//Draw the shape to the cleared window
-	wnd.draw(shape);
+	//wnd.draw(shape);
 }
