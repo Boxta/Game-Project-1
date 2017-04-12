@@ -3,7 +3,6 @@
 #include <SFML\Graphics.hpp>
 #include <map>
 #include <string>
-#include <assert.h>
 
 class CmnTextureStore
 {

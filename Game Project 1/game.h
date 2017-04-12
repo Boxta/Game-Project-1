@@ -4,20 +4,25 @@
 #include "TestState.h"
 #include <SFML/Graphics.hpp>
 #include <assert.h>
+#include "CmnTextureStore.h"
 
 class Game
 {
-public:
+private:
 	StateManager mStateManager = {};
 
 	/*Add State To The State Stack*/
 	TestState mTestState;
-	sf::RenderWindow Window;
-	Game();
+	sf::RenderWindow mWindow;
+	
+	
 	void Initiate();
 	void Update();
 	void Draw();
 
+public:
+	CmnTextureStore mCommonTextureStore;
+	Game();
 	~Game();
 };
 

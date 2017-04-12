@@ -2,6 +2,7 @@
 
 #include <stack>
 #include <SFML/Graphics.hpp>
+#include "CmnTextureStore.h"
 
 /*
 Virtual so as to let the Game use the GameState manager to call a consistent function.
@@ -9,6 +10,8 @@ Virtual so as to let the Game use the GameState manager to call a consistent fun
 class GameState
 {
 public:
+	/*Initiate Variables and Structures*/
+	virtual void Initiate(CmnTextureStore& str) = 0;
 	/*The States KeyBoard and Mouse Handling Function*/
 	virtual void HandleInput() = 0;
 	/*The States Logic Update Function*/

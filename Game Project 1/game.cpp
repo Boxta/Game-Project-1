@@ -4,18 +4,29 @@ using namespace sf;
 
 Game::Game()
 	:
-	Window(VideoMode(600, 600), "SFML works!"),
+	mWindow(VideoMode(600, 600), "SFML works!"),
+	mCommonTextureStore(),
 	mTestState()
 {
-	Initiate();
+	/*Load Common Textures*/
+	mCommonTextureStore.AddTexture("Test", "Media\\001.png");
+
+	Initiate();						
 }
 
 void Game::Initiate()
 {
+	/*Limit Window Max Frame Rate*/
+	mWindow.setFramerateLimit(60);	
+
+	/*Initiate States*/
+	mTestState.Initiate(mCommonTextureStore);
+
+	/*Add States To State Manager*/
 	mStateManager.PushState(mTestState);
 
 	/*Enter Game Loop*/
-	while (Window.isOpen())
+	while (mWindow.isOpen())
 	{
 		Update();
 		Draw();
@@ -26,10 +37,10 @@ void Game::Update()
 {
 	/*Check for and Process Events*/
 	Event event;
-	while (Window.pollEvent(event))
+	while (mWindow.pollEvent(event))
 	{
 		if (event.type == Event::Closed)
-			Window.close();
+			mWindow.close();
 	}
 
 	/*Assert there is always a game state in the stack*/
@@ -43,10 +54,10 @@ void Game::Update()
 void Game::Draw()
 {
 	/*Draw State @ Top Of Stack*/
-	mStateManager.PeekState()->Draw(1.0f, Window);
+	mStateManager.PeekState()->Draw(1.0f, mWindow);
 
 	/*Display Graphics*/
-	Window.display();
+	mWindow.display();
 }
 
 

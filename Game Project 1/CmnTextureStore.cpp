@@ -11,7 +11,6 @@ void CmnTextureStore::AddTexture(const std::string& key, const std::string& file
 
 sf::Texture& CmnTextureStore::GetTextureRef(const std::string& key)
 {
-	assert(TextureStore.size() <= 0);
 	return TextureStore.at(key); 	//.at has bounds checking
 }
 
