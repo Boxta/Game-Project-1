@@ -28,15 +28,17 @@ public:
 public:
 
 	AnimatedSprite();
-	AnimatedSprite(sf::Texture& texture, int width, 
-		int height, int x, int y, std::vector<Animation>& animations);
+	AnimatedSprite(sf::Texture& texture, 
+		const int width, const int height, 
+		const int x, const int y, 
+		const std::vector<Animation>& animations);
 	~AnimatedSprite();
 
 	void Initiate();
 	void Update(const float dt);
 	void Draw(sf::RenderWindow& wnd);
 
-	auto& GetPosition()
+	const auto& GetPosition()
 	{
 		return sf::Vector2<int>(mXPosition, mYPosition);
 	}
@@ -45,10 +47,17 @@ public:
 
 
 private:
+	/*Animated Sprites Sprite*/
 	Sprite mSprite;
+
+	/*Sprite and Sprite Animation Frame Position*/
 	int mXPosition;
 	int mYPosition;
+
+	/*Current Frame In Use*/
 	int mCurrentFrame;
+
+	/*Sprite Width and Height*/
 	int mWidth;
 	int mHeight;
 

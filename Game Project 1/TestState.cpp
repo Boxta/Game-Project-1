@@ -41,6 +41,6 @@ void TestState::Draw(float dt, sf::RenderWindow& wnd)
 	wnd.clear();
 	//Draw the shape to the cleared window
 	//wnd.draw(mShape);
-	//wnd.draw(mMario);
+	wnd.draw(mMario);
 	AniSprite.Draw(wnd);
 }
