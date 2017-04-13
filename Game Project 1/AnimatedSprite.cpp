@@ -3,25 +3,20 @@
 AnimatedSprite::AnimatedSprite()
 	:
 	mSprite(),
-	Animation1(0, 8, 0.05f),
-	Animation2(0, 8, 0.05f),
-	Animation3(0, 8, 0.05f),
-	Animation4(0, 8, 0.05f),
 	mWidth(0),
 	mHeight(0)
 {
 }
 
 AnimatedSprite::AnimatedSprite(sf::Texture& texture,
-	int width, int height, int x, int y)
+	int width, int height, int x, int y, std::vector<Animation>& animations)
 	:
 	mSprite(texture, sf::IntRect(x, y, width, height)),
-	Animation1(0, 8, 0.05f),
-	Animation2(0, 8, 0.05f),
-	Animation3(0, 8, 0.05f),
-	Animation4(0, 8, 0.05f),
 	mWidth(width),
-	mHeight(height)
+	mHeight(height), 
+	mXPosition(x),
+	mYPosition(y),
+	mAnimationList(animations)
 {
 }
 
@@ -32,11 +27,8 @@ AnimatedSprite::~AnimatedSprite()
 
 void AnimatedSprite::Initiate()
 {
-	mAnimationList.push_back(Animation1);
-	mAnimationList.push_back(Animation2);
-	mAnimationList.push_back(Animation3);
-	mAnimationList.push_back(Animation4);
-	mCurrentAnimation = 3;
+	mSprite.setPosition(mXPosition, mYPosition);
+	mCurrentAnimation = 1;
 	mCurrentFrame = 0;
 	mTimeCounter = 0.0f;
 }
@@ -75,7 +67,13 @@ void AnimatedSprite::Update(const float dt)
 	}
 }
 
-void AnimatedSprite::Draw(sf::RenderWindow & wnd)
+void AnimatedSprite::Draw(sf::RenderWindow& wnd)
 {
 	wnd.draw(mSprite);
+}
+
+void AnimatedSprite::setPosition(sf::Vector2<int> pos)
+{
+	mXPosition = pos.x;
+	mXPosition = pos.y;
 }

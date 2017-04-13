@@ -11,7 +11,7 @@ Game::Game()
 	/*Load Common Textures*/
 	/*MUST Load All Before GameState Initialisation*/
 	mCommonTextureStore.AddTexture("Test", "Media\\001.png");
-	mCommonTextureStore.AddTexture("AnimatedBox", "Media\\003.png");
+	mCommonTextureStore.AddTexture("AnimatedBox", "Media\\004.png");
 
 	Initiate();						
 }

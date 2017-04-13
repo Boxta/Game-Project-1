@@ -3,6 +3,8 @@
 #include "CmnTextureStore.h"
 #include "AnimatedSprite.h"
 #include <chrono>
+#include "AnimatedSprite.h"
+#include <vector>
 
 class TestState 
 	:
@@ -22,5 +24,8 @@ public:
 	sf::CircleShape mShape;
 	sf::Sprite mMario;
 	CmnTextureStore mCommonTextureStore;
+	AnimatedSprite::Animation Animation1;
+	AnimatedSprite::Animation Animation2;
+	std::vector<AnimatedSprite::Animation> AnimationCollection;
 };
 

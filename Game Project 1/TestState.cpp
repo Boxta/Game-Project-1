@@ -3,7 +3,9 @@
 TestState::TestState()
 	:
 	mShape(300.0f),
-	AniSprite()
+	AniSprite(),
+	Animation1(0, 3, 0.1f),
+	Animation2(0, 3, 0.1f)
 {
 	mShape.setFillColor(sf::Color::Green);
 }
@@ -17,7 +19,9 @@ void TestState::Initiate(CmnTextureStore& str)
 	mCommonTextureStore = str;
 	mMario.setTexture(mCommonTextureStore.GetTextureRef("Test"));
 	mMario.setPosition(100.0f, 100.0f);
-	AniSprite = { mCommonTextureStore.GetTextureRef("AnimatedBox") , 64, 64, 0, 0 };
+	AnimationCollection.push_back(Animation1);
+	AnimationCollection.push_back(Animation2);
+	AniSprite = { mCommonTextureStore.GetTextureRef("AnimatedBox") , 20, 20, 400, 400, AnimationCollection };
 	
 	AniSprite.Initiate();
 }

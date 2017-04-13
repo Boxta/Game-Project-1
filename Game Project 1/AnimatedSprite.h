@@ -26,23 +26,28 @@ public:
 		int getLength() { return mEndFrame - mStartFrame + 1; }
 	};
 public:
-	Sprite mSprite;
+
 	AnimatedSprite();
 	AnimatedSprite(sf::Texture& texture, int width, 
-		int height, int x, int y);
+		int height, int x, int y, std::vector<Animation>& animations);
 	~AnimatedSprite();
 
 	void Initiate();
 	void Update(const float dt);
 	void Draw(sf::RenderWindow& wnd);
 
+	auto& GetPosition()
+	{
+		return sf::Vector2<int>(mXPosition, mYPosition);
+	}
+
+	void setPosition(sf::Vector2<int> pos);
+
 
 private:
-	Animation Animation1;
-	Animation Animation2;
-	Animation Animation3;
-	Animation Animation4;
-
+	Sprite mSprite;
+	int mXPosition;
+	int mYPosition;
 	int mCurrentFrame;
 	int mWidth;
 	int mHeight;
