@@ -9,7 +9,9 @@ Game::Game()
 	mTestState()
 {
 	/*Load Common Textures*/
+	/*MUST Load All Before GameState Initialisation*/
 	mCommonTextureStore.AddTexture("Test", "Media\\001.png");
+	mCommonTextureStore.AddTexture("AnimatedBox", "Media\\003.png");
 
 	Initiate();						
 }
@@ -35,6 +37,8 @@ void Game::Initiate()
 
 void Game::Update()
 {
+	mDeltaTime = mFrameTimer.Mark();
+
 	/*Check for and Process Events*/
 	Event event;
 	while (mWindow.pollEvent(event))
@@ -48,13 +52,13 @@ void Game::Update()
 
 	/*Handle Input Then Update State @ Top Of Stack*/
 	mStateManager.PeekState()->HandleInput();
-	mStateManager.PeekState()->Update(1.0f);
+	mStateManager.PeekState()->Update(mDeltaTime);
 }
 
 void Game::Draw()
 {
 	/*Draw State @ Top Of Stack*/
-	mStateManager.PeekState()->Draw(1.0f, mWindow);
+	mStateManager.PeekState()->Draw(mDeltaTime, mWindow);
 
 	/*Display Graphics*/
 	mWindow.display();

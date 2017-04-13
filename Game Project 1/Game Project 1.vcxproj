@@ -156,14 +156,18 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="CmnTextureStore.cpp" />
+    <ClCompile Include="Frametimer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="TestState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="CmnTextureStore.h" />
+    <ClInclude Include="Frametimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="StateManager.h" />

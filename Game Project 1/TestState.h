@@ -1,6 +1,8 @@
 #pragma once
 #include "GameState.h"
 #include "CmnTextureStore.h"
+#include "AnimatedSprite.h"
+#include <chrono>
 
 class TestState 
 	:
@@ -16,6 +18,7 @@ public:
 	virtual void HandleInput();
 
 	//Create a SFML Circle shape passing in the radius
+	AnimatedSprite AniSprite;
 	sf::CircleShape mShape;
 	sf::Sprite mMario;
 	CmnTextureStore mCommonTextureStore;

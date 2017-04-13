@@ -12,7 +12,7 @@ class GameState
 public:
 	/*Initiate Variables and Structures*/
 	virtual void Initiate(CmnTextureStore& str) = 0;
-	/*The States KeyBoard and Mouse Handling Function*/
+	/*The States Keyboard and Mouse Handling Function*/
 	virtual void HandleInput() = 0;
 	/*The States Logic Update Function*/
 	virtual void Update(float dt) = 0;
