@@ -15,15 +15,21 @@ TestState::~TestState()
 void TestState::Initiate(CmnTextureStore& str)
 {
 	/*Setup a Layer Of Animated Tiles and Tile Manager*/
-	std::vector<AnimatedSprite::Animation> tempaniamtions;
-	tempaniamtions.push_back(AnimatedSprite::Animation(0, 8, 0.1f));
-	tempaniamtions.push_back(AnimatedSprite::Animation(0, 8, 0.1f));
-	tempaniamtions.push_back(AnimatedSprite::Animation(0, 8, 0.1f));
-	tempaniamtions.push_back(AnimatedSprite::Animation(0, 8, 0.1f));
-	mTileManager.AddTileLayer(0, mTileManager.CreateLayerTiles(10, 10, 64, 64,
-		tempaniamtions, "TileSheet2", str));
-	mTileManager.AddTileLayer(1, mTileManager.CreateLayerTiles(5, 5, 64, 64,
-		tempaniamtions, "TileSheet1", str));
+	std::vector<AnimatedSprite::Animation> Sheet1Animations;
+	Sheet1Animations.push_back(AnimatedSprite::Animation(0, 8, 0.1f));
+	Sheet1Animations.push_back(AnimatedSprite::Animation(0, 8, 0.1f));
+	Sheet1Animations.push_back(AnimatedSprite::Animation(0, 8, 0.1f));
+	Sheet1Animations.push_back(AnimatedSprite::Animation(0, 8, 0.1f));
+	std::vector<AnimatedSprite::Animation> Sheet2Animations;
+	Sheet2Animations.push_back(AnimatedSprite::Animation(0, 5, 1.05f));
+	Sheet2Animations.push_back(AnimatedSprite::Animation(0, 5, 1.05f));
+	Sheet2Animations.push_back(AnimatedSprite::Animation(0, 5, 1.05f));
+
+	mTileManager.AddTileLayer(0, mTileManager.CreateLayerTiles(50, 50, 64, 64,
+		Sheet2Animations, "TileSheet2", str, true));
+	mTileManager.AddTileLayer(1, mTileManager.CreateLayerTiles(50, 50, 64, 64,
+		Sheet1Animations, "TileSheet1", str, false));
+
 	mTileManager.Initiate(str);
 }
 

@@ -45,7 +45,8 @@ public:
 		int width, int height,
 		std::vector<AnimatedSprite::Animation> animations,
 		std::string textureid,
-		CmnTextureStore& cmn);
+		CmnTextureStore& cmn,
+		bool animating);
 	void AddTileLayer(int layerid, std::vector<Tile> tiles);
 
 	void Initiate(CmnTextureStore& cmn);

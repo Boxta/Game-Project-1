@@ -4,21 +4,22 @@ std::vector<TileManager::Tile> TileManager::CreateLayerTiles(int layertilewidth,
 	int width, int height,
 	std::vector<AnimatedSprite::Animation> animations,
 	std::string textureid,
-	CmnTextureStore& cmn
+	CmnTextureStore& cmn,
+	bool animating
 	)
 {
 	std::vector<TileManager::Tile> tilelist;
-
-	for (int w = 0; w < layertilewidth; w++)
+	for (int h = 0; h < layertileheight; h++)
 	{
-		for (int h = 0; h < layertileheight; h++)
+		for (int w = 0; w < layertilewidth; w++)
 		{
+		
 			Tile tile = { w * width, h * height,
 				width, height,
 				animations,
 				textureid, 
 				cmn, 
-				false };
+				animating };
 			
 			tilelist.push_back(tile);
 		}
@@ -41,11 +42,11 @@ void TileManager::Initiate(CmnTextureStore& cmn)
 		/*Iterator Over Each Tile and Initiate*/
 		for (auto& _tiles : _layer.second)
 		{
+			/*Set Default/Starting Animation and Frame*/
 			_tiles.Initiate(0, 2);
 			
 		}
 	}
-
 }
 
 void TileManager::Update(const float dt)
@@ -100,12 +101,12 @@ TileManager::Tile::Tile(int _x, int _y,
 	mTileWidth(_w),
 	mTileHeight(_h),
 	mType(texturesheetid),
-	mTileSprite(cmn.GetTextureRef(mType),
-		mTileWidth, mTileHeight,
-		mPositionX, mPositionY,
-		mAnimationCollection),
 	mIsAnimating(isAnimating)
 {
+	mTileSprite = { cmn.GetTextureRef(texturesheetid),
+		mTileWidth, mTileHeight,
+		mPositionX, mPositionY,
+		mAnimationCollection };
 	mTileSprite.setAnimation(mIsAnimating);
 }
 
