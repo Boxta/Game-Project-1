@@ -28,8 +28,13 @@ public:
 
 	TileManager mTileManager;
 
+	void UpdateCameraPosition(int x, int y);
+
 	sf::Text SF_Text;
 	sf::Font SF_Font;
+	int camerax = 0;
+	int cameray = 0;
+	sf::View View1;
 
 };
 

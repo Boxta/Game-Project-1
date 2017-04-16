@@ -3,7 +3,8 @@
 TestState::TestState()
 	:
 	mShape(300.0f),
-	mTileManager()
+	mTileManager(),
+	View1(sf::FloatRect(camerax, cameray, 800, 600))
 {
 	mShape.setFillColor(sf::Color::White);
 }
@@ -19,6 +20,9 @@ void TestState::Initiate(CmnTextureStore& str)
 	SF_Text.setString("ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789");
 	SF_Text.setCharacterSize(70);
 
+	/*Move the view by setting set centre*/
+	/*Rotate the view by setting set rotate*/
+	/*Zoom the view by setting set size*/
 
 	/*Setup a Layer Of Animated Tiles and Tile Manager*/
 	std::vector<AnimatedSprite::Animation> Sheet1Animations;
@@ -42,13 +46,37 @@ void TestState::HandleInput()
 {
 }
 
+void TestState::UpdateCameraPosition(int x, int y)
+{
+	View1.setCenter(View1.getCenter().x + x, View1.getCenter().y + y);
+}
+
 void TestState::Update(float dt)
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		UpdateCameraPosition(-1, 0);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		UpdateCameraPosition(1, 0);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		UpdateCameraPosition(0, -1);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		UpdateCameraPosition(0, 1);
+	}
 	mTileManager.Update(dt);
 }
 
 void TestState::Draw(float dt, sf::RenderWindow& wnd)
 {
+	/*Set View*/
+	wnd.setView(View1);
+
 	/*Clear Window*/
 	wnd.clear();
 

@@ -32,6 +32,7 @@ private:
 public:
 	/*Common State Resources*/
 	CmnTextureStore mCommonTextureStore;
+	sf::Font mFont_System;
 	/*Constructors*/
 	Game();
 	~Game();

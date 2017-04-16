@@ -4,7 +4,7 @@ using namespace sf;
 
 Game::Game()
 	:
-	mWindow(VideoMode(1600, 1200), "SFML works!"),
+	mWindow(VideoMode(800, 600), "SFML works!"),
 	mCommonTextureStore(),
 	mTestState()
 {
