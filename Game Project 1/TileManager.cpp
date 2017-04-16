@@ -5,7 +5,9 @@ std::vector<TileManager::Tile> TileManager::CreateLayerTiles(int layertilewidth,
 	std::vector<AnimatedSprite::Animation> animations,
 	std::string textureid,
 	CmnTextureStore& cmn,
-	bool animating
+	bool animating,
+	int defaultanimation,
+	int defaultframe
 	)
 {
 	std::vector<TileManager::Tile> tilelist;
@@ -19,7 +21,9 @@ std::vector<TileManager::Tile> TileManager::CreateLayerTiles(int layertilewidth,
 				animations,
 				textureid, 
 				cmn, 
-				animating };
+				animating,
+				defaultanimation,
+				defaultframe };
 			
 			tilelist.push_back(tile);
 		}
@@ -31,22 +35,6 @@ std::vector<TileManager::Tile> TileManager::CreateLayerTiles(int layertilewidth,
 void TileManager::AddTileLayer(int layerid, std::vector<Tile> tiles)
 {
 	mTileStore[layerid] = tiles;
-}
-
-void TileManager::Initiate(CmnTextureStore& cmn)
-{
-
-	/*For Each Tile Layer*/
-	for (auto& _layer : mTileStore)
-	{
-		/*Iterator Over Each Tile and Initiate*/
-		for (auto& _tiles : _layer.second)
-		{
-			/*Set Default/Starting Animation and Frame*/
-			_tiles.Initiate(0, 2);
-			
-		}
-	}
 }
 
 void TileManager::Update(const float dt)
@@ -93,7 +81,9 @@ TileManager::Tile::Tile(int _x, int _y,
 	std::vector<AnimatedSprite::Animation>& anicollection, 
 	std::string texturesheetid, 
 	CmnTextureStore& cmn, 
-	bool isAnimating)
+	bool isAnimating,
+	const int defaultanimation,
+	const int defaultframe)
 	:
 	mAnimationCollection(anicollection),
 	mPositionX(_x),
@@ -101,20 +91,19 @@ TileManager::Tile::Tile(int _x, int _y,
 	mTileWidth(_w),
 	mTileHeight(_h),
 	mType(texturesheetid),
-	mIsAnimating(isAnimating)
+	mIsAnimating(isAnimating),
+	mDefaultAnimation(defaultanimation),
+	mDefaultFrame(defaultframe)
 {
 	mTileSprite = { cmn.GetTextureRef(texturesheetid),
 		mTileWidth, mTileHeight,
 		mPositionX, mPositionY,
-		mAnimationCollection };
+		mAnimationCollection,
+		mDefaultAnimation,
+		mDefaultFrame };
 	mTileSprite.setAnimation(mIsAnimating);
 }
 
-void TileManager::Tile::Initiate(const int animation, const int frame)
-{
-
-	mTileSprite.Initiate(animation, frame);
-}
 
 void TileManager::Tile::Update(const float dt)
 {

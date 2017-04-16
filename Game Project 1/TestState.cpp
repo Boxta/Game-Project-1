@@ -26,11 +26,10 @@ void TestState::Initiate(CmnTextureStore& str)
 	Sheet2Animations.push_back(AnimatedSprite::Animation(0, 5, 1.05f));
 
 	mTileManager.AddTileLayer(0, mTileManager.CreateLayerTiles(50, 50, 64, 64,
-		Sheet2Animations, "TileSheet2", str, true));
+		Sheet2Animations, "TileSheet2", str, true, 0, 0));
 	mTileManager.AddTileLayer(1, mTileManager.CreateLayerTiles(50, 50, 64, 64,
-		Sheet1Animations, "TileSheet1", str, false));
+		Sheet2Animations, "TileSheet2", str, true, 1, 0));
 
-	mTileManager.Initiate(str);
 }
 
 void TestState::HandleInput()

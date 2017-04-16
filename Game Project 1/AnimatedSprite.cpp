@@ -9,7 +9,9 @@ AnimatedSprite::AnimatedSprite()
 }
 
 AnimatedSprite::AnimatedSprite(sf::Texture& texture,
-	int width, int height, int x, int y, std::vector<Animation>& animations)
+	int width, int height, int x, int y, std::vector<Animation>& animations,
+	int defaultani,
+	int defaultframe)
 	:
 	mSprite(texture, sf::IntRect(x, y, width, height)),
 	mWidth(width),
@@ -17,20 +19,17 @@ AnimatedSprite::AnimatedSprite(sf::Texture& texture,
 	mXPosition(x),
 	mYPosition(y),
 	mAnimationList(animations)
-{}
+{
+	mSprite.setPosition(mXPosition, mYPosition);
+	mCurrentAnimation = defaultani;
+	mCurrentFrame = defaultframe;
+	mTimeCounter = 0.0f;
+	mSprite.setTextureRect(sf::IntRect(mCurrentFrame * mWidth, mCurrentAnimation * mHeight, mWidth, mHeight));
+}
 
 
 AnimatedSprite::~AnimatedSprite()
 {
-}
-
-void AnimatedSprite::Initiate(const int Animation, const int frame)
-{
-	mSprite.setPosition(mXPosition, mYPosition);
-	mCurrentAnimation = Animation;
-	mCurrentFrame = frame;
-	mTimeCounter = 0.0f;
-	mSprite.setTextureRect(sf::IntRect(mCurrentFrame * mWidth, mCurrentAnimation * mHeight, mWidth, mHeight));
 }
 
 void AnimatedSprite::Update(const float dt)

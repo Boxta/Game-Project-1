@@ -31,10 +31,11 @@ public:
 	AnimatedSprite(sf::Texture& texture, 
 		int width, int height, 
 		int x, int y, 
-		std::vector<Animation>& animations);
+		std::vector<Animation>& animations,
+		int defaultani,
+		int defaultframe);
 	~AnimatedSprite();
 
-	void Initiate(const int startanimation, const int frame);
 	void Update(const float dt);
 	void Draw(sf::RenderWindow& wnd);
 
@@ -48,6 +49,14 @@ public:
 		mIsAnimating = val;
 	}
 
+	void setAnimation(int n)
+	{
+		mCurrentAnimation = n;
+	}
+	void setFrame(int n)
+	{
+		mCurrentFrame = n;
+	}
 	void setPosition(sf::Vector2<int> pos);
 
 	/*Animated Sprites Sprite*/
