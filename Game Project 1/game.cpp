@@ -10,7 +10,6 @@ Game::Game()
 {
 	/*Load Common Textures*/
 	/*MUST Load All Before GameState Initialisation*/
-	mCommonTextureStore.AddTexture("TileSheet1", "Media\\003.png");
 	mCommonTextureStore.AddTexture("TileSheet2", "Media\\002.png");
 	Initiate();						
 }

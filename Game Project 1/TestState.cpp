@@ -14,6 +14,12 @@ TestState::~TestState()
 
 void TestState::Initiate(CmnTextureStore& str)
 {
+	SF_Font.loadFromFile("Media/font1.ttf");
+	SF_Text.setFont(SF_Font);
+	SF_Text.setString("ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789");
+	SF_Text.setCharacterSize(70);
+
+
 	/*Setup a Layer Of Animated Tiles and Tile Manager*/
 	std::vector<AnimatedSprite::Animation> Sheet1Animations;
 	Sheet1Animations.push_back(AnimatedSprite::Animation(0, 8, 0.1f));
@@ -51,4 +57,7 @@ void TestState::Draw(float dt, sf::RenderWindow& wnd)
 	
 	/*Draw Tiles*/
 	mTileManager.Draw(wnd);
+
+	/*Draw Text*/
+	wnd.draw(SF_Text);
 }

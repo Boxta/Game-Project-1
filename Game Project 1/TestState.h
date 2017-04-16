@@ -28,5 +28,8 @@ public:
 
 	TileManager mTileManager;
 
+	sf::Text SF_Text;
+	sf::Font SF_Font;
+
 };
 
