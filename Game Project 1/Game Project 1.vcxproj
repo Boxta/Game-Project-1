@@ -163,6 +163,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="TestState.cpp" />
+    <ClCompile Include="TileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="TestState.h" />
+    <ClInclude Include="TileManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

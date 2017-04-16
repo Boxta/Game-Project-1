@@ -5,6 +5,7 @@
 #include <chrono>
 #include "AnimatedSprite.h"
 #include <vector>
+#include "TileManager.h"
 
 class TestState 
 	:
@@ -20,12 +21,12 @@ public:
 	virtual void HandleInput();
 
 	//Create a SFML Circle shape passing in the radius
-	AnimatedSprite AniSprite;
+	
 	sf::CircleShape mShape;
-	sf::Sprite mMario;
+
 	CmnTextureStore mCommonTextureStore;
-	AnimatedSprite::Animation Animation1;
-	AnimatedSprite::Animation Animation2;
-	std::vector<AnimatedSprite::Animation> AnimationCollection;
+
+	TileManager mTileManager;
+
 };
 

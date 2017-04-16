@@ -17,24 +17,28 @@ AnimatedSprite::AnimatedSprite(sf::Texture& texture,
 	mXPosition(x),
 	mYPosition(y),
 	mAnimationList(animations)
-{
-}
+{}
 
 
 AnimatedSprite::~AnimatedSprite()
 {
 }
 
-void AnimatedSprite::Initiate()
+void AnimatedSprite::Initiate(const int Animation, const int frame)
 {
 	mSprite.setPosition(mXPosition, mYPosition);
-	mCurrentAnimation = 1;
-	mCurrentFrame = 0;
+	mCurrentAnimation = Animation;
+	mCurrentFrame = frame;
 	mTimeCounter = 0.0f;
+	mSprite.setTextureRect(sf::IntRect(mCurrentFrame * mWidth, mCurrentAnimation * mHeight, mWidth, mHeight));
 }
 
 void AnimatedSprite::Update(const float dt)
 {
+	/*Only Update If Not Animating*/
+	if (!mIsAnimating)
+		return;
+
 	/*Only Update If Animation Present*/
 	if (mCurrentAnimation < 0 ||
 		mCurrentAnimation > mAnimationList.size())

@@ -4,15 +4,14 @@ using namespace sf;
 
 Game::Game()
 	:
-	mWindow(VideoMode(600, 600), "SFML works!"),
+	mWindow(VideoMode(1600, 1200), "SFML works!"),
 	mCommonTextureStore(),
 	mTestState()
 {
 	/*Load Common Textures*/
 	/*MUST Load All Before GameState Initialisation*/
-	mCommonTextureStore.AddTexture("Test", "Media\\001.png");
-	mCommonTextureStore.AddTexture("AnimatedBox", "Media\\004.png");
-
+	mCommonTextureStore.AddTexture("TileSheet1", "Media\\003.png");
+	mCommonTextureStore.AddTexture("TileSheet2", "Media\\002.png");
 	Initiate();						
 }
 

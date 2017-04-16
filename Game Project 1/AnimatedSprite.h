@@ -29,12 +29,12 @@ public:
 
 	AnimatedSprite();
 	AnimatedSprite(sf::Texture& texture, 
-		const int width, const int height, 
-		const int x, const int y, 
-		const std::vector<Animation>& animations);
+		int width, int height, 
+		int x, int y, 
+		std::vector<Animation>& animations);
 	~AnimatedSprite();
 
-	void Initiate();
+	void Initiate(const int startanimation, const int frame);
 	void Update(const float dt);
 	void Draw(sf::RenderWindow& wnd);
 
@@ -43,12 +43,17 @@ public:
 		return sf::Vector2<int>(mXPosition, mYPosition);
 	}
 
+	void setAnimation(bool val)
+	{
+		mIsAnimating = val;
+	}
+
 	void setPosition(sf::Vector2<int> pos);
 
-
-private:
 	/*Animated Sprites Sprite*/
 	Sprite mSprite;
+private:
+
 
 	/*Sprite and Sprite Animation Frame Position*/
 	int mXPosition;
@@ -60,6 +65,9 @@ private:
 	/*Sprite Width and Height*/
 	int mWidth;
 	int mHeight;
+
+	/*Animation On/Off Toggle*/
+	bool mIsAnimating = true;
 
 	/* Array of Animations */
 	std::vector<Animation> mAnimationList;
