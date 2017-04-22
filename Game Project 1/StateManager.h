@@ -2,8 +2,9 @@
 
 #include <stack>
 #include <SFML/Graphics.hpp>
-#include "GameState.h"
 #include <assert.h>
+
+class GameState;
 
 /*
 A Game State Will Update, Draw and Handle Input.

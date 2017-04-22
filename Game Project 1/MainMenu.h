@@ -1,10 +1,6 @@
 #pragma once
 #include "GameState.h"
-#include <SFML\Graphics.hpp>
-#include "CmnTextureStore.h"
-
-
-class BootLoadState :
+class MainMenu :
 	public GameState
 {
 public:
@@ -18,11 +14,12 @@ public:
 	/*The States Draw Function*/
 	virtual void Draw(float dt, sf::RenderWindow& wnd);
 
+	CmnTextureStore mCommonTextureStore;
 	sf::RectangleShape mBackgroundFill;
-	sf::Sprite mCompanyIcon;
 	sf::Text mText1;
 	sf::Font mFont1;
-	BootLoadState();
-	~BootLoadState();
+
+	MainMenu();
+	~MainMenu();
 };
 

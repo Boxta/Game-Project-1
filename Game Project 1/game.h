@@ -7,6 +7,7 @@
 #include "CmnTextureStore.h"
 #include <chrono>
 #include "Frametimer.h"
+#include "MainMenu.h"
 
 class Game
 {
@@ -16,11 +17,12 @@ private:
 	float mDeltaTime;
 
 	/*State Manager*/
-	StateManager mStateManager = {};
+	StateManager mStateManager;
 
 	/*Game States*/
 	//TestState mTestState;
 	BootLoadState  mState_BootLoad;
+	MainMenu mState_MainMenu;
 
 	/*Game Window*/
 	sf::RenderWindow mWindow;

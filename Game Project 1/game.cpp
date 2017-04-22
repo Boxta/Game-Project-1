@@ -6,12 +6,13 @@ Game::Game()
 	:
 	mWindow(VideoMode(1920, 1080), "SFML works!"),
 	mCommonTextureStore(),
-	mState_BootLoad()
+	mState_BootLoad(),
+	mStateManager(),
+	mState_MainMenu()
 {
 	/*Load Common Textures*/
 	/*MUST Load All Before GameState Initialisation*/
-	mCommonTextureStore.AddTexture("TileSheet2", "Media\\002.png");
-	mCommonTextureStore.AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
+	
 	Initiate();						
 }
 
@@ -19,14 +20,15 @@ void Game::Initiate()
 {
 	/*Limit Window Max Frame Rate*/
 	mWindow.setFramerateLimit(60);	
-
-	/*Initiate States*/
-	mState_BootLoad.Initiate(mCommonTextureStore);
 	
-
 	/*Add States To State Manager*/
+	mStateManager.PushState(mState_MainMenu);
 	mStateManager.PushState(mState_BootLoad);
-
+	
+	/*Initiate States*/
+	mState_BootLoad.Initiate(mCommonTextureStore, mStateManager);
+	mState_MainMenu.Initiate(mCommonTextureStore, mStateManager);
+	
 	/*Enter Game Loop*/
 	while (mWindow.isOpen())
 	{
