@@ -24,8 +24,6 @@ public:
 	
 	sf::CircleShape mShape;
 
-	CmnTextureStore mCommonTextureStore;
-
 	TileManager mTileManager;
 
 	void UpdateCameraPosition(int x, int y);

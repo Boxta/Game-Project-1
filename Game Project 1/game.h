@@ -1,7 +1,7 @@
 #pragma once
 
 #include "StateManager.h"
-#include "TestState.h"
+#include "BootLoadState.h"
 #include <SFML/Graphics.hpp>
 #include <assert.h>
 #include "CmnTextureStore.h"
@@ -20,6 +20,7 @@ private:
 
 	/*Game States*/
 	//TestState mTestState;
+	BootLoadState  mState_BootLoad;
 
 	/*Game Window*/
 	sf::RenderWindow mWindow;

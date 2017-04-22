@@ -157,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="BootLoadState.cpp" />
     <ClCompile Include="CmnTextureStore.cpp" />
     <ClCompile Include="Frametimer.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -167,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
+    <ClInclude Include="BootLoadState.h" />
     <ClInclude Include="CmnTextureStore.h" />
     <ClInclude Include="Frametimer.h" />
     <ClInclude Include="Game.h" />

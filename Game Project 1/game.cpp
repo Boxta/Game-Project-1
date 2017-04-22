@@ -4,13 +4,14 @@ using namespace sf;
 
 Game::Game()
 	:
-	mWindow(VideoMode(800, 600), "SFML works!"),
-	mCommonTextureStore()
-	//mTestState()
+	mWindow(VideoMode(1920, 1080), "SFML works!"),
+	mCommonTextureStore(),
+	mState_BootLoad()
 {
 	/*Load Common Textures*/
 	/*MUST Load All Before GameState Initialisation*/
 	mCommonTextureStore.AddTexture("TileSheet2", "Media\\002.png");
+	mCommonTextureStore.AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
 	Initiate();						
 }
 
@@ -20,10 +21,11 @@ void Game::Initiate()
 	mWindow.setFramerateLimit(60);	
 
 	/*Initiate States*/
-	//mTestState.Initiate(mCommonTextureStore);
+	mState_BootLoad.Initiate(mCommonTextureStore);
+	
 
 	/*Add States To State Manager*/
-	//mStateManager.PushState(mTestState);
+	mStateManager.PushState(mState_BootLoad);
 
 	/*Enter Game Loop*/
 	while (mWindow.isOpen())
