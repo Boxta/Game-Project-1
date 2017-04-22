@@ -15,14 +15,11 @@ TestState::~TestState()
 
 void TestState::Initiate(CmnTextureStore& str)
 {
+	/*Setup Font*/
 	SF_Font.loadFromFile("Media/font1.ttf");
 	SF_Text.setFont(SF_Font);
 	SF_Text.setString("ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789");
 	SF_Text.setCharacterSize(70);
-
-	/*Move the view by setting set centre*/
-	/*Rotate the view by setting set rotate*/
-	/*Zoom the view by setting set size*/
 
 	/*Setup a Layer Of Animated Tiles and Tile Manager*/
 	std::vector<AnimatedSprite::Animation> Sheet1Animations;
@@ -38,20 +35,11 @@ void TestState::Initiate(CmnTextureStore& str)
 	mTileManager.AddTileLayer(0, mTileManager.CreateLayerTiles(50, 50, 64, 64,
 		Sheet2Animations, "TileSheet2", str, true, 0, 0));
 	mTileManager.AddTileLayer(1, mTileManager.CreateLayerTiles(50, 50, 64, 64,
-		Sheet2Animations, "TileSheet2", str, true, 1, 0));
+		Sheet2Animations, "TileSheet2", str, false, 1, 0));
 
 }
 
 void TestState::HandleInput()
-{
-}
-
-void TestState::UpdateCameraPosition(int x, int y)
-{
-	View1.setCenter(View1.getCenter().x + x, View1.getCenter().y + y);
-}
-
-void TestState::Update(float dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
@@ -69,6 +57,15 @@ void TestState::Update(float dt)
 	{
 		UpdateCameraPosition(0, 1);
 	}
+}
+
+void TestState::UpdateCameraPosition(int x, int y)
+{
+	View1.setCenter(View1.getCenter().x + x, View1.getCenter().y + y);
+}
+
+void TestState::Update(float dt)
+{
 	mTileManager.Update(dt);
 }
 

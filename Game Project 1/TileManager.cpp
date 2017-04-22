@@ -32,7 +32,7 @@ std::vector<TileManager::Tile> TileManager::CreateLayerTiles(int layertilewidth,
 	return tilelist;
 }
 
-void TileManager::AddTileLayer(int layerid, std::vector<Tile> tiles)
+void TileManager::AddTileLayer(int layerid, std::vector<Tile>& tiles)
 {
 	mTileStore[layerid] = tiles;
 }

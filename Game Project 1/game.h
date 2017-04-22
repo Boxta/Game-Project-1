@@ -19,7 +19,7 @@ private:
 	StateManager mStateManager = {};
 
 	/*Game States*/
-	TestState mTestState;
+	//TestState mTestState;
 
 	/*Game Window*/
 	sf::RenderWindow mWindow;

@@ -5,8 +5,8 @@ using namespace sf;
 Game::Game()
 	:
 	mWindow(VideoMode(800, 600), "SFML works!"),
-	mCommonTextureStore(),
-	mTestState()
+	mCommonTextureStore()
+	//mTestState()
 {
 	/*Load Common Textures*/
 	/*MUST Load All Before GameState Initialisation*/
@@ -20,10 +20,10 @@ void Game::Initiate()
 	mWindow.setFramerateLimit(60);	
 
 	/*Initiate States*/
-	mTestState.Initiate(mCommonTextureStore);
+	//mTestState.Initiate(mCommonTextureStore);
 
 	/*Add States To State Manager*/
-	mStateManager.PushState(mTestState);
+	//mStateManager.PushState(mTestState);
 
 	/*Enter Game Loop*/
 	while (mWindow.isOpen())

@@ -52,7 +52,7 @@ public:
 		bool animating,
 		int defaultanimation,
 		int defaultframe);
-	void AddTileLayer(int layerid, std::vector<Tile> tiles);
+	void AddTileLayer(int layerid, std::vector<Tile>& tiles);
 
 	void Update(const float dt);
 	void Draw(sf::RenderWindow& wnd);
