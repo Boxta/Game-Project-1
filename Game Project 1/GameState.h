@@ -2,7 +2,7 @@
 
 #include <stack>
 #include <SFML/Graphics.hpp>
-#include "CmnTextureStore.h"
+#include "CmnStore.h"
 #include "StateManager.h"
 
 /*

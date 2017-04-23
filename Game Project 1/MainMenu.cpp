@@ -14,7 +14,7 @@ void MainMenu::Initiate()
 	mMenuMusic.setLoop(true);
 
 	/*Setup Sprites*/
-	mBackgroundImage.setTexture(mCommonTextureStore.GetTextureRef("MenuBackground"));
+	mBackgroundImage.setTexture(mCommonStore.GetTextureRef("MenuBackground"));
 	mBackgroundImage.setPosition(sf::Vector2f(0, 0));
 
 	mStartGame_Button.Initiate((mWindow.getSize().x / 2) - (UIButton::WIDTH / 2), 
@@ -108,10 +108,10 @@ MainMenu::MainMenu(StateManager& stmgr,
 	sf::RenderWindow& wnd)
 	:
 	mStateManager(stmgr),
-	mCommonTextureStore(stmgr.mGameReference.mCommonTextureStore),
-	mStartGame_Button(stmgr.mGameReference.mCommonTextureStore),
-	mLoadGame_Button(stmgr.mGameReference.mCommonTextureStore),
-	mTutorialGame_Button(stmgr.mGameReference.mCommonTextureStore),
+	mCommonStore(stmgr.mGameReference.mCommonStore),
+	mStartGame_Button(stmgr.mGameReference.mCommonStore),
+	mLoadGame_Button(stmgr.mGameReference.mCommonStore),
+	mTutorialGame_Button(stmgr.mGameReference.mCommonStore),
 	mWindow(wnd)
 {
 }

@@ -2,7 +2,7 @@
 
 
 
-UIButton::UIButton(CmnTextureStore& str)
+UIButton::UIButton(CmnStore& str)
 	:
 	mCmnStore(str)
 {

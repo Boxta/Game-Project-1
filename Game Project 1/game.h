@@ -4,7 +4,7 @@
 #include "BootLoadState.h"
 #include <SFML/Graphics.hpp>
 #include <assert.h>
-#include "CmnTextureStore.h"
+#include "CmnStore.h"
 #include <chrono>
 #include "Frametimer.h"
 #include "MainMenu.h"
@@ -40,7 +40,7 @@ public:
 	BoardState mState_Board;
 
 	/*Common State Resources*/
-	CmnTextureStore mCommonTextureStore;
+	CmnStore mCommonStore;
 	sf::Font mFont_System;
 	/*Constructors*/
 	Game();

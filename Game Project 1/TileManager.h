@@ -4,7 +4,7 @@
 #include <string>
 #include "AnimatedSprite.h"
 #include "SFML\Window.hpp"
-#include "CmnTextureStore.h"
+#include "CmnStore.h"
 
 
 /*Manages Tiles and Layers*/
@@ -19,7 +19,7 @@ public:
 			int _w, int _h,
 			std::vector<AnimatedSprite::Animation>& anicollection,
 			std::string texturesheetid,
-			CmnTextureStore& store,
+			CmnStore& store,
 			bool isAnimating,
 			int defaultanimation,
 			int defaultframe);
@@ -48,7 +48,7 @@ public:
 		int width, int height,
 		std::vector<AnimatedSprite::Animation> animations,
 		std::string textureid,
-		CmnTextureStore& cmn,
+		CmnStore& cmn,
 		bool animating,
 		int defaultanimation,
 		int defaultframe);

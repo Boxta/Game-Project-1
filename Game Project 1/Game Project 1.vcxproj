@@ -159,7 +159,7 @@
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="BoardState.cpp" />
     <ClCompile Include="BootLoadState.cpp" />
-    <ClCompile Include="CmnTextureStore.cpp" />
+    <ClCompile Include="CmnStore.cpp" />
     <ClCompile Include="Frametimer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -172,7 +172,7 @@
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="BoardState.h" />
     <ClInclude Include="BootLoadState.h" />
-    <ClInclude Include="CmnTextureStore.h" />
+    <ClInclude Include="CmnStore.h" />
     <ClInclude Include="Frametimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />

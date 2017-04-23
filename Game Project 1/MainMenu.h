@@ -23,7 +23,7 @@ private:
 	sf::RenderWindow& mWindow;
 
 	StateManager& mStateManager;
-	CmnTextureStore& mCommonTextureStore;
+	CmnStore& mCommonStore;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
 	sf::Music mMenuMusic;

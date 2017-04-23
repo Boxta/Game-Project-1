@@ -1,11 +1,11 @@
 #pragma once
 #include <SFML\Graphics.hpp>
-#include "CmnTextureStore.h"
+#include "CmnStore.h"
 
 class UIButton
 {
 public:
-	UIButton(CmnTextureStore& str);
+	UIButton(CmnStore& str);
 	~UIButton();
 
 	/*Return Rectangle Reference*/
@@ -32,7 +32,7 @@ public:
 
 private:
 	/*Common Texture Store Reference*/
-	CmnTextureStore& mCmnStore;
+	CmnStore& mCmnStore;
 
 	/*The Buttons Sprite*/
 	sf::Sprite mButtonSprite;

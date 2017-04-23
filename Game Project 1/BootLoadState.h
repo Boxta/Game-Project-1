@@ -1,7 +1,7 @@
 #pragma once
 #include "GameState.h"
 #include <SFML\Graphics.hpp>
-#include "CmnTextureStore.h"
+#include "CmnStore.h"
 
 
 class BootLoadState :
@@ -21,7 +21,7 @@ public:
 private:
 	sf::RenderWindow& mWindow;
 	StateManager& mStateManager;
-	CmnTextureStore& mCommonTextureStore;
+	CmnStore& mCommonStore;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mCompanyIcon;
 	sf::Text mText1;

@@ -22,7 +22,7 @@ public:
 private:
 	sf::RenderWindow& mWindow;
 	StateManager& mStateManager;
-	CmnTextureStore& mCommonTextureStore;
+	CmnStore& mCommonStore;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
 	bool mInitiated = false;

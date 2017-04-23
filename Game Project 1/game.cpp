@@ -5,17 +5,17 @@ using namespace sf;
 Game::Game()
 	:
 	mWindow(VideoMode(1920, 1080), "Card Battle"),
-	mCommonTextureStore(),
+	mCommonStore(),
 	mStateManager(*this),
 	mState_BootLoad(mStateManager, mWindow),
 	mState_Board(mStateManager, mWindow),
 	mState_MainMenu(mStateManager, mWindow)
 {
 	/*Load Common Textures*/
-	mCommonTextureStore.AddTexture("MenuBackground", "Media\\Background2.png");
-	mCommonTextureStore.AddTexture("BoardBackground", "Media\\Background1.png");
-	mCommonTextureStore.AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
-	mCommonTextureStore.AddTexture("BaseButtons", "Media\\BaseButtons.png");
+	mCommonStore.AddTexture("MenuBackground", "Media\\Background2.png");
+	mCommonStore.AddTexture("BoardBackground", "Media\\Background1.png");
+	mCommonStore.AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
+	mCommonStore.AddTexture("BaseButtons", "Media\\BaseButtons.png");
 
 	/*Initiate Game*/
 	Initiate();						

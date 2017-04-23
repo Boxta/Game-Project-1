@@ -17,7 +17,7 @@ void BootLoadState::Initiate()
 	mText1.setPosition(sf::Vector2f(1920 / 2 - 100, 1080 / 2 - 300));
 
 	/*Setup Sprites*/
-	mCompanyIcon.setTexture(mCommonTextureStore.GetTextureRef("BootLoadImage"));
+	mCompanyIcon.setTexture(mCommonStore.GetTextureRef("BootLoadImage"));
 	mCompanyIcon.setPosition(sf::Vector2f(1920 / 2 - 170, 1080 / 2 - 250));
 }
 
@@ -56,7 +56,7 @@ BootLoadState::BootLoadState(StateManager& stmgr,
 	mBackgroundFill(),
 	mCompanyIcon(),
 	mStateManager(stmgr),
-	mCommonTextureStore(stmgr.mGameReference.mCommonTextureStore),
+	mCommonStore(stmgr.mGameReference.mCommonStore),
 	mWindow(wnd)
 {
 	mBackgroundFill.setFillColor(sf::Color::Black);

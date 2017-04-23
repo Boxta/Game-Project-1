@@ -10,7 +10,8 @@ void BoardState::Initiate()
 	else
 		mInitiated = true;
 
-	mBackgroundImage.setTexture(mCommonTextureStore.GetTextureRef("BoardBackground"));
+	/*Setup Sprite*/
+	mBackgroundImage.setTexture(mCommonStore.GetTextureRef("BoardBackground"));
 	mBackgroundImage.setPosition(0.0f, 0.0f);
 }
 
@@ -38,7 +39,7 @@ BoardState::BoardState(StateManager& stmgr,
 	mBackgroundImage(),
 	mBackgroundFill(),
 	mStateManager(stmgr),
-	mCommonTextureStore(stmgr.mGameReference.mCommonTextureStore),
+	mCommonStore(stmgr.mGameReference.mCommonStore),
 	mWindow(wnd)
 {
 	mBackgroundFill.setFillColor(sf::Color::Black);
