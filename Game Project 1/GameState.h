@@ -12,14 +12,15 @@ class GameState
 {
 public:
 	/*Initiate Variables and Structures*/
-	virtual void Initiate(CmnTextureStore& str,
-		StateManager& stmgr) = 0;
+	virtual void Initiate() = 0;
 	/*The States Keyboard and Mouse Handling Function*/
 	virtual void HandleInput() = 0;
 	/*The States Logic Update Function*/
 	virtual void Update(float dt) = 0;
 	/*The States Draw Function*/
-	virtual void Draw(float dt, sf::RenderWindow& wnd) = 0;
+	virtual void Draw() = 0;
+	/*Handle Events*/
+	virtual void HandleEvents(sf::Event& ev) = 0;
 
 };
 

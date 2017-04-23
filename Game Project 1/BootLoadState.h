@@ -9,20 +9,29 @@ class BootLoadState :
 {
 public:
 	/*Initiate Variables and Structures*/
-	virtual void Initiate(CmnTextureStore& str,
-		StateManager& stmgr);
+	virtual void Initiate();
 	/*The States Keyboard and Mouse Handling Function*/
 	virtual void HandleInput();
 	/*The States Logic Update Function*/
 	virtual void Update(float dt);
 	/*The States Draw Function*/
-	virtual void Draw(float dt, sf::RenderWindow& wnd);
-
+	virtual void Draw();
+	/*Handle Events*/
+	virtual void HandleEvents(sf::Event& ev);
+private:
+	sf::RenderWindow& mWindow;
+	StateManager& mStateManager;
+	CmnTextureStore& mCommonTextureStore;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mCompanyIcon;
 	sf::Text mText1;
 	sf::Font mFont1;
-	BootLoadState();
+	const float mWaitTime = 2.0f;
+	float mWaitTimer = 0.0f;
+public:
+	BootLoadState(StateManager& stmgr,
+		CmnTextureStore& str,
+		sf::RenderWindow& wnd);
 	~BootLoadState();
 };
 

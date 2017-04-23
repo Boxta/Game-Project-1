@@ -4,15 +4,18 @@ using namespace sf;
 
 Game::Game()
 	:
-	mWindow(VideoMode(1920, 1080), "SFML works!"),
+	mWindow(VideoMode(1920, 1080), "Card Battle"),
 	mCommonTextureStore(),
-	mState_BootLoad(),
 	mStateManager(),
-	mState_MainMenu()
+	mState_BootLoad(mStateManager, mCommonTextureStore, mWindow),
+	mState_MainMenu(mStateManager, mCommonTextureStore, mWindow)
 {
 	/*Load Common Textures*/
-	/*MUST Load All Before GameState Initialisation*/
-	
+	mCommonTextureStore.AddTexture("MenuBackground", "Media\\Background2.png");
+	mCommonTextureStore.AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
+	mCommonTextureStore.AddTexture("BaseButtons", "Media\\BaseButtons.png");
+
+	/*Initiate Game*/
 	Initiate();						
 }
 
@@ -26,9 +29,11 @@ void Game::Initiate()
 	mStateManager.PushState(mState_BootLoad);
 	
 	/*Initiate States*/
-	mState_BootLoad.Initiate(mCommonTextureStore, mStateManager);
-	mState_MainMenu.Initiate(mCommonTextureStore, mStateManager);
-	
+	for (auto& s : mStateManager.StateStack._Get_container())
+	{
+		s->Initiate();
+	}
+
 	/*Enter Game Loop*/
 	while (mWindow.isOpen())
 	{
@@ -39,6 +44,7 @@ void Game::Initiate()
 
 void Game::Update()
 {
+	/*Time Since Last Update Call*/
 	mDeltaTime = mFrameTimer.Mark();
 
 	/*Check for and Process Events*/
@@ -47,25 +53,26 @@ void Game::Update()
 	{
 		if (event.type == Event::Closed)
 			mWindow.close();
-	}
 
+		mStateManager.PeekState()->HandleEvents(event);
+	}
 	/*Assert there is always a game state in the stack*/
 	assert(mStateManager.PeekState() != nullptr);
 
 	/*Handle Input Then Update State @ Top Of Stack*/
 	mStateManager.PeekState()->HandleInput();
+
 	mStateManager.PeekState()->Update(mDeltaTime);
 }
 
 void Game::Draw()
 {
 	/*Draw State @ Top Of Stack*/
-	mStateManager.PeekState()->Draw(mDeltaTime, mWindow);
+	mStateManager.PeekState()->Draw();
 
 	/*Display Graphics*/
 	mWindow.display();
 }
-
 
 Game::~Game()
 {
