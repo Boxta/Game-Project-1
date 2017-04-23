@@ -57,8 +57,5 @@ private:
 	/*Text*/
 	sf::String mString1;
 	sf::Text mText1;
-
-	/*Fonts*/
-	sf::Font mFont1;
 };
 

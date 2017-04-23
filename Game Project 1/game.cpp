@@ -17,13 +17,16 @@ Game::Game()
 	mCommonStore.AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
 	mCommonStore.AddTexture("BaseButtons", "Media\\BaseButtons.png");
 
+	/*Load Common Fonts*/
+	mCommonStore.AddFont("System", "Media/font1.ttf");
+
 	/*Initiate Game*/
 	Initiate();						
 }
 
 void Game::ChangeGameState(GameState & ref)
 {
-	mStateManager.PushState(ref);
+	mStateManager.ChangeState(ref);
 	mStateManager.PeekState()->Initiate();
 }
 
@@ -32,9 +35,8 @@ void Game::Initiate()
 	/*Limit Window Max Frame Rate*/
 	mWindow.setFramerateLimit(60);	
 	
-	/*Add States To State Manager*/
-	mStateManager.PushState(mState_MainMenu);
-	mStateManager.PushState(mState_BootLoad);
+	/*Initial State To State Manager*/
+	ChangeGameState(mState_BootLoad);
 	
 	/*Initiate States*/
 	for (auto& s : mStateManager.StateStack._Get_container())

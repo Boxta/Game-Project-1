@@ -41,7 +41,7 @@ public:
 
 	/*Common State Resources*/
 	CmnStore mCommonStore;
-	sf::Font mFont_System;
+
 	/*Constructors*/
 	Game();
 	~Game();

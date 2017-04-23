@@ -9,9 +9,8 @@ void BootLoadState::Initiate()
 	else
 		mInitiated = true;
 
-	/*Setup Fonts*/
-	mFont1.loadFromFile("Media/font1.ttf");
-	mText1.setFont(mFont1);
+	/*Setup Text*/
+	mText1.setFont(mCommonStore.GetFontRef("System"));
 	mText1.setString("Loading Assets..");
 	mText1.setCharacterSize(24);
 	mText1.setPosition(sf::Vector2f(1920 / 2 - 100, 1080 / 2 - 300));
@@ -34,7 +33,7 @@ void BootLoadState::Update(float dt)
 		mWaitTimer = 0;
 
 		/*Call Next State*/
-		mStateManager.PopState();
+		mStateManager.mGameReference.ChangeGameState(mStateManager.mGameReference.mState_MainMenu);
 	}
 }
 
