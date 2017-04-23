@@ -2,12 +2,6 @@
 
 void MainMenu::Initiate()
 {
-	/*Setup Fonts*/
-	mFont1.loadFromFile("Media/font1.ttf");
-	mText1.setFont(mFont1);
-	mText1.setString("Loading Assets..");
-	mText1.setCharacterSize(24);
-	
 	/*Setup Music*/
 	mMenuMusic.openFromFile("Media/MenuMusic.wav");
 	mMenuMusic.setLoop(true);
@@ -16,9 +10,15 @@ void MainMenu::Initiate()
 	mBackgroundImage.setTexture(mCommonTextureStore.GetTextureRef("MenuBackground"));
 	mBackgroundImage.setPosition(sf::Vector2f(0, 0));
 
-	mStartGame_Button.Initiate(1920 / 2 - 125, 1080 / 2 + 20);
-	mLoadGame_Button.Initiate(1920 / 2 - 125, 1080 / 2 + 120);
-	mTutorialGame_Button.Initiate(1920 / 2 - 125, 1080 / 2 + 220);
+	mStartGame_Button.Initiate((mWindow.getSize().x / 2) - (UIButton::WIDTH / 2), 
+		mWindow.getSize().y / 2, 
+		"Start");
+	mLoadGame_Button.Initiate((mWindow.getSize().x / 2) - (UIButton::WIDTH / 2), 
+		mWindow.getSize().y / 2 + (mButtonSpacing + UIButton::HEIGHT),
+		"Load");
+	mTutorialGame_Button.Initiate((mWindow.getSize().x / 2) - (UIButton::WIDTH / 2), 
+		mWindow.getSize().y / 2 + ((mButtonSpacing + UIButton::HEIGHT) * 2),
+		"Tutorial");
 }
 
 void MainMenu::HandleInput()

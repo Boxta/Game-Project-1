@@ -24,13 +24,12 @@ private:
 	CmnTextureStore& mCommonTextureStore;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
-	sf::Text mText1;
-	sf::Font mFont1;
 	sf::Music mMenuMusic;
 	bool mMusicIsPlaying = false;
 	UIButton mStartGame_Button;
 	UIButton mLoadGame_Button;
 	UIButton mTutorialGame_Button;
+	static const int mButtonSpacing = 20;
 public:
 	MainMenu(StateManager& stmgr,
 		CmnTextureStore& str,

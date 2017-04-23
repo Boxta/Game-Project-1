@@ -21,10 +21,14 @@ public:
 	void SetPressedState(bool to) { mIsPressed = to; }
 
 	/*Initiate Button*/
-	void Initiate(int x, int y);
+	void Initiate(int x, int y, sf::String txt);
 
 	/*The States Draw Function*/
 	void Draw(sf::RenderWindow& wnd);
+
+	/*Size Should Equal Pixel Image Size Of Button*/
+	static const int WIDTH = 250;
+	static const int HEIGHT = 80;
 
 private:
 	/*Common Texture Store Reference*/
@@ -32,10 +36,6 @@ private:
 
 	/*The Buttons Sprite*/
 	sf::Sprite mButtonSprite;
-
-	/*Size Should Equal Pixel Image Size Of Button*/
-	const int mWidth = 250;
-	const int mHeight = 80;
 
 	/*Pixel Position In Screen Space*/
 	int mXPosition = 0;
@@ -53,5 +53,12 @@ private:
 
 	/*Track Button Pressed State*/
 	bool mIsPressed = false;
+
+	/*Text*/
+	sf::String mString1;
+	sf::Text mText1;
+
+	/*Fonts*/
+	sf::Font mFont1;
 };
 
