@@ -61,9 +61,14 @@ void MainMenu::HandleEvents(sf::Event& ev)
 		if (mStartGame_Button.CheckIfClicked(xX, yY))
 		{
 			if (mStartGame_Button.GetPressedState())
+			{
 				mStartGame_Button.SetPressedState(false);
+			}
 			else
+			{
 				mStartGame_Button.SetPressedState(true);
+				mExit_StartNewGame();
+			}
 		}
 		/*If Press Was Inside 'Load Game' Button*/
 		if (mLoadGame_Button.CheckIfClicked(xX, yY))
@@ -84,16 +89,24 @@ void MainMenu::HandleEvents(sf::Event& ev)
 	}
 }
 
+void MainMenu::mExit_StartNewGame()
+{
+	mMenuMusic.stop();
+	mStateManager.PushState(mNextStateRef);
+}
+
 MainMenu::MainMenu(StateManager& stmgr,
 	CmnTextureStore& str,
-	sf::RenderWindow& wnd)
+	sf::RenderWindow& wnd,
+	GameState& nxt)
 	:
 	mStateManager(stmgr),
 	mCommonTextureStore(str),
 	mStartGame_Button(str),
 	mLoadGame_Button(str),
 	mTutorialGame_Button(str),
-	mWindow(wnd)
+	mWindow(wnd),
+	mNextStateRef(nxt)
 {
 }
 

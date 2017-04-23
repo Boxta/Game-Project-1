@@ -8,6 +8,7 @@
 #include <chrono>
 #include "Frametimer.h"
 #include "MainMenu.h"
+#include "BoardState.h"
 
 class Game
 {
@@ -23,6 +24,7 @@ private:
 	//TestState mTestState;
 	BootLoadState  mState_BootLoad;
 	MainMenu mState_MainMenu;
+	BoardState mState_Board;
 
 	/*Game Window*/
 	sf::RenderWindow mWindow;

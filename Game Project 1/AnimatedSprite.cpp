@@ -20,7 +20,7 @@ AnimatedSprite::AnimatedSprite(sf::Texture& texture,
 	mYPosition(y),
 	mAnimationList(animations)
 {
-	mSprite.setPosition(mXPosition, mYPosition);
+	mSprite.setPosition(float(mXPosition), float(mYPosition));
 	mCurrentAnimation = defaultani;
 	mCurrentFrame = defaultframe;
 	mTimeCounter = 0.0f;

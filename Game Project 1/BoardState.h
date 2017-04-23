@@ -1,10 +1,6 @@
 #pragma once
 #include "GameState.h"
-#include <SFML\Audio.hpp>
-#include "UIButton.h"
-#include <SFML\Window.hpp>
-
-class MainMenu :
+class BoardState :
 	public GameState
 {
 public:
@@ -18,25 +14,17 @@ public:
 	virtual void Draw();
 	/*Handle Events*/
 	virtual void HandleEvents(sf::Event& ev);
+
+	BoardState(StateManager& stmgr,
+		CmnTextureStore& str,
+		sf::RenderWindow& wnd);
+	~BoardState();
+
 private:
-	void mExit_StartNewGame();
 	sf::RenderWindow& mWindow;
-	GameState& mNextStateRef;
 	StateManager& mStateManager;
 	CmnTextureStore& mCommonTextureStore;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
-	sf::Music mMenuMusic;
-	bool mMusicIsPlaying = false;
-	UIButton mStartGame_Button;
-	UIButton mLoadGame_Button;
-	UIButton mTutorialGame_Button;
-	static const int mButtonSpacing = 20;
-public:
-	MainMenu(StateManager& stmgr,
-		CmnTextureStore& str,
-		sf::RenderWindow& wnd,
-		GameState& nxt);
-	~MainMenu();
 };
 

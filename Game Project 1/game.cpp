@@ -8,7 +8,8 @@ Game::Game()
 	mCommonTextureStore(),
 	mStateManager(),
 	mState_BootLoad(mStateManager, mCommonTextureStore, mWindow),
-	mState_MainMenu(mStateManager, mCommonTextureStore, mWindow)
+	mState_Board(mStateManager, mCommonTextureStore, mWindow),
+	mState_MainMenu(mStateManager, mCommonTextureStore, mWindow, mState_Board)
 {
 	/*Load Common Textures*/
 	mCommonTextureStore.AddTexture("MenuBackground", "Media\\Background2.png");
