@@ -16,7 +16,6 @@ public:
 	virtual void HandleEvents(sf::Event& ev);
 
 	BoardState(StateManager& stmgr,
-		CmnTextureStore& str,
 		sf::RenderWindow& wnd);
 	~BoardState();
 

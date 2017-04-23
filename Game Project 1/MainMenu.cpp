@@ -1,4 +1,5 @@
 #include "MainMenu.h"
+#include "Game.h"
 
 void MainMenu::Initiate()
 {
@@ -92,21 +93,18 @@ void MainMenu::HandleEvents(sf::Event& ev)
 void MainMenu::mExit_StartNewGame()
 {
 	mMenuMusic.stop();
-	mStateManager.PushState(mNextStateRef);
+	mStateManager.PushState(mStateManager.mGameReference.mState_Board);
 }
 
 MainMenu::MainMenu(StateManager& stmgr,
-	CmnTextureStore& str,
-	sf::RenderWindow& wnd,
-	GameState& nxt)
+	sf::RenderWindow& wnd)
 	:
 	mStateManager(stmgr),
-	mCommonTextureStore(str),
-	mStartGame_Button(str),
-	mLoadGame_Button(str),
-	mTutorialGame_Button(str),
-	mWindow(wnd),
-	mNextStateRef(nxt)
+	mCommonTextureStore(stmgr.mGameReference.mCommonTextureStore),
+	mStartGame_Button(stmgr.mGameReference.mCommonTextureStore),
+	mLoadGame_Button(stmgr.mGameReference.mCommonTextureStore),
+	mTutorialGame_Button(stmgr.mGameReference.mCommonTextureStore),
+	mWindow(wnd)
 {
 }
 

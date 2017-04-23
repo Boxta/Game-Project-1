@@ -30,7 +30,6 @@ private:
 	float mWaitTimer = 0.0f;
 public:
 	BootLoadState(StateManager& stmgr,
-		CmnTextureStore& str,
 		sf::RenderWindow& wnd);
 	~BootLoadState();
 };

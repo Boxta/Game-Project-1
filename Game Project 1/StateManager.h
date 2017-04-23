@@ -4,7 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <assert.h>
 
+
 class GameState;
+class Game;
 
 /*
 A Game State Will Update, Draw and Handle Input.
@@ -16,7 +18,7 @@ class StateManager
 public:
 	/*Hold GameStates in FILO Structure*/
 	std::stack<GameState*> StateStack;
-
+	Game& mGameReference;
 	/*Add GameState to the top of the Stack*/
 	void PushState(GameState& st);
 	/*Remove GameState on the top of the Stack*/
@@ -26,7 +28,7 @@ public:
 	/*Remove GameState on the top of the Stack and Add GameState to the top of the Stack*/
 	void ChangeState(GameState& st);
 
-	StateManager();
+	StateManager(Game& ref);
 	~StateManager();
 };
 

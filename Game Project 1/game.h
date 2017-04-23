@@ -20,11 +20,7 @@ private:
 	/*State Manager*/
 	StateManager mStateManager;
 
-	/*Game States*/
-	//TestState mTestState;
-	BootLoadState  mState_BootLoad;
-	MainMenu mState_MainMenu;
-	BoardState mState_Board;
+
 
 	/*Game Window*/
 	sf::RenderWindow mWindow;
@@ -35,6 +31,12 @@ private:
 	void Draw();
 
 public:
+	/*Game States*/
+	//TestState mTestState;
+	BootLoadState  mState_BootLoad;
+	MainMenu mState_MainMenu;
+	BoardState mState_Board;
+
 	/*Common State Resources*/
 	CmnTextureStore mCommonTextureStore;
 	sf::Font mFont_System;

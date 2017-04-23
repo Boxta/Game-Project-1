@@ -6,10 +6,10 @@ Game::Game()
 	:
 	mWindow(VideoMode(1920, 1080), "Card Battle"),
 	mCommonTextureStore(),
-	mStateManager(),
-	mState_BootLoad(mStateManager, mCommonTextureStore, mWindow),
-	mState_Board(mStateManager, mCommonTextureStore, mWindow),
-	mState_MainMenu(mStateManager, mCommonTextureStore, mWindow, mState_Board)
+	mStateManager(*this),
+	mState_BootLoad(mStateManager, mWindow),
+	mState_Board(mStateManager, mWindow),
+	mState_MainMenu(mStateManager, mWindow)
 {
 	/*Load Common Textures*/
 	mCommonTextureStore.AddTexture("MenuBackground", "Media\\Background2.png");

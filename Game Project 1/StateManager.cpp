@@ -29,7 +29,9 @@ void StateManager::ChangeState(GameState& st)
 	StateStack.push(&st);
 }
 
-StateManager::StateManager()
+StateManager::StateManager(Game& ref)
+	:
+	mGameReference(ref)
 {
 }
 

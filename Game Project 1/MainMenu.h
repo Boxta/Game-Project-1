@@ -21,7 +21,7 @@ public:
 private:
 	void mExit_StartNewGame();
 	sf::RenderWindow& mWindow;
-	GameState& mNextStateRef;
+
 	StateManager& mStateManager;
 	CmnTextureStore& mCommonTextureStore;
 	sf::RectangleShape mBackgroundFill;
@@ -34,9 +34,7 @@ private:
 	static const int mButtonSpacing = 20;
 public:
 	MainMenu(StateManager& stmgr,
-		CmnTextureStore& str,
-		sf::RenderWindow& wnd,
-		GameState& nxt);
+		sf::RenderWindow& wnd);
 	~MainMenu();
 };
 

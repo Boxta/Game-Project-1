@@ -1,4 +1,5 @@
 #include "BootLoadState.h"
+#include "Game.h"
 
 void BootLoadState::Initiate()
 {
@@ -44,13 +45,12 @@ void BootLoadState::HandleEvents(sf::Event& ev)
 }
 
 BootLoadState::BootLoadState(StateManager& stmgr,
-	CmnTextureStore& str,
 	sf::RenderWindow& wnd)
 	:
 	mBackgroundFill(),
 	mCompanyIcon(),
 	mStateManager(stmgr),
-	mCommonTextureStore(str),
+	mCommonTextureStore(stmgr.mGameReference.mCommonTextureStore),
 	mWindow(wnd)
 {
 	mBackgroundFill.setFillColor(sf::Color::Black);

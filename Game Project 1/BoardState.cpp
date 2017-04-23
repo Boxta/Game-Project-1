@@ -1,5 +1,5 @@
 #include "BoardState.h"
-
+#include "Game.h"
 
 
 void BoardState::Initiate()
@@ -24,11 +24,10 @@ void BoardState::HandleEvents(sf::Event & ev)
 }
 
 BoardState::BoardState(StateManager& stmgr,
-	CmnTextureStore& str,
 	sf::RenderWindow& wnd)
 	:
 	mStateManager(stmgr),
-	mCommonTextureStore(str),
+	mCommonTextureStore(stmgr.mGameReference.mCommonTextureStore),
 	mWindow(wnd)
 {
 }
