@@ -28,6 +28,7 @@ private:
 	sf::Font mFont1;
 	const float mWaitTime = 2.0f;
 	float mWaitTimer = 0.0f;
+	bool mInitiated = false;
 public:
 	BootLoadState(StateManager& stmgr,
 		sf::RenderWindow& wnd);

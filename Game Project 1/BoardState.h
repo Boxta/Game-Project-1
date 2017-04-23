@@ -25,5 +25,6 @@ private:
 	CmnTextureStore& mCommonTextureStore;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
+	bool mInitiated = false;
 };
 

@@ -3,6 +3,12 @@
 
 void BootLoadState::Initiate()
 {
+	/*Only Initiate Once*/
+	if (mInitiated)
+		return;
+	else
+		mInitiated = true;
+
 	/*Setup Fonts*/
 	mFont1.loadFromFile("Media/font1.ttf");
 	mText1.setFont(mFont1);

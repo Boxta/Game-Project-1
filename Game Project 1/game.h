@@ -20,7 +20,7 @@ private:
 	/*State Manager*/
 	StateManager mStateManager;
 
-
+	
 
 	/*Game Window*/
 	sf::RenderWindow mWindow;
@@ -32,7 +32,9 @@ private:
 
 public:
 	/*Game States*/
-	//TestState mTestState;
+	/*Change State*/
+	void ChangeGameState(GameState& ref);
+	/*States*/
 	BootLoadState  mState_BootLoad;
 	MainMenu mState_MainMenu;
 	BoardState mState_Board;

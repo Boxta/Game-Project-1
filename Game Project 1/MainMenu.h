@@ -32,6 +32,7 @@ private:
 	UIButton mLoadGame_Button;
 	UIButton mTutorialGame_Button;
 	static const int mButtonSpacing = 20;
+	bool mInitiated = false;
 public:
 	MainMenu(StateManager& stmgr,
 		sf::RenderWindow& wnd);

@@ -13,11 +13,18 @@ Game::Game()
 {
 	/*Load Common Textures*/
 	mCommonTextureStore.AddTexture("MenuBackground", "Media\\Background2.png");
+	mCommonTextureStore.AddTexture("BoardBackground", "Media\\Background1.png");
 	mCommonTextureStore.AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
 	mCommonTextureStore.AddTexture("BaseButtons", "Media\\BaseButtons.png");
 
 	/*Initiate Game*/
 	Initiate();						
+}
+
+void Game::ChangeGameState(GameState & ref)
+{
+	mStateManager.PushState(ref);
+	mStateManager.PeekState()->Initiate();
 }
 
 void Game::Initiate()

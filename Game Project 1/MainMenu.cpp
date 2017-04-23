@@ -3,6 +3,12 @@
 
 void MainMenu::Initiate()
 {
+	/*Only Initiate Once*/
+	if (mInitiated)
+		return;
+	else
+		mInitiated = true;
+
 	/*Setup Music*/
 	mMenuMusic.openFromFile("Media/MenuMusic.wav");
 	mMenuMusic.setLoop(true);
@@ -92,8 +98,10 @@ void MainMenu::HandleEvents(sf::Event& ev)
 
 void MainMenu::mExit_StartNewGame()
 {
+	GameState& ref = mStateManager.mGameReference.mState_Board;
+	Game& gme = mStateManager.mGameReference;
 	mMenuMusic.stop();
-	mStateManager.PushState(mStateManager.mGameReference.mState_Board);
+	gme.ChangeGameState(ref);
 }
 
 MainMenu::MainMenu(StateManager& stmgr,
