@@ -27,10 +27,9 @@ private:
 	int mEnemyScore = 0;
 	sf::Text mPlayerScoreText;
 	sf::Text mEnemyScoreText;
-
+	sf::FloatRect mSelectCard_Player;
+	sf::FloatRect mSelectCard_Enemy;
 	Enemy mEnemy;
-
-
 	bool mInitiated = false;
 };
 

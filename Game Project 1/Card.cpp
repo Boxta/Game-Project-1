@@ -57,13 +57,29 @@ void Card::Update(const float dt)
 
 void Card::Draw()
 {
+	switch (mState)
+	{
+		case CardState::Free:
+		{
+			mSprite.setColor(sf::Color::White);
+			break;
+		}
+		case CardState::Selected:
+		{
+			mSprite.setColor(sf::Color::Color(100, 0, 0, 255));
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
 	mGameReference.GetWindow().draw(mSprite);
 	mGameReference.GetWindow().draw(mName);
 	mGameReference.GetWindow().draw(mTextTop);
 	mGameReference.GetWindow().draw(mTextDown);
 	mGameReference.GetWindow().draw(mTextLeft);
 	mGameReference.GetWindow().draw(mTextRight);
-
 }
 
 Card::Card(Game& ref)

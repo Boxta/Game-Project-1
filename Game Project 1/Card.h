@@ -6,6 +6,12 @@ class Game;
 class Card
 {
 public:
+	enum CardState
+	{
+		Selected,
+		Free
+	};
+public:
 	void Initiate(float x, float y, std::string name);
 	void Update(const float dt);
 	void Draw();
@@ -13,7 +19,10 @@ public:
 	Card(Game& ref);
 	~Card();
 	sf::FloatRect& GetRectangle() { return mRectangle; }
+	void SetState(CardState st) { mState = st; }
+	CardState GetState() { return mState; }
 private:
+	CardState mState = CardState::Free;
 	sf::FloatRect mRectangle;
 	Game& mGameReference;
 	sf::Vector2f mPosition;

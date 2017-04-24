@@ -49,3 +49,23 @@ void Enemy::Draw()
 	crd4.Draw();
 
 }
+
+Card& Enemy::GetClickedCard(sf::FloatRect& ref)
+{
+	if (crd1.GetRectangle() == ref)
+	{
+		return crd1;
+	}
+	else if (crd2.GetRectangle() == ref)
+	{
+		return crd2;
+	}
+	else if (crd3.GetRectangle() == ref)
+	{
+		return crd3;
+	}
+	else if (crd4.GetRectangle() == ref)
+	{
+		return crd4;
+	}
+}

@@ -15,7 +15,7 @@ public:
 		float xn, float yn);
 	void Update(const float dt);
 	void Draw();
-
+	Card& GetClickedCard(sf::FloatRect& ref);
 private:
 	Game& mGameReference;
 	sf::Text mName;
