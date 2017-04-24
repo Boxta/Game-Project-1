@@ -10,13 +10,13 @@ void BootLoadState::Initiate()
 		mInitiated = true;
 
 	/*Setup Text*/
-	mText1.setFont(mCommonStore.GetFontRef("System"));
+	mText1.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mText1.setString("Loading Assets..");
 	mText1.setCharacterSize(24);
 	mText1.setPosition(sf::Vector2f(1920 / 2 - 100, 1080 / 2 - 300));
 
 	/*Setup Sprites*/
-	mCompanyIcon.setTexture(mCommonStore.GetTextureRef("BootLoadImage"));
+	mCompanyIcon.setTexture(mGameReference.GetCommonStore().GetTextureRef("BootLoadImage"));
 	mCompanyIcon.setPosition(sf::Vector2f(1920 / 2 - 170, 1080 / 2 - 250));
 }
 
@@ -33,30 +33,27 @@ void BootLoadState::Update(float dt)
 		mWaitTimer = 0;
 
 		/*Call Next State*/
-		mStateManager.mGameReference.ChangeGameState(mStateManager.mGameReference.mState_MainMenu);
+		mGameReference.ChangeGameState(mGameReference.GetState_MainMenu());
 	}
 }
 
 void BootLoadState::Draw()
 {
-	mWindow.clear();
-	mWindow.draw(mBackgroundFill);
-	mWindow.draw(mCompanyIcon);
-	mWindow.draw(mText1);
+	mGameReference.GetWindow().clear();
+	mGameReference.GetWindow().draw(mBackgroundFill);
+	mGameReference.GetWindow().draw(mCompanyIcon);
+	mGameReference.GetWindow().draw(mText1);
 }
 
 void BootLoadState::HandleEvents(sf::Event& ev)
 {
 }
 
-BootLoadState::BootLoadState(StateManager& stmgr,
-	sf::RenderWindow& wnd)
+BootLoadState::BootLoadState(Game& ref)
 	:
 	mBackgroundFill(),
 	mCompanyIcon(),
-	mStateManager(stmgr),
-	mCommonStore(stmgr.mGameReference.mCommonStore),
-	mWindow(wnd)
+	mGameReference(ref)
 {
 	mBackgroundFill.setFillColor(sf::Color::Black);
 	mBackgroundFill.setSize(sf::Vector2f(1920, 1080));

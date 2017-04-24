@@ -159,11 +159,13 @@
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="BoardState.cpp" />
     <ClCompile Include="BootLoadState.cpp" />
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="CmnStore.cpp" />
     <ClCompile Include="Frametimer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="TileManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
@@ -172,11 +174,13 @@
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="BoardState.h" />
     <ClInclude Include="BootLoadState.h" />
+    <ClInclude Include="Card.h" />
     <ClInclude Include="CmnStore.h" />
     <ClInclude Include="Frametimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="TileManager.h" />
     <ClInclude Include="UIButton.h" />

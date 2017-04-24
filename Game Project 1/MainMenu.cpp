@@ -14,17 +14,17 @@ void MainMenu::Initiate()
 	mMenuMusic.setLoop(true);
 
 	/*Setup Sprites*/
-	mBackgroundImage.setTexture(mCommonStore.GetTextureRef("MenuBackground"));
+	mBackgroundImage.setTexture(mGameReference.GetCommonStore().GetTextureRef("MenuBackground"));
 	mBackgroundImage.setPosition(sf::Vector2f(0, 0));
 
-	mStartGame_Button.Initiate((mWindow.getSize().x / 2) - (UIButton::WIDTH / 2), 
-		mWindow.getSize().y / 2, 
+	mStartGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - (UIButton::WIDTH / 2),
+		mGameReference.GetWindow().getSize().y / 2,
 		"Start");
-	mLoadGame_Button.Initiate((mWindow.getSize().x / 2) - (UIButton::WIDTH / 2), 
-		mWindow.getSize().y / 2 + (mButtonSpacing + UIButton::HEIGHT),
+	mLoadGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - (UIButton::WIDTH / 2),
+		mGameReference.GetWindow().getSize().y / 2 + (mButtonSpacing + UIButton::HEIGHT),
 		"Load");
-	mTutorialGame_Button.Initiate((mWindow.getSize().x / 2) - (UIButton::WIDTH / 2), 
-		mWindow.getSize().y / 2 + ((mButtonSpacing + UIButton::HEIGHT) * 2),
+	mTutorialGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - (UIButton::WIDTH / 2),
+		mGameReference.GetWindow().getSize().y / 2 + ((mButtonSpacing + UIButton::HEIGHT) * 2),
 		"Tutorial");
 }
 
@@ -46,12 +46,12 @@ void MainMenu::Update(float dt)
 
 void MainMenu::Draw()
 {
-	mWindow.clear();
-	mWindow.draw(mBackgroundFill);
-	mWindow.draw(mBackgroundImage);
-	mStartGame_Button.Draw(mWindow);
-	mLoadGame_Button.Draw(mWindow);
-	mTutorialGame_Button.Draw(mWindow);
+	mGameReference.GetWindow().clear();
+	mGameReference.GetWindow().draw(mBackgroundFill);
+	mGameReference.GetWindow().draw(mBackgroundImage);
+	mStartGame_Button.Draw(mGameReference.GetWindow());
+	mLoadGame_Button.Draw(mGameReference.GetWindow());
+	mTutorialGame_Button.Draw(mGameReference.GetWindow());
 }
 
 void MainMenu::HandleEvents(sf::Event& ev)
@@ -61,8 +61,8 @@ void MainMenu::HandleEvents(sf::Event& ev)
 		ev.mouseButton.button == sf::Mouse::Left)
 	{
 		/*Capture Mouse Coords*/
-		const int xX = sf::Mouse::getPosition(mWindow).x;
-		const int yY = sf::Mouse::getPosition(mWindow).y;
+		const int xX = sf::Mouse::getPosition(mGameReference.GetWindow()).x;
+		const int yY = sf::Mouse::getPosition(mGameReference.GetWindow()).y;
 
 		/*If Press Was Inside 'Start Game' Button*/
 		if (mStartGame_Button.CheckIfClicked(xX, yY))
@@ -98,21 +98,19 @@ void MainMenu::HandleEvents(sf::Event& ev)
 
 void MainMenu::mExit_StartNewGame()
 {
-	GameState& ref = mStateManager.mGameReference.mState_Board;
-	Game& gme = mStateManager.mGameReference;
+	/*Initiate Player*/
+	mGameReference.GetPlayer().Initiate(50.0f, 700.0f, "CMDR Ayna P", 133.0f, 721.0f);
 	mMenuMusic.stop();
-	gme.ChangeGameState(ref);
+	mMenuMusic.setLoop(false);
+	mGameReference.ChangeGameState(mGameReference.GetStateBoard());
 }
 
-MainMenu::MainMenu(StateManager& stmgr,
-	sf::RenderWindow& wnd)
+MainMenu::MainMenu(Game& ref)
 	:
-	mStateManager(stmgr),
-	mCommonStore(stmgr.mGameReference.mCommonStore),
-	mStartGame_Button(stmgr.mGameReference.mCommonStore),
-	mLoadGame_Button(stmgr.mGameReference.mCommonStore),
-	mTutorialGame_Button(stmgr.mGameReference.mCommonStore),
-	mWindow(wnd)
+	mGameReference(ref),
+	mStartGame_Button(ref.GetCommonStore()),
+	mLoadGame_Button(ref.GetCommonStore()),
+	mTutorialGame_Button(ref.GetCommonStore())
 {
 }
 

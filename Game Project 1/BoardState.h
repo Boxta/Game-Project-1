@@ -15,16 +15,26 @@ public:
 	/*Handle Events*/
 	virtual void HandleEvents(sf::Event& ev);
 
-	BoardState(StateManager& stmgr,
-		sf::RenderWindow& wnd);
+	BoardState(Game& ref);
 	~BoardState();
 
 private:
-	sf::RenderWindow& mWindow;
-	StateManager& mStateManager;
-	CmnStore& mCommonStore;
+	Game& mGameReference;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
+	int mPlayerScore = 0;
+	int mEnemyScore = 0;
+	sf::Text mPlayerScoreText;
+	sf::Text mEnemyScoreText;
+
+	sf::Sprite mEnemyPicture;
+
+	sf::Text mEnemyName;
+	sf::Sprite mEnemyCard_Img_1;
+	sf::Sprite mEnemyCard_Img_2;
+	sf::Sprite mEnemyCard_Img_3;
+	sf::Sprite mEnemyCard_Img_4;
+
 	bool mInitiated = false;
 };
 

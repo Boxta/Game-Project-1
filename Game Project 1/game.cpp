@@ -7,15 +7,19 @@ Game::Game()
 	mWindow(VideoMode(1920, 1080), "Card Battle"),
 	mCommonStore(),
 	mStateManager(*this),
-	mState_BootLoad(mStateManager, mWindow),
-	mState_Board(mStateManager, mWindow),
-	mState_MainMenu(mStateManager, mWindow)
+	mState_BootLoad(*this),
+	mState_Board(*this),
+	mState_MainMenu(*this),
+	mPlayer(*this)
 {
 	/*Load Common Textures*/
 	mCommonStore.AddTexture("MenuBackground", "Media\\Background2.png");
 	mCommonStore.AddTexture("BoardBackground", "Media\\Background1.png");
 	mCommonStore.AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
 	mCommonStore.AddTexture("BaseButtons", "Media\\BaseButtons.png");
+	mCommonStore.AddTexture("EnemyPicture", "Media\\EnemyPortrait.png");
+	mCommonStore.AddTexture("PlayerPicture", "Media\\PlayerPortrait.png");
+	mCommonStore.AddTexture("TestCard", "Media\\TestCard.png");
 
 	/*Load Common Fonts*/
 	mCommonStore.AddFont("System", "Media/font1.ttf");

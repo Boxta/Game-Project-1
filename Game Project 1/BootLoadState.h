@@ -19,9 +19,7 @@ public:
 	/*Handle Events*/
 	virtual void HandleEvents(sf::Event& ev);
 private:
-	sf::RenderWindow& mWindow;
-	StateManager& mStateManager;
-	CmnStore& mCommonStore;
+	Game& mGameReference;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mCompanyIcon;
 	sf::Text mText1;
@@ -30,8 +28,7 @@ private:
 	float mWaitTimer = 0.0f;
 	bool mInitiated = false;
 public:
-	BootLoadState(StateManager& stmgr,
-		sf::RenderWindow& wnd);
+	BootLoadState(Game& ref);
 	~BootLoadState();
 };
 

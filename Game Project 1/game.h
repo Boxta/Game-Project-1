@@ -9,6 +9,7 @@
 #include "Frametimer.h"
 #include "MainMenu.h"
 #include "BoardState.h"
+#include "Player.h"
 
 class Game
 {
@@ -20,20 +21,9 @@ private:
 	/*State Manager*/
 	StateManager mStateManager;
 
-	
-
 	/*Game Window*/
 	sf::RenderWindow mWindow;
-	
-	/*Game Functions*/
-	void Initiate();
-	void Update();
-	void Draw();
 
-public:
-	/*Game States*/
-	/*Change State*/
-	void ChangeGameState(GameState& ref);
 	/*States*/
 	BootLoadState  mState_BootLoad;
 	MainMenu mState_MainMenu;
@@ -42,6 +32,35 @@ public:
 	/*Common State Resources*/
 	CmnStore mCommonStore;
 
+	/*Player*/
+	Player mPlayer;
+
+	/*Game Functions*/
+	void Initiate();
+	void Update();
+	void Draw();
+
+public:
+	/*Expose Player*/
+	Player& GetPlayer() { return mPlayer; }
+
+	/*Expose Window*/
+	sf::RenderWindow& GetWindow() { return mWindow; }
+
+	/*Expose State Manager*/
+	StateManager& GetStateManager() { return mStateManager; }
+
+	/*Expose Common Resource Store*/
+	CmnStore& GetCommonStore() { return mCommonStore; }
+
+	/*Expose Game States*/
+	GameState&  GetState_BootLoad() { return mState_BootLoad; }
+	GameState& GetState_MainMenu() { return mState_MainMenu; }
+	GameState& GetStateBoard() { return mState_Board; }
+
+	/*Change State*/
+	void ChangeGameState(GameState& ref);
+	
 	/*Constructors*/
 	Game();
 	~Game();

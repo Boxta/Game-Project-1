@@ -20,10 +20,8 @@ public:
 	virtual void HandleEvents(sf::Event& ev);
 private:
 	void mExit_StartNewGame();
-	sf::RenderWindow& mWindow;
+	Game& mGameReference;
 
-	StateManager& mStateManager;
-	CmnStore& mCommonStore;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
 	sf::Music mMenuMusic;
@@ -34,8 +32,7 @@ private:
 	static const int mButtonSpacing = 20;
 	bool mInitiated = false;
 public:
-	MainMenu(StateManager& stmgr,
-		sf::RenderWindow& wnd);
+	MainMenu(Game& ref);
 	~MainMenu();
 };
 
