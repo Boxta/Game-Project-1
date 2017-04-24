@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "Enemy.h"
 class BoardState :
 	public GameState
 {
@@ -27,13 +28,8 @@ private:
 	sf::Text mPlayerScoreText;
 	sf::Text mEnemyScoreText;
 
-	sf::Sprite mEnemyPicture;
+	Enemy mEnemy;
 
-	sf::Text mEnemyName;
-	sf::Sprite mEnemyCard_Img_1;
-	sf::Sprite mEnemyCard_Img_2;
-	sf::Sprite mEnemyCard_Img_3;
-	sf::Sprite mEnemyCard_Img_4;
 
 	bool mInitiated = false;
 };

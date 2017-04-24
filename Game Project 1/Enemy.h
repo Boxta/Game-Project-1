@@ -4,12 +4,13 @@
 #include "Card.h"
 
 
-class Player
+class Enemy
 {
 public:
-	Player(Game& ref);
-	~Player();
-	void Initiate(float x, float y, 
+	Enemy(Game& ref);
+	~Enemy();
+
+	void Initiate(float x, float y,
 		std::string name,
 		float xn, float yn);
 	void Update(const float dt);

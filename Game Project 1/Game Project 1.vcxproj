@@ -161,6 +161,7 @@
     <ClCompile Include="BootLoadState.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CmnStore.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Frametimer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="BootLoadState.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="CmnStore.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Frametimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
