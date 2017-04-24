@@ -5,7 +5,7 @@ void Card::Initiate(float x, float y, std::string name)
 {
 	mName.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mName.setString(name);
-	mName.setPosition(0.0f, 0.0f);
+	mName.setPosition(x + 72, y + 50);
 	mPosition = { x, y };
 	mSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("TestCard"));
 	mSprite.setPosition(x, y);
@@ -27,6 +27,11 @@ void Card::Initiate(float x, float y, std::string name)
 	mTextDown.setPosition(x + 117, y + 230);
 	mTextLeft.setPosition(x + 77, y + 210);
 	mTextRight.setPosition(x + 157, y + 210);
+	mRectangle.top = y;
+	mRectangle.left = x;
+	mRectangle.width = 250;
+	mRectangle.height = 300;
+
 }
 
 void Card::Update(const float dt)
@@ -36,6 +41,7 @@ void Card::Update(const float dt)
 void Card::Draw()
 {
 	mGameReference.GetWindow().draw(mSprite);
+	mGameReference.GetWindow().draw(mName);
 	mGameReference.GetWindow().draw(mTextTop);
 	mGameReference.GetWindow().draw(mTextDown);
 	mGameReference.GetWindow().draw(mTextLeft);

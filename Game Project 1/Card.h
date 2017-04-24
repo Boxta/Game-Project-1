@@ -12,8 +12,9 @@ public:
 	Card() = default;
 	Card(Game& ref);
 	~Card();
-
+	sf::FloatRect& GetRectangle() { return mRectangle; }
 private:
+	sf::FloatRect mRectangle;
 	Game& mGameReference;
 	sf::Vector2f mPosition;
 	sf::Sprite mSprite;
