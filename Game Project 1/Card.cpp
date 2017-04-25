@@ -3,6 +3,12 @@
 
 void Card::Initiate(float x, float y, std::string name)
 {
+	/*Set Card Recatangle*/
+	mRectangle.top = y;
+	mRectangle.left = x;
+	mRectangle.width = 250;
+	mRectangle.height = 300;
+
 	/*Setup Card Name*/
 	mName.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mName.setString(name);
@@ -17,7 +23,7 @@ void Card::Initiate(float x, float y, std::string name)
 
 	/*Setup Random Generator*/
 	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-	std::uniform_int_distribution<int> uni(1, 8); // guaranteed unbiased
+	std::uniform_int_distribution<int> uni(1, 9); // guaranteed unbiased
 	
 	/*Setup Card Values*/
 	mValue_Top = uni(rng);
@@ -38,42 +44,44 @@ void Card::Initiate(float x, float y, std::string name)
 	mTextRight.setString(std::to_string(mValue_Right));
 
 	/*Set Text Position*/
-	mTextTop.setPosition(x + 117, y + 190);
-	mTextDown.setPosition(x + 117, y + 230);
-	mTextLeft.setPosition(x + 77, y + 210);
-	mTextRight.setPosition(x + 157, y + 210);
+	int TopSize = int(mTextTop.getLocalBounds().width);
+	int DownSize = int(mTextDown.getLocalBounds().width);
+	int LeftSize = int(mTextLeft.getLocalBounds().width);
+	int RightSize = int(mTextRight.getLocalBounds().width);
 
-	/*Set Card Recatangle*/
-	mRectangle.top = y;
-	mRectangle.left = x;
-	mRectangle.width = 250;
-	mRectangle.height = 300;
-
+	mTextTop.setPosition((x + (mRectangle.width / 2)) - (TopSize / 2), y + 184);
+	mTextDown.setPosition((x + (mRectangle.width / 2)) - (DownSize / 2), y + 236);
+	mTextLeft.setPosition((x + (mRectangle.width / 2)) - 40 - (LeftSize / 2), y + 210);
+	mTextRight.setPosition((x + (mRectangle.width / 2)) + 40 - (RightSize / 2), y + 210);
 }
 
 void Card::Update(const float dt)
 {
+	/*Keep Asset Positions Aligned To Object Position*/
+
+
+	switch (mState)
+	{
+	case CardState::Free:
+	{
+		mSprite.setColor(sf::Color::White);
+		break;
+	}
+	case CardState::Selected:
+	{
+		mSprite.setColor(sf::Color::Color(100, 0, 0, 255));
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
 }
 
 void Card::Draw()
 {
-	switch (mState)
-	{
-		case CardState::Free:
-		{
-			mSprite.setColor(sf::Color::White);
-			break;
-		}
-		case CardState::Selected:
-		{
-			mSprite.setColor(sf::Color::Color(100, 0, 0, 255));
-			break;
-		}
-		default:
-		{
-			break;
-		}
-	}
+
 	mGameReference.GetWindow().draw(mSprite);
 	mGameReference.GetWindow().draw(mName);
 	mGameReference.GetWindow().draw(mTextTop);
@@ -92,4 +100,32 @@ Card::Card(Game& ref)
 
 Card::~Card()
 {
+}
+
+void Card::SetPosition(float x, float y)
+{
+	mPosition.x = x; 
+	mPosition.y = y; 
+
+	mRectangle.top = y;
+	mRectangle.left = x;
+
+	mName.setPosition(x + 72, y + 50);
+	
+	mSprite.setPosition(x, y);
+	/*Set Text Position*/
+	int TopSize = int(mTextTop.getLocalBounds().width);
+	int DownSize = int(mTextDown.getLocalBounds().width);
+	int LeftSize = int(mTextLeft.getLocalBounds().width);
+	int RightSize = int(mTextRight.getLocalBounds().width);
+
+	mTextTop.setPosition((x + (mRectangle.width / 2)) - (TopSize / 2), y + 184);
+	mTextDown.setPosition((x + (mRectangle.width / 2)) - (DownSize / 2), y + 236);
+	mTextLeft.setPosition((x + (mRectangle.width / 2)) - 40 - (LeftSize / 2), y + 210);
+	mTextRight.setPosition((x + (mRectangle.width / 2)) + 40 - (RightSize / 2), y + 210);
+}
+
+void Card::ResetColor()
+{
+	mSprite.setColor(sf::Color::White);
 }

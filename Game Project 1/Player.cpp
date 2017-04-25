@@ -33,39 +33,53 @@ void Player::Initiate(float x, float y,
 	crd2.Initiate(100.0f, 100.0f, "Card B");
 	crd3.Initiate(150.0f, 150.0f, "Card C");
 	crd4.Initiate(200.0f, 200.0f, "Card D");
+
+	CardDeck.push_back(&crd1);
+	CardDeck.push_back(&crd2);
+	CardDeck.push_back(&crd3);
+	CardDeck.push_back(&crd4);
 }
 
 void Player::Update(const float dt)
 {
+	for (auto& c : CardDeck)
+	{
+		c->Update(dt);
+	}
 }
 
 void Player::Draw()
 {
 	mGameReference.GetWindow().draw(mSprite);
 	mGameReference.GetWindow().draw(mName);
-	crd1.Draw();
-	crd2.Draw();
-	crd3.Draw();
-	crd4.Draw();
-
+	for (int p = 0; p < CardDeck.size(); p++)
+	{
+		CardDeck[p]->SetPosition((p + 1) * 50, ((p + 1) * 50));
+		CardDeck[p]->Draw();
+	}
 }
 
-Card& Player::GetClickedCard(sf::FloatRect& ref)
+Card& Player::GetTopCard()
 {
-	if (crd1.GetRectangle() == ref)
-	{
-		return crd1;
-	}
-	else if (crd2.GetRectangle() == ref)
-	{
-		return crd2;
-	}
-	else if (crd3.GetRectangle() == ref)
-	{
-		return crd3;
-	}
-	else if (crd4.GetRectangle() == ref)
-	{
-		return crd4;
-	}
+	return *CardDeck.back();
 }
+
+Card& Player::UseTopCard()
+{
+	Card& tmp = *CardDeck.back();
+	tmp.ResetColor();
+	CardDeck.pop_back();
+	return tmp;
+}
+
+void Player::CycleDeck()
+{
+
+	CardDeckIterator = CardDeck.begin();
+	Card* tmp = CardDeck.back();
+	CardDeck.pop_back();
+	CardDeck.insert(CardDeckIterator, tmp);
+}
+
+
+

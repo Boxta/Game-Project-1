@@ -15,7 +15,10 @@ public:
 		float xn, float yn);
 	void Update(const float dt);
 	void Draw();
-	Card& GetClickedCard(sf::FloatRect& ref);
+	Card& GetTopCard();
+	Card& UseTopCard();
+	int GetDeckCount() { return CardDeck.size(); }
+	void CycleDeck();
 private:
 	Game& mGameReference;
 	sf::Text mName;
@@ -24,5 +27,7 @@ private:
 	Card crd2;
 	Card crd3;
 	Card crd4;
+	std::vector<Card*> CardDeck;
+	std::vector<Card*>::iterator CardDeckIterator;
 };
 

@@ -17,6 +17,28 @@ Enemy::~Enemy()
 {
 }
 
+Card& Enemy::GetTopCard()
+{
+	return *CardDeck.back();
+}
+
+Card& Enemy::UseTopCard()
+{
+	Card& tmp = *CardDeck.back();
+	tmp.ResetColor();
+	CardDeck.pop_back();
+	return tmp;
+}
+
+void Enemy::CycleDeck()
+{
+
+	CardDeckIterator = CardDeck.begin();
+	Card* tmp = CardDeck.back();
+	CardDeck.pop_back();
+	CardDeck.insert(CardDeckIterator, tmp);
+}
+
 void Enemy::Initiate(float x, float y,
 	std::string name,
 	float xn, float yn)
@@ -33,39 +55,28 @@ void Enemy::Initiate(float x, float y,
 	crd2.Initiate(1570.0f, 100.0f, "Boss B");
 	crd3.Initiate(1520.0f, 150.0f, "Boss C");
 	crd4.Initiate(1470.0f, 200.0f, "Boss D");
+	
+	CardDeck.push_back(&crd1);
+	CardDeck.push_back(&crd2);
+	CardDeck.push_back(&crd3);
+	CardDeck.push_back(&crd4);
 }
 
 void Enemy::Update(const float dt)
 {
+	for (auto& c : CardDeck)
+	{
+		c->Update(dt);
+	}
 }
 
 void Enemy::Draw()
 {
 	mGameReference.GetWindow().draw(mSprite);
 	mGameReference.GetWindow().draw(mName);
-	crd1.Draw();
-	crd2.Draw();
-	crd3.Draw();
-	crd4.Draw();
-
-}
-
-Card& Enemy::GetClickedCard(sf::FloatRect& ref)
-{
-	if (crd1.GetRectangle() == ref)
+	for (int p = 0; p < CardDeck.size(); p++)
 	{
-		return crd1;
-	}
-	else if (crd2.GetRectangle() == ref)
-	{
-		return crd2;
-	}
-	else if (crd3.GetRectangle() == ref)
-	{
-		return crd3;
-	}
-	else if (crd4.GetRectangle() == ref)
-	{
-		return crd4;
+		CardDeck[p]->SetPosition(1670 - ((p + 1) * 50), ((p + 1) * 50));
+		CardDeck[p]->Draw();
 	}
 }

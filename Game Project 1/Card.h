@@ -21,6 +21,8 @@ public:
 	sf::FloatRect& GetRectangle() { return mRectangle; }
 	void SetState(CardState st) { mState = st; }
 	CardState GetState() { return mState; }
+	void SetPosition(float x, float y); 
+	void ResetColor();
 private:
 	CardState mState = CardState::Free;
 	sf::FloatRect mRectangle;
@@ -38,6 +40,5 @@ private:
 	sf::Text mTextRight;
 
 	std::random_device rd;     // only used once to initialise (seed) engine
-
 };
 
