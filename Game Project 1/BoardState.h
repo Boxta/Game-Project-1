@@ -13,11 +13,14 @@ class BoardState :
 	{
 	public:
 		Slot() = default;
-		Slot(sf::FloatRect c, sf::FloatRect f)
-		{
-			CardRectangle = c;
-			FullRectangle = f;
+		Slot(int x, int y)
+		{ 
+			mBoardPosition.x = x;
+			mBoardPosition.y = y;
+			CardRectangle = { (float(x) * 300.0f) + 535.0f, (float(y) * 350.0f) + 50.0f, 250.0f, 300.0f };
+			FullRectangle = { (float(x) * 300.0f) + 525.0f, (float(y) * 350.0f) + 40.0f, 250.0f, 300.0f };
 		}
+		sf::Vector2i mBoardPosition;
 		sf::FloatRect& GetCardRectangle() { return CardRectangle; }
 		sf::FloatRect& GetFullRectangle() { return FullRectangle; }
 		bool GetIsUsed() { return mIsUsed; }
@@ -39,6 +42,11 @@ public:
 	/*Handle Events*/
 	virtual void HandleEvents(sf::Event& ev);
 
+	/*Expose Boards Card Deck and Slots*/
+	std::vector<Card*>& GetDeck() { return mBoardCardDeck; }
+	std::vector<Slot>& GetSlots() { return mSlots; }
+
+	void ToogleTurn();
 	BoardState(Game& ref);
 	~BoardState();
 
@@ -73,39 +81,17 @@ private:
 
 	/*Create Board Card Deck*/
 	std::vector<Card*> mBoardCardDeck;
-
-	/*Create Board Card Position Rectangles Offset By Boarder Width*/
-	const sf::FloatRect mSlot1 = { 535.0f - mBOARDERWIDTH, 50.0f - mBOARDERWIDTH, 250.0f, 300.0f };
-	const sf::FloatRect mSlot2 = { 835.0f - mBOARDERWIDTH, 50.0f - mBOARDERWIDTH, 250.0f, 300.0f };
-	const sf::FloatRect mSlot3 = { 1135.0f - mBOARDERWIDTH, 50.0f - mBOARDERWIDTH, 250.0f, 300.0f };
-	const sf::FloatRect mSlot4 = { 535.0f - mBOARDERWIDTH, 400.0f - mBOARDERWIDTH, 250.0f, 300.0f };
-	const sf::FloatRect mSlot5 = { 835.0f - mBOARDERWIDTH, 400.0f - mBOARDERWIDTH, 250.0f, 300.0f };
-	const sf::FloatRect mSlot6 = { 1135.0f - mBOARDERWIDTH, 400.0f - mBOARDERWIDTH, 250.0f, 300.0f };
-	const sf::FloatRect mSlot7 = { 535.0f - mBOARDERWIDTH, 750.0f - mBOARDERWIDTH, 250.0f, 300.0f };
-	const sf::FloatRect mSlot8 = { 835.0f - mBOARDERWIDTH, 750.0f - mBOARDERWIDTH, 250.0f, 300.0f };
-	const sf::FloatRect mSlot9 = { 1135.0f - mBOARDERWIDTH, 750.0f - mBOARDERWIDTH, 250.0f, 300.0f };
-	
-	/*Create Board Card Position Rectangles*/
-	const sf::FloatRect mSlota = { 535.0f, 50.0f, 250.0f, 300.0f };
-	const sf::FloatRect mSlotb = { 835.0f, 50.0f, 250.0f, 300.0f };
-	const sf::FloatRect mSlotc = { 1135.0f, 50.0f, 250.0f, 300.0f };
-	const sf::FloatRect mSlotd = { 535.0f, 400.0f, 250.0f, 300.0f };
-	const sf::FloatRect mSlote = { 835.0f, 400.0f, 250.0f, 300.0f };
-	const sf::FloatRect mSlotf = { 1135.0f, 400.0f, 250.0f, 300.0f };
-	const sf::FloatRect mSlotg = { 535.0f, 750.0f, 250.0f, 300.0f };
-	const sf::FloatRect mSloth = { 835.0f, 750.0f, 250.0f, 300.0f };
-	const sf::FloatRect mSloti = { 1135.0f, 750.0f, 250.0f, 300.0f };
 	
 	/*Create Slots*/
-	Slot A1 = { mSlota, mSlot1 };
-	Slot A2 = { mSlotb, mSlot2 };
-	Slot A3 = { mSlotc, mSlot3 };
-	Slot B1 = { mSlotd, mSlot4 };
-	Slot B2 = { mSlote, mSlot5 };
-	Slot B3 = { mSlotf, mSlot6 };
-	Slot C1 = { mSlotg, mSlot7 };
-	Slot C2 = { mSloth, mSlot8 };
-	Slot C3 = { mSloti, mSlot9 };
+	Slot A1 = { 0, 0 };
+	Slot A2 = { 1, 0 };
+	Slot A3 = { 2, 0 };
+	Slot B1 = { 0, 1 };
+	Slot B2 = { 1, 1 };
+	Slot B3 = { 2, 1 };
+	Slot C1 = { 0, 2 };
+	Slot C2 = { 1, 2 };
+	Slot C3 = { 2, 2 };
 
 	Enemy mEnemy;
 	bool mInitiated = false;

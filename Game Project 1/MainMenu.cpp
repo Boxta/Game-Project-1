@@ -102,7 +102,7 @@ void MainMenu::mExit_StartNewGame()
 	mGameReference.GetPlayer().Initiate(50.0f, 700.0f, "CMDR Ayna P", 133.0f, 721.0f);
 	mMenuMusic.stop();
 	mMenuMusic.setLoop(false);
-	mGameReference.ChangeGameState(mGameReference.GetStateBoard());
+	mGameReference.ChangeGameState(mGameReference.GetState_Board());
 }
 
 MainMenu::MainMenu(Game& ref)

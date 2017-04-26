@@ -53,17 +53,15 @@ void BoardState::Update(float dt)
 	if (mCurrentTurn == TurnState::EnemyTurn)
 	{
 		//Added Enemy Turn Here.
-
-		/*Update Player plus Their Cards*/
-		mEnemy.Update(dt);
-		mCurrentTurn = TurnState::PlayerTurn;
+		mEnemy.Turn(*this);
 	}
-	
 	if (mCurrentTurn == TurnState::PlayerTurn)
 	{
-		/*Update Player plus Their Cards*/
-		mGameReference.GetPlayer().Update(dt);
+
 	}
+
+	mEnemy.Update(dt);
+	mGameReference.GetPlayer().Update(dt);
 
 	/*Update Board Cards*/
 	for (auto& u : mBoardCardDeck)
@@ -169,7 +167,7 @@ void BoardState::HandleEvents(sf::Event & ev)
 						mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Free);
 						mGameReference.GetPlayer().GetTopCard().SetPosition(c.GetCardRectangle().left, c.GetCardRectangle().top);
 						mBoardCardDeck.push_back(&mGameReference.GetPlayer().UseTopCard());
-						mCurrentTurn = TurnState::EnemyTurn;
+						ToogleTurn();
 					}
 				}
 			}
@@ -191,6 +189,18 @@ void BoardState::HandleEvents(sf::Event & ev)
 				mGameReference.GetPlayer().CycleDeck();
 			}
 		}
+	}
+}
+
+void BoardState::ToogleTurn()
+{
+	if (mCurrentTurn == TurnState::EnemyTurn)
+	{
+		mCurrentTurn = TurnState::PlayerTurn;
+	}
+	else if (mCurrentTurn == TurnState::PlayerTurn)
+	{
+		mCurrentTurn = TurnState::EnemyTurn;
 	}
 }
 

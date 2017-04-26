@@ -23,6 +23,10 @@ public:
 	CardState GetState() { return mState; }
 	void SetPosition(float x, float y); 
 	void ResetColor();
+	int mValue_Top = 0;
+	int mValue_Left = 0;
+	int mValue_Right = 0;
+	int mValue_Down = 0;
 private:
 	CardState mState = CardState::Free;
 	sf::FloatRect mRectangle;
@@ -30,10 +34,6 @@ private:
 	sf::Vector2f mPosition;
 	sf::Sprite mSprite;
 	sf::Text mName;
-	int mValue_Top = 0;
-	int mValue_Left = 0;
-	int mValue_Right = 0;
-	int mValue_Down = 0;
 	sf::Text mTextTop;
 	sf::Text mTextDown;
 	sf::Text mTextLeft;

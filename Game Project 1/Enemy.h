@@ -3,6 +3,7 @@
 #include <vector>
 #include "Card.h"
 
+class BoardState;
 
 class Enemy
 {
@@ -19,6 +20,7 @@ public:
 	Card& UseTopCard();
 	int GetDeckCount() { return CardDeck.size(); }
 	void CycleDeck();
+	void Turn(BoardState& brd);
 private:
 	Game& mGameReference;
 	sf::Text mName;

@@ -56,7 +56,7 @@ public:
 	/*Expose Game States*/
 	GameState&  GetState_BootLoad() { return mState_BootLoad; }
 	GameState& GetState_MainMenu() { return mState_MainMenu; }
-	GameState& GetStateBoard() { return mState_Board; }
+	GameState& GetState_Board() { return mState_Board; }
 
 	/*Change State*/
 	void ChangeGameState(GameState& ref);
