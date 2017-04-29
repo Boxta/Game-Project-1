@@ -165,7 +165,7 @@ void BoardState::HandleEvents(sf::Event & ev)
 					{
 						/*Turn off the boards selection state*/
 						mSelectSlotState = false;
-						//mGameReference.GetPlayer().GetTopCard().SetPosition(c.GetCardRectangle().left, c.GetCardRectangle().top);
+						
 						/*Copy The Players Card To The Slots Card*/
 						mGameReference.GetPlayer().GetTopCard().CopyCard(*c.mCard);
 						
@@ -196,12 +196,24 @@ void BoardState::HandleEvents(sf::Event & ev)
 			/*Capture Mouse Coords*/
 			const int xX = sf::Mouse::getPosition(mGameReference.GetWindow()).x;
 			const int yY = sf::Mouse::getPosition(mGameReference.GetWindow()).y;
-			if (mGameReference.GetPlayer().GetTopCard().GetRectangle().contains(float(xX), float(yY)))
+
+			if (mGameReference.GetPlayer().GetDeckCount() > 0 &&
+				mGameReference.GetPlayer().GetTopCard().GetRectangle().contains(float(xX), float(yY)))
 			{
 				mSelectSlotState = false;
 				mGameReference.GetPlayer().CycleDeck();
 			}
 		}
+	}
+}
+
+BoardState::Slot& BoardState::GetSlot(int x, int y)
+{
+	for (auto& j : mSlots)
+	{
+		if (j.mBoardPosition.x == x &&
+			j.mBoardPosition.y == y)
+			return j;
 	}
 }
 

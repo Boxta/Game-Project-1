@@ -36,7 +36,6 @@ public:
 	int mValue_Left = 0;
 	int mValue_Right = 0;
 	int mValue_Down = 0;
-	void SetSmallDraw(bool ison);
 	CardOwner GetOwner() { return mOwner; }
 	void CopyCard(Card& ref);
 private:

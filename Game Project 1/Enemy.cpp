@@ -19,16 +19,29 @@ Enemy::~Enemy()
 
 Card& Enemy::GetTopCard()
 {
-	return *CardDeck.back();
+	return *CardDeck[mCardDeckIterator];
+}
+
+void Enemy::KillTopCard()
+{
+	CardDeck.erase(CardDeck.begin() + mCardDeckIterator);
+}
+
+void Enemy::KillCard(int u)
+{
+	CardDeck.erase(CardDeck.begin() + u);
 }
 
 void Enemy::CycleDeck()
 {
-
-	CardDeckIterator = CardDeck.begin();
-	Card* tmp = CardDeck.back();
-	CardDeck.pop_back();
-	CardDeck.insert(CardDeckIterator, tmp);
+	if (mCardDeckIterator == CardDeck.size() - 1)
+	{
+		mCardDeckIterator = 0;
+	}
+	else
+	{
+		mCardDeckIterator++;
+	}
 }
 
 void Enemy::Turn(BoardState& brd)
@@ -44,65 +57,120 @@ void Enemy::Turn(BoardState& brd)
 	if (noSlotsUsed)
 		return;
 
-	//Check Slot On Board.
-	for(auto& u : brd.GetSlots())
+	bool mHasWon = false;
+
+	/*Try To Win*/
+	for (auto& u : brd.GetSlots())
 	{
 		//Slot if used and the card belongs to the player
 		if (u.GetIsUsed() && u.mCard->GetOwner() == Card::CardOwner::Player_Owned)
 		{
 			//Store Postion and Potential surrounding slot positions of the slot/card
-			const sf::Vector2i DeckCardPosition = u.mBoardPosition;
-			const sf::Vector2i PositionAbove = sf::Vector2i(u.mBoardPosition.x, u.mBoardPosition.y - 1);
-			const sf::Vector2i PositionDown = sf::Vector2i(u.mBoardPosition.x, u.mBoardPosition.y + 1);
-			const sf::Vector2i PositionLeft = sf::Vector2i(u.mBoardPosition.x - 1, u.mBoardPosition.y);
-			const sf::Vector2i PositionRight = sf::Vector2i(u.mBoardPosition.x + 1, u.mBoardPosition.y);
-			/*
+			sf::Vector2i DeckCardPosition = u.mBoardPosition;
+			sf::Vector2i PositionAbove = sf::Vector2i(u.mBoardPosition.x, u.mBoardPosition.y - 1);
+			sf::Vector2i PositionDown = sf::Vector2i(u.mBoardPosition.x, u.mBoardPosition.y + 1);
+			sf::Vector2i PositionLeft = sf::Vector2i(u.mBoardPosition.x - 1, u.mBoardPosition.y);
+			sf::Vector2i PositionRight = sf::Vector2i(u.mBoardPosition.x + 1, u.mBoardPosition.y);
+
+
 			for (auto& pc : CardDeck)
 			{
 				//Slot above card is free
 				if (CheckSafeBoardPosition(PositionAbove, brd.mWidth, brd.mHeight))
 				{
-					if (pc->mValue_Down > u.mCard->mValue_Top)
+					BoardState::Slot& slt = brd.GetSlot(PositionAbove.x, PositionAbove.y);
+					if (!slt.GetIsUsed() &&
+						pc->mValue_Down > u.mCard->mValue_Top)
 					{
-						brd.GetSlots()[PositionAbove.y * brd.mWidth + PositionAbove.y].mCard = pc;
-						//Change Player To Enemy Card
+						/*Win*/
+						pc->CopyCard(*slt.mCard);
+						slt.mCard->SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+						slt.ToogleUse();
+						KillTopCard();
+						brd.ToogleTurn();
+						mHasWon = true;
+						break;
 					}
 				}
-				//Slot Down card is free
-				if (CheckSafeBoardPosition(PositionDown, brd.mWidth, brd.mHeight))
+				else if (CheckSafeBoardPosition(PositionDown, brd.mWidth, brd.mHeight))
 				{
-					if (pc->mValue_Top > u.mCard->mValue_Down)
+					BoardState::Slot& slt = brd.GetSlot(PositionDown.x, PositionDown.y);
+					if (!slt.GetIsUsed() &&
+						pc->mValue_Top > u.mCard->mValue_Down)
 					{
-						brd.GetSlots()[PositionDown.y * brd.mWidth + PositionDown.y].mCard = pc;
-						//Change Player To Enemy Card
+						pc->CopyCard(*slt.mCard);
+						slt.mCard->SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+						slt.ToogleUse();
+						KillTopCard();
+						brd.ToogleTurn();
+						mHasWon = true;
+						break;
 					}
 				}
-				//Slot left card is free
-				if (CheckSafeBoardPosition(PositionLeft, brd.mWidth, brd.mHeight))
+				else if (CheckSafeBoardPosition(PositionLeft, brd.mWidth, brd.mHeight))
 				{
-					if (pc->mValue_Right > u.mCard->mValue_Left)
+					BoardState::Slot& slt = brd.GetSlot(PositionLeft.x, PositionLeft.y);
+					if (!slt.GetIsUsed() &&
+						pc->mValue_Right > u.mCard->mValue_Left)
 					{
-						brd.GetSlots()[PositionLeft.y * brd.mWidth + PositionLeft.y].mCard = pc;
-						//Change Player To Enemy Card
+						pc->CopyCard(*slt.mCard);
+						slt.mCard->SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+						slt.ToogleUse();
+						KillTopCard();
+						brd.ToogleTurn();
+						mHasWon = true;
+						break;
 					}
 				}
-				//Slot right card is free
-				if (CheckSafeBoardPosition(PositionRight, brd.mWidth, brd.mHeight))
+				else if (CheckSafeBoardPosition(PositionRight, brd.mWidth, brd.mHeight))
 				{
-					if (pc->mValue_Left > u.mCard->mValue_Right)
+					BoardState::Slot& slt = brd.GetSlot(PositionRight.x, PositionRight.y);
+					if (!slt.GetIsUsed() &&
+						pc->mValue_Left > u.mCard->mValue_Right)
 					{
-						brd.GetSlots()[PositionRight.y * brd.mWidth + PositionRight.y].mCard = pc;
-						//Change Player To Enemy Card
+
+						pc->CopyCard(*slt.mCard);
+						slt.mCard->SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+						slt.ToogleUse();
+						KillTopCard();
+						brd.ToogleTurn();
+						mHasWon = true;
+						break;
 					}
 				}
+
 			}
-			*/
 		}
 	}
+	/*Handle Loss*/
+	if (!mHasWon)
+	{
+		/*Setup Random Generator*/
+		std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+		std::uniform_int_distribution<int> uni(0, CardDeck.size() - 1); // guaranteed unbiased
 
-	/*No Win Found*/
-	brd.ToogleTurn();
+		for (auto& u : brd.GetSlots())
+		{
+			//Slot if used and the card belongs to the player
+			if (u.GetIsUsed())
+				continue;
 
+			Card* tempcard = nullptr;
+			int p = uni(rng);
+			do
+			{
+				p = uni(rng);
+			} while (CardDeck[p]->GetState() == Card::CardState::Used);
+
+			/*Lose*/
+			CardDeck[p]->CopyCard(*u.mCard);
+			u.mCard->SetPosition(u.GetCardRectangle().left, u.GetCardRectangle().top);
+			u.ToogleUse();
+			KillCard(p);
+			brd.ToogleTurn();
+			break;
+		}
+	}
 }
 
 bool Enemy::CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight)
@@ -133,6 +201,10 @@ void Enemy::Initiate(float x, float y,
 	std::string name,
 	float xn, float yn)
 {
+	mHandPositionA = { 1620.0f, 100.0f };
+	mHandPositionB = { 1595.0f, 80.0f };
+	mHandPositionC = { 1745.0f, 80.0f };
+	
 	mSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("EnemyPicture"));
 	mSprite.setPosition(x, y);
 	mName.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
@@ -141,9 +213,9 @@ void Enemy::Initiate(float x, float y,
 	mName.setFillColor(sf::Color::Black);
 	mName.setCharacterSize(18);
 
-	crd1.Initiate(1620.0f, 50.0f, "Boss A", Card::CardOwner::Enemy_Owned);
-	crd2.Initiate(1570.0f, 100.0f, "Boss B", Card::CardOwner::Enemy_Owned);
-	crd3.Initiate(1520.0f, 150.0f, "Boss C", Card::CardOwner::Enemy_Owned);
+	crd1.Initiate(1620.0f, 50.0f, "Dragon", Card::CardOwner::Enemy_Owned);
+	crd2.Initiate(1570.0f, 100.0f, "Planet", Card::CardOwner::Enemy_Owned);
+	crd3.Initiate(1520.0f, 150.0f, "B Hole", Card::CardOwner::Enemy_Owned);
 	crd4.Initiate(1470.0f, 200.0f, "Boss D", Card::CardOwner::Enemy_Owned);
 	
 	CardDeck.push_back(&crd1);
@@ -164,9 +236,55 @@ void Enemy::Draw()
 {
 	mGameReference.GetWindow().draw(mSprite);
 	mGameReference.GetWindow().draw(mName);
-	for (int p = 0; p < CardDeck.size(); p++)
+	
+	if (CardDeck.size() == 0)
+		return;
+
+	/*Draw Cards*/
+	if (mCardDeckIterator == 0)
 	{
-		CardDeck[p]->SetPosition(1670 - ((p + 1) * 50), ((p + 1) * 50));
-		CardDeck[p]->Draw();
+		if (CardDeck.size() > 1)
+		{
+			CardDeck[mCardDeckIterator + 1]->SetPosition(mHandPositionB.x, mHandPositionB.y);
+			CardDeck[mCardDeckIterator + 1]->Draw();
+		}
+		if (CardDeck.size() > 2)
+		{
+			CardDeck[CardDeck.size() - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
+			CardDeck[CardDeck.size() - 1]->Draw();
+		}
+
+		CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
+		CardDeck[mCardDeckIterator]->Draw();
+	}
+	else if (mCardDeckIterator > 0 && mCardDeckIterator < CardDeck.size() - 1)
+	{
+		if (CardDeck.size() > 1)
+		{
+			CardDeck[mCardDeckIterator + 1]->SetPosition(mHandPositionB.x, mHandPositionB.y);
+			CardDeck[mCardDeckIterator + 1]->Draw();
+		}
+		if (CardDeck.size() > 2)
+		{
+			CardDeck[mCardDeckIterator - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
+			CardDeck[mCardDeckIterator - 1]->Draw();
+		}
+		CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
+		CardDeck[mCardDeckIterator]->Draw();
+	}
+	else if (mCardDeckIterator == CardDeck.size() - 1)
+	{
+		if (CardDeck.size() > 1)
+		{
+			CardDeck[0]->SetPosition(mHandPositionB.x, mHandPositionB.y);
+			CardDeck[0]->Draw();
+		}
+		if (CardDeck.size() > 2)
+		{
+			CardDeck[mCardDeckIterator - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
+			CardDeck[mCardDeckIterator - 1]->Draw();
+		}
+		CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
+		CardDeck[mCardDeckIterator]->Draw();
 	}
 }

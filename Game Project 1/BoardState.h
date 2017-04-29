@@ -9,6 +9,7 @@ class BoardState :
 		PlayerTurn,
 		EnemyTurn
 	};
+public:
 	class Slot
 	{
 	public:
@@ -45,7 +46,7 @@ public:
 
 	/*Expose Boards Card Deck and Slots*/
 	std::vector<Slot>& GetSlots() { return mSlots; }
-
+	Slot& GetSlot(int x, int y);
 	/*Slot Width and Height*/
 	const int mWidth = 3;
 	const int mHeight = 3;

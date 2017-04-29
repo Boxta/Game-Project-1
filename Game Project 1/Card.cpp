@@ -127,28 +127,6 @@ void Card::SetPosition(float x, float y)
 	mTextRight.setPosition((x + (mRectangle.width / 2)) + 40 - (RightSize / 2), y + 210);
 }
 
-void Card::SetSmallDraw(bool ison)
-{
-	if (ison)
-	{
-		mSprite.setScale(0.5f, 0.5f);
-		mName.setScale(0.5f, 0.5f);
-		mTextTop.setScale(0.5f, 0.5f);
-		mTextDown.setScale(0.5f, 0.5f);
-		mTextLeft.setScale(0.5f, 0.5f);
-		mTextRight.setScale(0.5f, 0.5f);
-	}
-	else
-	{
-		mSprite.setScale(1.0f, 1.0f);
-		mName.setScale(1.0f, 1.0f);
-		mTextTop.setScale(1.0f, 1.0f);
-		mTextDown.setScale(1.0f, 1.0f);
-		mTextLeft.setScale(1.0f, 1.0f);
-		mTextRight.setScale(1.0f, 1.0f);
-	}
-}
-
 void Card::CopyCard(Card& ref)
 {
 	ref.mValue_Top = mValue_Top;
