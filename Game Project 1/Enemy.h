@@ -17,7 +17,7 @@ public:
 	void Update(const float dt);
 	void Draw();
 	Card& GetTopCard();
-	Card& UseTopCard();
+
 	int GetDeckCount() { return CardDeck.size(); }
 	void CycleDeck();
 	void Turn(BoardState& brd);
@@ -31,5 +31,7 @@ private:
 	Card crd4;
 	std::vector<Card*> CardDeck;
 	std::vector<Card*>::iterator CardDeckIterator;
+
+	bool CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight);
 };
 

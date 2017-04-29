@@ -25,6 +25,7 @@ class BoardState :
 		sf::FloatRect& GetFullRectangle() { return FullRectangle; }
 		bool GetIsUsed() { return mIsUsed; }
 		void ToogleUse();
+		Card* mCard;
 	private:
 		sf::FloatRect CardRectangle;
 		sf::FloatRect FullRectangle;
@@ -43,8 +44,11 @@ public:
 	virtual void HandleEvents(sf::Event& ev);
 
 	/*Expose Boards Card Deck and Slots*/
-	std::vector<Card*>& GetDeck() { return mBoardCardDeck; }
 	std::vector<Slot>& GetSlots() { return mSlots; }
+
+	/*Slot Width and Height*/
+	const int mWidth = 3;
+	const int mHeight = 3;
 
 	void ToogleTurn();
 	BoardState(Game& ref);
@@ -69,18 +73,22 @@ private:
 	/*Track Turn*/
 	TurnState mCurrentTurn = TurnState::PlayerTurn;
 	
-	/*Set Card Deck Selection Rectangles*/
-	const sf::FloatRect mSelectCard_Player = { 200.0f, 200.0f, 250.0f, 300.0f };
-	const sf::FloatRect mSelectCard_Enemy = { 1470.0f, 200.0f, 250.0f, 300.0f };
-
 	/*Setup Board Selection Boarder Width*/
 	const float mBOARDERWIDTH = 10.0f;
 
 	/*Create Slot Array*/
 	std::vector<Slot> mSlots;
 
-	/*Create Board Card Deck*/
-	std::vector<Card*> mBoardCardDeck;
+	/*Create Board Cards*/
+	Card Card_A1;
+	Card Card_A2;
+	Card Card_A3;
+	Card Card_B1;
+	Card Card_B2;
+	Card Card_B3;
+	Card Card_C1;
+	Card Card_C2;
+	Card Card_C3;
 	
 	/*Create Slots*/
 	Slot A1 = { 0, 0 };
@@ -92,6 +100,7 @@ private:
 	Slot C1 = { 0, 2 };
 	Slot C2 = { 1, 2 };
 	Slot C3 = { 2, 2 };
+
 
 	Enemy mEnemy;
 	bool mInitiated = false;

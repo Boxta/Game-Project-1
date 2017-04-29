@@ -2,7 +2,7 @@
 #include <SFML\Graphics.hpp>
 #include <vector>
 #include "Card.h"
-
+#include <algorithm>
 
 class Player
 {
@@ -15,10 +15,13 @@ public:
 	void Update(const float dt);
 	void Draw();
 	Card& GetTopCard();
-	Card& UseTopCard();
 	int GetDeckCount() { return CardDeck.size(); }
 	void CycleDeck();
+	void KillTopCard();
 private:
+	sf::Vector2f mHandPositionA;
+	sf::Vector2f mHandPositionB;
+	sf::Vector2f mHandPositionC;
 	Game& mGameReference;
 	sf::Text mName;
 	sf::Sprite mSprite;
@@ -27,6 +30,7 @@ private:
 	Card crd3;
 	Card crd4;
 	std::vector<Card*> CardDeck;
-	std::vector<Card*>::iterator CardDeckIterator;
+	std::vector<Card*>::iterator DeckIterator;
+	int mCardDeckIterator = 0;
 };
 

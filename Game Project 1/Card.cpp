@@ -1,8 +1,11 @@
 #include "Card.h"
 #include "Game.h"
 
-void Card::Initiate(float x, float y, std::string name)
+void Card::Initiate(float x, float y, std::string name, CardOwner own)
 {
+	/*Set Owner*/
+	mOwner = own;
+
 	/*Set Card Recatangle*/
 	mRectangle.top = y;
 	mRectangle.left = x;
@@ -58,30 +61,26 @@ void Card::Initiate(float x, float y, std::string name)
 void Card::Update(const float dt)
 {
 	/*Keep Asset Positions Aligned To Object Position*/
-
+	/*Set Card Recatangle*/
 
 	switch (mState)
 	{
 	case CardState::Free:
-	{
 		mSprite.setColor(sf::Color::White);
 		break;
-	}
 	case CardState::Selected:
-	{
 		mSprite.setColor(sf::Color::Color(100, 0, 0, 255));
 		break;
-	}
-	default:
-	{
+	case CardState::Used:
+		mSprite.setColor(sf::Color::White);
 		break;
-	}
+	default:
+		break;
 	}
 }
 
 void Card::Draw()
 {
-
 	mGameReference.GetWindow().draw(mSprite);
 	mGameReference.GetWindow().draw(mName);
 	mGameReference.GetWindow().draw(mTextTop);
@@ -109,10 +108,13 @@ void Card::SetPosition(float x, float y)
 
 	mRectangle.top = y;
 	mRectangle.left = x;
-
+	
+	/*Set Name Position*/
 	mName.setPosition(x + 72, y + 50);
 	
+	/*Set Sprite Position*/
 	mSprite.setPosition(x, y);
+	
 	/*Set Text Position*/
 	int TopSize = int(mTextTop.getLocalBounds().width);
 	int DownSize = int(mTextDown.getLocalBounds().width);
@@ -125,7 +127,46 @@ void Card::SetPosition(float x, float y)
 	mTextRight.setPosition((x + (mRectangle.width / 2)) + 40 - (RightSize / 2), y + 210);
 }
 
-void Card::ResetColor()
+void Card::SetSmallDraw(bool ison)
 {
-	mSprite.setColor(sf::Color::White);
+	if (ison)
+	{
+		mSprite.setScale(0.5f, 0.5f);
+		mName.setScale(0.5f, 0.5f);
+		mTextTop.setScale(0.5f, 0.5f);
+		mTextDown.setScale(0.5f, 0.5f);
+		mTextLeft.setScale(0.5f, 0.5f);
+		mTextRight.setScale(0.5f, 0.5f);
+	}
+	else
+	{
+		mSprite.setScale(1.0f, 1.0f);
+		mName.setScale(1.0f, 1.0f);
+		mTextTop.setScale(1.0f, 1.0f);
+		mTextDown.setScale(1.0f, 1.0f);
+		mTextLeft.setScale(1.0f, 1.0f);
+		mTextRight.setScale(1.0f, 1.0f);
+	}
 }
+
+void Card::CopyCard(Card& ref)
+{
+	ref.mValue_Top = mValue_Top;
+	ref.mValue_Left = mValue_Left;
+	ref.mValue_Right = mValue_Right;
+	ref.mValue_Down = mValue_Down;
+
+	ref.mState = mState;
+	ref.mRectangle = mRectangle;
+	
+	ref.mPosition = mPosition;
+	ref.mSprite = mSprite;
+	ref.mName = mName;
+	ref.mTextTop = mTextTop;
+	ref.mTextDown = mTextDown;
+	ref.mTextLeft = mTextLeft;
+	ref.mTextRight = mTextRight;
+	ref.mOwner = mOwner;
+}
+
+

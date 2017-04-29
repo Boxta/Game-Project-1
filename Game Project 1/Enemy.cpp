@@ -22,14 +22,6 @@ Card& Enemy::GetTopCard()
 	return *CardDeck.back();
 }
 
-Card& Enemy::UseTopCard()
-{
-	Card& tmp = *CardDeck.back();
-	tmp.ResetColor();
-	CardDeck.pop_back();
-	return tmp;
-}
-
 void Enemy::CycleDeck()
 {
 
@@ -41,182 +33,100 @@ void Enemy::CycleDeck()
 
 void Enemy::Turn(BoardState& brd)
 {
-	/*Enemy Is First Turn*/
-	if (brd.GetDeck().size() <= 0)
+	bool noSlotsUsed = true;
+	for (auto& r : brd.GetSlots())
 	{
-		//Ad Code Here
+		if (r.GetIsUsed())
+		{
+			noSlotsUsed = false;
+		}
+	}
+	if (noSlotsUsed)
 		return;
-	}
 
-	//Check Cards On Board.
-	for(auto& u : brd.GetDeck())
+	//Check Slot On Board.
+	for(auto& u : brd.GetSlots())
 	{
-		const int nTop = u->mValue_Top;
-		const int nDown = u->mValue_Down;
-		const int nLeft = u->mValue_Left;
-		const int nRight = u->mValue_Right;
-
-		bool opnTop = false;
-		bool opnDown = false;
-		bool opnLeft = false;
-		bool opnRight = false;
-
-		/*Create Rectangles Around Card*/
-		const sf::FloatRect recTop(u->GetRectangle().left, u->GetRectangle().top - 350.0f, 250.0f, 300.0f);
-		const sf::FloatRect recDown(u->GetRectangle().left, u->GetRectangle().top + 350.0f, 250.0f, 300.0f);
-		const sf::FloatRect recLeft(u->GetRectangle().left - 300.0f, u->GetRectangle().top, 250.0f, 300.0f);
-		const sf::FloatRect recRight(u->GetRectangle().left + 300.0f, u->GetRectangle().top, 250.0f, 300.0f);
-
-		/*Identify Board Spaces That Meet Criteria*/
-		for (auto& y : brd.GetSlots())
+		//Slot if used and the card belongs to the player
+		if (u.GetIsUsed() && u.mCard->GetOwner() == Card::CardOwner::Player_Owned)
 		{
-			if (y.GetCardRectangle() == recTop &&
-				y.GetIsUsed() == false)
+			//Store Postion and Potential surrounding slot positions of the slot/card
+			const sf::Vector2i DeckCardPosition = u.mBoardPosition;
+			const sf::Vector2i PositionAbove = sf::Vector2i(u.mBoardPosition.x, u.mBoardPosition.y - 1);
+			const sf::Vector2i PositionDown = sf::Vector2i(u.mBoardPosition.x, u.mBoardPosition.y + 1);
+			const sf::Vector2i PositionLeft = sf::Vector2i(u.mBoardPosition.x - 1, u.mBoardPosition.y);
+			const sf::Vector2i PositionRight = sf::Vector2i(u.mBoardPosition.x + 1, u.mBoardPosition.y);
+			/*
+			for (auto& pc : CardDeck)
 			{
-				int i = 0;
-				opnTop = true;
+				//Slot above card is free
+				if (CheckSafeBoardPosition(PositionAbove, brd.mWidth, brd.mHeight))
+				{
+					if (pc->mValue_Down > u.mCard->mValue_Top)
+					{
+						brd.GetSlots()[PositionAbove.y * brd.mWidth + PositionAbove.y].mCard = pc;
+						//Change Player To Enemy Card
+					}
+				}
+				//Slot Down card is free
+				if (CheckSafeBoardPosition(PositionDown, brd.mWidth, brd.mHeight))
+				{
+					if (pc->mValue_Top > u.mCard->mValue_Down)
+					{
+						brd.GetSlots()[PositionDown.y * brd.mWidth + PositionDown.y].mCard = pc;
+						//Change Player To Enemy Card
+					}
+				}
+				//Slot left card is free
+				if (CheckSafeBoardPosition(PositionLeft, brd.mWidth, brd.mHeight))
+				{
+					if (pc->mValue_Right > u.mCard->mValue_Left)
+					{
+						brd.GetSlots()[PositionLeft.y * brd.mWidth + PositionLeft.y].mCard = pc;
+						//Change Player To Enemy Card
+					}
+				}
+				//Slot right card is free
+				if (CheckSafeBoardPosition(PositionRight, brd.mWidth, brd.mHeight))
+				{
+					if (pc->mValue_Left > u.mCard->mValue_Right)
+					{
+						brd.GetSlots()[PositionRight.y * brd.mWidth + PositionRight.y].mCard = pc;
+						//Change Player To Enemy Card
+					}
+				}
 			}
-			if (y.GetCardRectangle() == recDown &&
-				!y.GetIsUsed())
-			{
-				opnTop = true;
-			}
-			if (y.GetCardRectangle() == recLeft &&
-				!y.GetIsUsed())
-			{
-				opnTop = true;
-			}
-			if (y.GetCardRectangle() == recRight &&
-				!y.GetIsUsed())
-			{
-				opnTop = true;
-			}
+			*/
 		}
-
-		/*Check and Place Cards*/
-		/*RETURN IF WIN FOUND*/
-		for (auto& k : CardDeck)
-		{
-			if (opnTop)
-			{
-				if (k->mValue_Down > u->mValue_Top)
-				{
-					for (auto& y : brd.GetSlots())
-					{
-						if (y.GetCardRectangle() == recTop)
-						{
-							y.ToogleUse();
-						}
-					}
-					//while (CardDeck.back()->GetRectangle() != k->GetRectangle())
-					//{
-					//	CycleDeck();
-					//}
-					k->SetPosition(recTop.left, recTop.top);
-					brd.GetDeck().push_back(k);
-					//CardDeck.pop_back();
-					brd.ToogleTurn();
-					return;
-				}
-				else
-				{
-					//Lose
-				}
-			}
-			if (opnDown)
-			{
-				if (k->mValue_Top > u->mValue_Down)
-				{
-					for (auto& y : brd.GetSlots())
-					{
-						for (auto& y : brd.GetSlots())
-						{
-							if (y.GetCardRectangle() == recDown)
-							{
-								y.ToogleUse();
-							}
-						}
-						//while (CardDeck.back()->GetRectangle() != k->GetRectangle())
-						//{
-						//	CycleDeck();
-						//}
-						k->SetPosition(recDown.left, recDown.top);
-						brd.GetDeck().push_back(k);
-						//CardDeck.pop_back();
-						brd.ToogleTurn();
-						return;
-					}
-				}
-				else
-				{
-					//Lose
-				}
-			}
-			if (opnLeft)
-			{
-				if (k->mValue_Right > u->mValue_Left)
-				{
-					for (auto& y : brd.GetSlots())
-					{
-						for (auto& y : brd.GetSlots())
-						{
-							if (y.GetCardRectangle() == recLeft)
-							{
-								y.ToogleUse();
-							}
-						}
-						//while (CardDeck.back()->GetRectangle() != k->GetRectangle())
-						//{
-						//	CycleDeck();
-						//}
-						k->SetPosition(recLeft.left, recLeft.top);
-						brd.GetDeck().push_back(k);
-						//CardDeck.pop_back();
-						brd.ToogleTurn();
-						return;
-					}
-				}
-				else
-				{
-					//Lose
-				}
-			}
-			if (opnRight)
-			{
-				if (k->mValue_Left > u->mValue_Right)
-				{
-					for (auto& y : brd.GetSlots())
-					{
-						for (auto& y : brd.GetSlots())
-						{
-							if (y.GetCardRectangle() == recRight)
-							{
-								y.ToogleUse();
-							}
-						}
-						//while (CardDeck.back()->GetRectangle() != k->GetRectangle())
-						//{
-						//	CycleDeck();
-						//}
-						k->SetPosition(recRight.left, recRight.top);
-						brd.GetDeck().push_back(k);
-						//CardDeck.pop_back();
-						brd.ToogleTurn();
-						return;
-					}
-				}
-				else
-				{
-					//Lose
-				}
-			}
-		}
-
-		/*No Win Found*/
-		brd.ToogleTurn();
 	}
 
+	/*No Win Found*/
+	brd.ToogleTurn();
 
+}
+
+bool Enemy::CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight)
+{
+	if (vec.x < 0)
+	{
+		return false;
+	}
+	else if (vec.x > boardwidth)
+	{
+		return false;
+	}
+	else if (vec.y < 0)
+	{
+		return false;
+	}
+	else if (vec.y > boardheight)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 void Enemy::Initiate(float x, float y,
@@ -231,10 +141,10 @@ void Enemy::Initiate(float x, float y,
 	mName.setFillColor(sf::Color::Black);
 	mName.setCharacterSize(18);
 
-	crd1.Initiate(1620.0f, 50.0f, "Boss A");
-	crd2.Initiate(1570.0f, 100.0f, "Boss B");
-	crd3.Initiate(1520.0f, 150.0f, "Boss C");
-	crd4.Initiate(1470.0f, 200.0f, "Boss D");
+	crd1.Initiate(1620.0f, 50.0f, "Boss A", Card::CardOwner::Enemy_Owned);
+	crd2.Initiate(1570.0f, 100.0f, "Boss B", Card::CardOwner::Enemy_Owned);
+	crd3.Initiate(1520.0f, 150.0f, "Boss C", Card::CardOwner::Enemy_Owned);
+	crd4.Initiate(1470.0f, 200.0f, "Boss D", Card::CardOwner::Enemy_Owned);
 	
 	CardDeck.push_back(&crd1);
 	CardDeck.push_back(&crd2);

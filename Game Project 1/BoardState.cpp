@@ -50,6 +50,11 @@ void BoardState::HandleInput()
 
 void BoardState::Update(float dt)
 {
+	for (auto& t : mSlots)
+	{
+		t.mCard->Update(dt);
+	}
+
 	if (mCurrentTurn == TurnState::EnemyTurn)
 	{
 		//Added Enemy Turn Here.
@@ -57,17 +62,10 @@ void BoardState::Update(float dt)
 	}
 	if (mCurrentTurn == TurnState::PlayerTurn)
 	{
-
 	}
 
 	mEnemy.Update(dt);
 	mGameReference.GetPlayer().Update(dt);
-
-	/*Update Board Cards*/
-	for (auto& u : mBoardCardDeck)
-	{
-		u->Update(dt);
-	}
 
 	/*Selected State Update Logic*/
 	mSelectFlashCounter += dt;
@@ -115,10 +113,13 @@ void BoardState::Draw()
 	/*Draw Enemy*/
 	mEnemy.Draw();
 
-	/*Draw Board Card Deck*/
-	for (auto& u : mBoardCardDeck)
+	/*Draw Board Cards*/
+	for (auto& t : mSlots)
 	{
-		u->Draw();
+		if (t.GetIsUsed())
+		{
+			t.mCard->Draw();
+		}
 	}
 }
 
@@ -162,17 +163,31 @@ void BoardState::HandleEvents(sf::Event & ev)
 					if (c.GetCardRectangle().contains(float(xX), float(yY)) &&
 						!c.GetIsUsed())
 					{
-						c.ToogleUse();
+						/*Turn off the boards selection state*/
 						mSelectSlotState = false;
-						mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Free);
-						mGameReference.GetPlayer().GetTopCard().SetPosition(c.GetCardRectangle().left, c.GetCardRectangle().top);
-						mBoardCardDeck.push_back(&mGameReference.GetPlayer().UseTopCard());
+						//mGameReference.GetPlayer().GetTopCard().SetPosition(c.GetCardRectangle().left, c.GetCardRectangle().top);
+						/*Copy The Players Card To The Slots Card*/
+						mGameReference.GetPlayer().GetTopCard().CopyCard(*c.mCard);
+						
+						/*Mark the Slot As Used*/
+						c.ToogleUse();
+						
+						/*Mark The Slots Card As Used*/
+						c.mCard->SetState(Card::CardState::Used);
+						
+						/*Set Slots Card To Position Of The Slot*/
+						c.mCard->SetPosition(c.GetCardRectangle().left, c.GetCardRectangle().top);
+						
+						/*Remove Used Card From Players Deck*/
+						mGameReference.GetPlayer().KillTopCard();
+
+						/*End Player Turn*/
 						ToogleTurn();
+
 					}
 				}
 			}
 		}
-
 
 		/*Handle Right Mouse Clicks*/
 		if (ev.type == sf::Event::MouseButtonPressed &&
@@ -181,11 +196,9 @@ void BoardState::HandleEvents(sf::Event & ev)
 			/*Capture Mouse Coords*/
 			const int xX = sf::Mouse::getPosition(mGameReference.GetWindow()).x;
 			const int yY = sf::Mouse::getPosition(mGameReference.GetWindow()).y;
-			if (mSelectCard_Player.contains(float(xX), float(yY)))
+			if (mGameReference.GetPlayer().GetTopCard().GetRectangle().contains(float(xX), float(yY)))
 			{
 				mSelectSlotState = false;
-				mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Free);
-				mGameReference.GetPlayer().GetTopCard().ResetColor();
 				mGameReference.GetPlayer().CycleDeck();
 			}
 		}
@@ -210,11 +223,30 @@ BoardState::BoardState(Game& ref)
 	mBackgroundImage(),
 	mBackgroundFill(),
 	mEnemy(ref),
-	mBoardCardDeck()
+	Card_A1(ref),
+	Card_A2(ref),
+	Card_A3(ref),
+	Card_B1(ref),
+	Card_B2(ref),
+	Card_B3(ref),
+	Card_C1(ref),
+	Card_C2(ref),
+	Card_C3(ref)
 {
 	mBackgroundFill.setFillColor(sf::Color::Black);
 	mBackgroundFill.setSize(sf::Vector2f(1920, 1080));
 	mBackgroundFill.setPosition(sf::Vector2f(0, 0));
+	
+	/*Assign Card References To Slots*/
+	A1.mCard = &Card_A1;
+	A2.mCard = &Card_A2;
+	A3.mCard = &Card_A3;
+	B1.mCard = &Card_B1;
+	B2.mCard = &Card_B2;
+	B3.mCard = &Card_B3;
+	C1.mCard = &Card_C1;
+	C2.mCard = &Card_C2;
+	C3.mCard = &Card_C3;
 }
 
 

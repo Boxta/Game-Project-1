@@ -30,7 +30,6 @@ void MainMenu::Initiate()
 
 void MainMenu::HandleInput()
 {
-
 }
 
 void MainMenu::Update(float dt)
@@ -77,6 +76,7 @@ void MainMenu::HandleEvents(sf::Event& ev)
 				mExit_StartNewGame();
 			}
 		}
+
 		/*If Press Was Inside 'Load Game' Button*/
 		if (mLoadGame_Button.CheckIfClicked(xX, yY))
 		{
@@ -85,6 +85,7 @@ void MainMenu::HandleEvents(sf::Event& ev)
 			else
 				mLoadGame_Button.SetPressedState(true);
 		}
+
 		/*If Press Was Inside 'Tutorial Game' Button*/
 		if (mTutorialGame_Button.CheckIfClicked(xX, yY))
 		{
