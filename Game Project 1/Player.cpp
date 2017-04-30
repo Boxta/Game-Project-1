@@ -22,8 +22,6 @@ void Player::Initiate(float x, float y,
 	float xn, float yn)
 {
 	mHandPositionA = { 140.0f, 150.0f };
-	mHandPositionB = { 15.0f, 80.0f };
-	mHandPositionC = { 270.0f, 80.0f };
 
 	mSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("PlayerPicture"));
 	mSprite.setPosition(x, y);
@@ -63,53 +61,115 @@ void Player::Draw()
 	/*If No Cards In Deck Exit*/
 	if (CardDeck.size() == 0)
 		return;
+	for (int T = 0; T < CardDeck.size(); T++)
+	{
+		if (T < mCardDeckIterator)
+		{
+			CardDeck[T]->SetPosition(mHandPositionA.x - 125.0f, mHandPositionA.y - 80.0f);
+			CardDeck[T]->Draw();
+		}
+	}
 
+	for (int T = 0; T < CardDeck.size(); T++)
+	{
+		if (T > mCardDeckIterator)
+		{
+			CardDeck[T]->SetPosition(mHandPositionA.x + 125.0f, mHandPositionA.y - 80.0f);
+			CardDeck[T]->Draw();
+		}
+	}
+
+	CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
+	CardDeck[mCardDeckIterator]->Draw();
+	
+
+	/*
+	switch (mCardDeckIterator)
+	{
+		case 0:
+		{
+
+			if (CardDeck.size() > 1)
+			{
+				CardDeck[mCardDeckIterator + 1]->SetPosition(mHandPositionB.x, mHandPositionB.y);
+				CardDeck[mCardDeckIterator + 1]->Draw();
+			}
+			if (CardDeck.size() > 2)
+			{
+				CardDeck[CardDeck.size() - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
+				CardDeck[CardDeck.size() - 1]->Draw();
+			}
+
+			CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
+			CardDeck[mCardDeckIterator]->Draw();
+			break;
+		}
+		case 1:
+		{
+			if (CardDeck.size() > 1)
+			{
+				CardDeck[mCardDeckIterator + 1]->SetPosition(mHandPositionB.x, mHandPositionB.y);
+				CardDeck[mCardDeckIterator + 1]->Draw();
+			}
+			if (CardDeck.size() > 2)
+			{
+				CardDeck[mCardDeckIterator - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
+				CardDeck[mCardDeckIterator - 1]->Draw();
+			}
+			CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
+			CardDeck[mCardDeckIterator]->Draw();
+			break;
+		}
+		case 2:
+		{
+			if (CardDeck.size() > 1)
+			{
+				CardDeck[mCardDeckIterator + 1]->SetPosition(mHandPositionB.x, mHandPositionB.y);
+				CardDeck[mCardDeckIterator + 1]->Draw();
+			}
+			if (CardDeck.size() > 2)
+			{
+				CardDeck[mCardDeckIterator - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
+				CardDeck[mCardDeckIterator - 1]->Draw();
+			}
+			CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
+			CardDeck[mCardDeckIterator]->Draw();
+			break;
+		}
+		case 3:
+		{
+			if (CardDeck.size() > 1)
+			{
+				CardDeck[0]->SetPosition(mHandPositionB.x, mHandPositionB.y);
+				CardDeck[0]->Draw();
+			}
+			if (CardDeck.size() > 2)
+			{
+				CardDeck[mCardDeckIterator - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
+				CardDeck[mCardDeckIterator - 1]->Draw();
+			}
+			CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
+			CardDeck[mCardDeckIterator]->Draw();
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+	*/
 	/*Draw Cards*/
 	if (mCardDeckIterator == 0)
 	{
-		if (CardDeck.size() > 1)
-		{
-			CardDeck[mCardDeckIterator + 1]->SetPosition(mHandPositionB.x, mHandPositionB.y);
-			CardDeck[mCardDeckIterator + 1]->Draw();
-		}
-		if (CardDeck.size() > 2)
-		{
-			CardDeck[CardDeck.size() - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
-			CardDeck[CardDeck.size() - 1]->Draw();
-		}
-
-		CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
-		CardDeck[mCardDeckIterator]->Draw();
+		
 	}
 	else if (mCardDeckIterator > 0 && mCardDeckIterator < CardDeck.size() - 1)
 	{
-		if (CardDeck.size() > 1)
-		{
-			CardDeck[mCardDeckIterator + 1]->SetPosition(mHandPositionB.x, mHandPositionB.y);
-			CardDeck[mCardDeckIterator + 1]->Draw();
-		}
-		if (CardDeck.size() > 2)
-		{
-			CardDeck[mCardDeckIterator - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
-			CardDeck[mCardDeckIterator - 1]->Draw();
-		}
-		CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
-		CardDeck[mCardDeckIterator]->Draw();
+		
 	}
 	else if (mCardDeckIterator == CardDeck.size() - 1)
 	{
-		if (CardDeck.size() > 1)
-		{
-			CardDeck[0]->SetPosition(mHandPositionB.x, mHandPositionB.y);
-			CardDeck[0]->Draw();
-		}
-		if (CardDeck.size() > 2)
-		{
-			CardDeck[mCardDeckIterator - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
-			CardDeck[mCardDeckIterator - 1]->Draw();
-		}
-		CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
-		CardDeck[mCardDeckIterator]->Draw();
+
 	}
 }
 
@@ -121,14 +181,31 @@ Card& Player::GetTopCard()
 
 void Player::CycleDeck()
 {
-	if (mCardDeckIterator >= (CardDeck.size() - 1))
+	if (mIterateDirection)
 	{
-		mCardDeckIterator = 0;
+		if (mCardDeckIterator >= (CardDeck.size() - 1))
+		{
+			mIterateDirection = false;
+			mCardDeckIterator--;
+		}
+		else
+		{
+			mCardDeckIterator++;
+		}
 	}
 	else
 	{
-		mCardDeckIterator++;
+		if (mCardDeckIterator <= 0)
+		{
+			mIterateDirection = true;
+			mCardDeckIterator++;
+		}
+		else
+		{
+			mCardDeckIterator--;
+		}
 	}
+
 }
 
 void Player::KillTopCard()

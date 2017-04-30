@@ -22,8 +22,6 @@ public:
 	void Turn(BoardState& brd, float xX, float yY);
 private:
 	sf::Vector2f mHandPositionA;
-	sf::Vector2f mHandPositionB;
-	sf::Vector2f mHandPositionC;
 	Game& mGameReference;
 	sf::Text mName;
 	sf::Sprite mSprite;
@@ -34,6 +32,7 @@ private:
 	std::vector<Card*> CardDeck;
 	std::vector<Card*>::iterator DeckIterator;
 	int mCardDeckIterator = 0;
+	bool mIterateDirection = true;
 	bool CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight);
 	std::random_device rd;     // only used once to initialise (seed) engine
 };
