@@ -24,6 +24,7 @@ private:
 
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
+	sf::Sprite mLogoImage;
 	sf::Music mMenuMusic;
 	bool mMusicIsPlaying = false;
 	UIButton mStartGame_Button;

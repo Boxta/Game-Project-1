@@ -34,13 +34,29 @@ void Enemy::KillCard(int u)
 
 void Enemy::CycleDeck()
 {
-	if (mCardDeckIterator == CardDeck.size() - 1)
+	if (mIterateDirection)
 	{
-		mCardDeckIterator = 0;
+		if (mCardDeckIterator >= (CardDeck.size() - 1))
+		{
+			mIterateDirection = false;
+			mCardDeckIterator--;
+		}
+		else
+		{
+			mCardDeckIterator++;
+		}
 	}
 	else
 	{
-		mCardDeckIterator++;
+		if (mCardDeckIterator <= 0)
+		{
+			mIterateDirection = true;
+			mCardDeckIterator++;
+		}
+		else
+		{
+			mCardDeckIterator--;
+		}
 	}
 }
 
@@ -71,7 +87,6 @@ void Enemy::Turn(BoardState& brd)
 			sf::Vector2i PositionDown = sf::Vector2i(u.mBoardPosition.x, u.mBoardPosition.y + 1);
 			sf::Vector2i PositionLeft = sf::Vector2i(u.mBoardPosition.x - 1, u.mBoardPosition.y);
 			sf::Vector2i PositionRight = sf::Vector2i(u.mBoardPosition.x + 1, u.mBoardPosition.y);
-
 
 			for (auto& pc : CardDeck)
 			{
@@ -245,50 +260,24 @@ void Enemy::Draw()
 		return;
 
 	/*Draw Cards*/
-	if (mCardDeckIterator == 0)
+	for (int T = 0; T < CardDeck.size(); T++)
 	{
-		if (CardDeck.size() > 1)
+		if (T < mCardDeckIterator)
 		{
-			CardDeck[mCardDeckIterator + 1]->SetPosition(mHandPositionB.x, mHandPositionB.y);
-			CardDeck[mCardDeckIterator + 1]->Draw();
+			CardDeck[T]->SetPosition(mHandPositionA.x - 125.0f, mHandPositionA.y - 80.0f);
+			CardDeck[T]->Draw();
 		}
-		if (CardDeck.size() > 2)
-		{
-			CardDeck[CardDeck.size() - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
-			CardDeck[CardDeck.size() - 1]->Draw();
-		}
+	}
 
-		CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
-		CardDeck[mCardDeckIterator]->Draw();
-	}
-	else if (mCardDeckIterator > 0 && mCardDeckIterator < CardDeck.size() - 1)
+	for (int T = CardDeck.size() - 1; T > 0; T--)
 	{
-		if (CardDeck.size() > 1)
+		if (T > mCardDeckIterator)
 		{
-			CardDeck[mCardDeckIterator + 1]->SetPosition(mHandPositionB.x, mHandPositionB.y);
-			CardDeck[mCardDeckIterator + 1]->Draw();
+			CardDeck[T]->SetPosition(mHandPositionA.x + 125.0f, mHandPositionA.y - 80.0f);
+			CardDeck[T]->Draw();
 		}
-		if (CardDeck.size() > 2)
-		{
-			CardDeck[mCardDeckIterator - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
-			CardDeck[mCardDeckIterator - 1]->Draw();
-		}
-		CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
-		CardDeck[mCardDeckIterator]->Draw();
 	}
-	else if (mCardDeckIterator == CardDeck.size() - 1)
-	{
-		if (CardDeck.size() > 1)
-		{
-			CardDeck[0]->SetPosition(mHandPositionB.x, mHandPositionB.y);
-			CardDeck[0]->Draw();
-		}
-		if (CardDeck.size() > 2)
-		{
-			CardDeck[mCardDeckIterator - 1]->SetPosition(mHandPositionC.x, mHandPositionC.y);
-			CardDeck[mCardDeckIterator - 1]->Draw();
-		}
-		CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
-		CardDeck[mCardDeckIterator]->Draw();
-	}
+
+	CardDeck[mCardDeckIterator]->SetPosition(mHandPositionA.x, mHandPositionA.y);
+	CardDeck[mCardDeckIterator]->Draw();
 }

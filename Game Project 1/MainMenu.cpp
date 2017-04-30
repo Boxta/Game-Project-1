@@ -17,6 +17,10 @@ void MainMenu::Initiate()
 	mBackgroundImage.setTexture(mGameReference.GetCommonStore().GetTextureRef("MenuBackground"));
 	mBackgroundImage.setPosition(sf::Vector2f(0, 0));
 
+	mLogoImage.setTexture(mGameReference.GetCommonStore().GetTextureRef("Logo"));
+	mLogoImage.setPosition(mGameReference.GetWindow().getSize().x / 2 - 333,
+		mGameReference.GetWindow().getSize().y / 2 - 350);
+
 	mStartGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - (UIButton::WIDTH / 2),
 		mGameReference.GetWindow().getSize().y / 2,
 		"Start");
@@ -48,6 +52,7 @@ void MainMenu::Draw()
 	mGameReference.GetWindow().clear();
 	mGameReference.GetWindow().draw(mBackgroundFill);
 	mGameReference.GetWindow().draw(mBackgroundImage);
+	mGameReference.GetWindow().draw(mLogoImage);
 	mStartGame_Button.Draw(mGameReference.GetWindow());
 	mLoadGame_Button.Draw(mGameReference.GetWindow());
 	mTutorialGame_Button.Draw(mGameReference.GetWindow());

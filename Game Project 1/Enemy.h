@@ -38,6 +38,7 @@ private:
 	std::vector<Card*>::iterator CardDeckIterator;
 	int mCardDeckIterator = 0;
 	bool CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight);
+	bool mIterateDirection = true;
 	std::random_device rd;     // only used once to initialise (seed) engine
 };
 

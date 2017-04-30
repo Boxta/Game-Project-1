@@ -21,6 +21,7 @@ Game::Game()
 	mCommonStore.AddTexture("PlayerPicture", "Media\\PlayerPortrait.png");
 	mCommonStore.AddTexture("TestCard", "Media\\TestCard0.png");
 	mCommonStore.AddTexture("SelectBoarder", "Media\\BoardSelect.png");
+	mCommonStore.AddTexture("Logo", "Media\\Logo1.png");
 	/*Load Common Fonts*/
 	mCommonStore.AddFont("System", "Media/font1.ttf");
 
