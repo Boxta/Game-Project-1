@@ -20,8 +20,10 @@ public:
 	void CycleDeck();
 	void KillTopCard();
 	void Turn(BoardState& brd, float xX, float yY);
+	void ClearDeck();
 private:
 	sf::Vector2f mHandPositionA;
+	void GetNewCards();
 	Game& mGameReference;
 	sf::Text mName;
 	sf::Sprite mSprite;

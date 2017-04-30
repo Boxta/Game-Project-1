@@ -23,10 +23,10 @@ public:
 	int GetDeckCount() { return CardDeck.size(); }
 	void CycleDeck();
 	void Turn(BoardState& brd);
+	void ClearDeck();
 private:
 	sf::Vector2f mHandPositionA;
-	sf::Vector2f mHandPositionB;
-	sf::Vector2f mHandPositionC;
+	void GetNewCards();
 	Game& mGameReference;
 	sf::Text mName;
 	sf::Sprite mSprite;
@@ -40,5 +40,6 @@ private:
 	bool CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight);
 	bool mIterateDirection = true;
 	std::random_device rd;     // only used once to initialise (seed) engine
+	std::mt19937 rng;    // random-number engine used (Mersenne-Twister in this case)
 };
 

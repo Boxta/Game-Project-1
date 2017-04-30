@@ -221,6 +221,33 @@ void Player::Turn(BoardState& brd, float xX, float yY)
 	
 }
 
+void Player::ClearDeck()
+{
+	CardDeck.clear();
+	GetNewCards();
+}
+
+void Player::GetNewCards()
+{
+	crd1.Initiate(0.0f, 0.0f, "Regen1", Card::CardOwner::Player_Owned);
+	crd2.Initiate(0.0f, 0.0f, "Curaga", Card::CardOwner::Player_Owned);
+	crd3.Initiate(0.0f, 0.0f, "Protek", Card::CardOwner::Player_Owned);
+	crd4.Initiate(0.0f, 0.0f, "Shell1", Card::CardOwner::Player_Owned);
+
+	crd1.SetState(Card::CardState::Free);
+	crd2.SetState(Card::CardState::Free);
+	crd3.SetState(Card::CardState::Free);
+	crd4.SetState(Card::CardState::Free);
+
+	CardDeck.push_back(&crd1);
+	CardDeck.push_back(&crd2);
+	CardDeck.push_back(&crd3);
+	CardDeck.push_back(&crd4);
+
+	mCardDeckIterator = 0;
+	mIterateDirection = true;
+}
+
 bool Player::CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight)
 {
 	if (vec.x < 0)

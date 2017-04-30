@@ -9,6 +9,12 @@ class BoardState :
 		PlayerTurn,
 		EnemyTurn
 	};
+	enum WinState {
+		PlayerWin,
+		EnemyWin,
+		Tie,
+		GameRunning
+	};
 public:
 	class Slot
 	{
@@ -20,13 +26,15 @@ public:
 			mBoardPosition.y = y;
 			CardRectangle = { (float(x) * 300.0f) + 535.0f, (float(y) * 350.0f) + 50.0f, 250.0f, 300.0f };
 			FullRectangle = { (float(x) * 300.0f) + 525.0f, (float(y) * 350.0f) + 40.0f, 250.0f, 300.0f };
+			mIsUsed = false;
+			mCard = nullptr;
 		}
 		sf::Vector2i mBoardPosition;
 		sf::FloatRect& GetCardRectangle() { return CardRectangle; }
 		sf::FloatRect& GetFullRectangle() { return FullRectangle; }
 		bool GetIsUsed() { return mIsUsed; }
 		void ToogleUse();
-		Card* mCard;
+		Card* mCard = nullptr;
 	private:
 		sf::FloatRect CardRectangle;
 		sf::FloatRect FullRectangle;
@@ -44,9 +52,13 @@ public:
 	/*Handle Events*/
 	virtual void HandleEvents(sf::Event& ev);
 
-	/*Expose Boards Card Deck and Slots*/
+	/*Expose Boards Slots*/
 	std::vector<Slot>& GetSlots() { return mSlots; }
 	Slot& GetSlot(int x, int y);
+
+	/*Reset Board*/
+	void ResetBoard();
+
 	/*Slot Width and Height*/
 	const int mWidth = 3;
 	const int mHeight = 3;
@@ -107,8 +119,10 @@ private:
 	Slot C2 = { 1, 2 };
 	Slot C3 = { 2, 2 };
 
+	WinState mGameWinState = WinState::GameRunning;
 
 	Enemy mEnemy;
+
 	bool mInitiated = false;
 };
 

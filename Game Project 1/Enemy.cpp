@@ -8,7 +8,8 @@ Enemy::Enemy(Game& ref)
 	crd1(ref),
 	crd2(ref),
 	crd3(ref),
-	crd4(ref)
+	crd4(ref),
+	rng(rd())
 {
 }
 
@@ -24,7 +25,15 @@ Card& Enemy::GetTopCard()
 
 void Enemy::KillTopCard()
 {
-	CardDeck.erase(CardDeck.begin() + mCardDeckIterator);
+	if (mCardDeckIterator > 0)
+	{
+		CardDeck.erase(CardDeck.begin() + mCardDeckIterator);
+		mCardDeckIterator--;
+	}
+	else
+	{
+		CardDeck.erase(CardDeck.begin() + mCardDeckIterator);
+	}
 }
 
 void Enemy::KillCard(int u)
@@ -165,7 +174,7 @@ void Enemy::Turn(BoardState& brd)
 	if (!mHasWon)
 	{
 		/*Setup Random Generator*/
-		std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+		
 		std::uniform_int_distribution<int> uni(0, CardDeck.size() - 1); // guaranteed unbiased
 
 		for (auto& u : brd.GetSlots())
@@ -190,6 +199,32 @@ void Enemy::Turn(BoardState& brd)
 			break;
 		}
 	}
+}
+
+void Enemy::ClearDeck()
+{
+	CardDeck.clear();
+	GetNewCards();
+}
+
+void Enemy::GetNewCards()
+{
+	crd1.Initiate(0.0f, 0.0f, "Dragon", Card::CardOwner::Enemy_Owned);
+	crd2.Initiate(0.0f, 0.0f, "Planet", Card::CardOwner::Enemy_Owned);
+	crd3.Initiate(0.0f, 0.0f, "Gemini", Card::CardOwner::Enemy_Owned);
+	crd4.Initiate(0.0f, 0.0f, "Roadie", Card::CardOwner::Enemy_Owned);
+	crd1.SetState(Card::CardState::Free);
+	crd2.SetState(Card::CardState::Free);
+	crd3.SetState(Card::CardState::Free);
+	crd4.SetState(Card::CardState::Free);
+
+	CardDeck.push_back(&crd1);
+	CardDeck.push_back(&crd2);
+	CardDeck.push_back(&crd3);
+	CardDeck.push_back(&crd4);
+
+	mCardDeckIterator = 0;
+	mIterateDirection = true;
 }
 
 bool Enemy::CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight)
@@ -221,8 +256,6 @@ void Enemy::Initiate(float x, float y,
 	float xn, float yn)
 {
 	mHandPositionA = { 1540.0f, 150.0f };
-	mHandPositionB = { 1400.0f, 80.0f };
-	mHandPositionC = { 1655.0f, 80.0f };
 	
 	mSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("EnemyPicture"));
 	mSprite.setPosition(x, y);

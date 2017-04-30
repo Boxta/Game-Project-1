@@ -15,7 +15,8 @@ public:
 	enum CardOwner
 	{
 		Player_Owned,
-		Enemy_Owned
+		Enemy_Owned,
+		None
 	};
 public:
 	void Initiate(float x, float y, std::string name, CardOwner own);
