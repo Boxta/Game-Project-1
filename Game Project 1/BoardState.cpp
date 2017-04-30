@@ -50,9 +50,19 @@ void BoardState::HandleInput()
 
 void BoardState::Update(float dt)
 {
+	mPlayerScore = 0;
+	mEnemyScore = 0;
 	for (auto& t : mSlots)
 	{
 		t.mCard->Update(dt);
+		if (t.mCard->GetOwner() == Card::CardOwner::Player_Owned)
+		{
+			mPlayerScore++;
+		}
+		if (t.mCard->GetOwner() == Card::CardOwner::Enemy_Owned)
+		{
+			mEnemyScore++;
+		}
 	}
 
 	if (mCurrentTurn == TurnState::EnemyTurn)
@@ -65,7 +75,10 @@ void BoardState::Update(float dt)
 	}
 
 	mEnemy.Update(dt);
+	mEnemyScoreText.setString(std::to_string(mEnemyScore));
+
 	mGameReference.GetPlayer().Update(dt);
+	mPlayerScoreText.setString(std::to_string(mPlayerScore));
 
 	/*Selected State Update Logic*/
 	mSelectFlashCounter += dt;
@@ -87,9 +100,7 @@ void BoardState::Update(float dt)
 void BoardState::Draw()
 {
 	mGameReference.GetWindow().clear();
-	/*Draw Background*/
-	mGameReference.GetWindow().draw(mBackgroundImage);
-
+	
 	/*Draw Selection Boarders*/
 	if (mSelectSlotState && mShowSelectBoarder)
 	{
@@ -102,6 +113,9 @@ void BoardState::Draw()
 			}
 		}
 	}
+	
+	/*Draw Background*/
+	mGameReference.GetWindow().draw(mBackgroundImage);
 
 	/*Draw Scores*/
 	mGameReference.GetWindow().draw(mPlayerScoreText);
@@ -166,23 +180,8 @@ void BoardState::HandleEvents(sf::Event & ev)
 						/*Turn off the boards selection state*/
 						mSelectSlotState = false;
 						
-						/*Copy The Players Card To The Slots Card*/
-						mGameReference.GetPlayer().GetTopCard().CopyCard(*c.mCard);
-						
-						/*Mark the Slot As Used*/
-						c.ToogleUse();
-						
-						/*Mark The Slots Card As Used*/
-						c.mCard->SetState(Card::CardState::Used);
-						
-						/*Set Slots Card To Position Of The Slot*/
-						c.mCard->SetPosition(c.GetCardRectangle().left, c.GetCardRectangle().top);
-						
-						/*Remove Used Card From Players Deck*/
-						mGameReference.GetPlayer().KillTopCard();
-
-						/*End Player Turn*/
-						ToogleTurn();
+						/*Player Takes Turn*/
+						mGameReference.GetPlayer().Turn(*this, xX, yY);
 
 					}
 				}

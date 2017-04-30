@@ -2,7 +2,8 @@
 #include <SFML\Graphics.hpp>
 #include <vector>
 #include "Card.h"
-#include <algorithm>
+
+class BoardState;
 
 class Player
 {
@@ -18,6 +19,7 @@ public:
 	int GetDeckCount() { return CardDeck.size(); }
 	void CycleDeck();
 	void KillTopCard();
+	void Turn(BoardState& brd, float xX, float yY);
 private:
 	sf::Vector2f mHandPositionA;
 	sf::Vector2f mHandPositionB;
@@ -32,5 +34,7 @@ private:
 	std::vector<Card*> CardDeck;
 	std::vector<Card*>::iterator DeckIterator;
 	int mCardDeckIterator = 0;
+	bool CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight);
+	std::random_device rd;     // only used once to initialise (seed) engine
 };
 

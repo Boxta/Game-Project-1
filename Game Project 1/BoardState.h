@@ -55,6 +55,11 @@ public:
 	BoardState(Game& ref);
 	~BoardState();
 
+	void PlayerScored() 
+	{ mPlayerScore++; }
+	void EnemyScored() 
+	{ mEnemyScore++; }
+
 private:
 	/*Setup Timer For Drawing Logic Of Selection Boarder*/
 	bool mSelectSlotState = false;

@@ -37,6 +37,7 @@ public:
 	int mValue_Right = 0;
 	int mValue_Down = 0;
 	CardOwner GetOwner() { return mOwner; }
+	void SetOwner(CardOwner k) { mOwner = k; }
 	void CopyCard(Card& ref);
 private:
 	CardState mState = CardState::Free;

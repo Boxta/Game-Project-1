@@ -15,7 +15,7 @@ void Card::Initiate(float x, float y, std::string name, CardOwner own)
 	/*Setup Card Name*/
 	mName.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mName.setString(name);
-	mName.setPosition(x + 72, y + 50);
+	mName.setPosition(x + 72, y - 5);
 	
 	/*Setup Card Position*/
 	mPosition = { x, y };
@@ -77,6 +77,18 @@ void Card::Update(const float dt)
 	default:
 		break;
 	}
+
+	switch (mOwner)
+	{
+	case CardOwner::Player_Owned:
+		mSprite.setTextureRect(sf::IntRect(0, 0, 250, 300));
+		break;
+	case CardOwner::Enemy_Owned:
+		mSprite.setTextureRect(sf::IntRect(250, 0, 250, 300));
+		break;
+	default:
+		break;
+	}
 }
 
 void Card::Draw()
@@ -110,7 +122,7 @@ void Card::SetPosition(float x, float y)
 	mRectangle.left = x;
 	
 	/*Set Name Position*/
-	mName.setPosition(x + 72, y + 50);
+	mName.setPosition(x + 72, y + 30);
 	
 	/*Set Sprite Position*/
 	mSprite.setPosition(x, y);

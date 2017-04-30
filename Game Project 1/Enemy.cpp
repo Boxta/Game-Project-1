@@ -88,6 +88,7 @@ void Enemy::Turn(BoardState& brd)
 						slt.ToogleUse();
 						KillTopCard();
 						brd.ToogleTurn();
+						u.mCard->SetOwner(Card::CardOwner::Enemy_Owned);
 						mHasWon = true;
 						break;
 					}
@@ -103,6 +104,7 @@ void Enemy::Turn(BoardState& brd)
 						slt.ToogleUse();
 						KillTopCard();
 						brd.ToogleTurn();
+						u.mCard->SetOwner(Card::CardOwner::Enemy_Owned);
 						mHasWon = true;
 						break;
 					}
@@ -118,6 +120,7 @@ void Enemy::Turn(BoardState& brd)
 						slt.ToogleUse();
 						KillTopCard();
 						brd.ToogleTurn();
+						u.mCard->SetOwner(Card::CardOwner::Enemy_Owned);
 						mHasWon = true;
 						break;
 					}
@@ -134,6 +137,7 @@ void Enemy::Turn(BoardState& brd)
 						slt.ToogleUse();
 						KillTopCard();
 						brd.ToogleTurn();
+						u.mCard->SetOwner(Card::CardOwner::Enemy_Owned);
 						mHasWon = true;
 						break;
 					}
@@ -201,9 +205,9 @@ void Enemy::Initiate(float x, float y,
 	std::string name,
 	float xn, float yn)
 {
-	mHandPositionA = { 1620.0f, 100.0f };
-	mHandPositionB = { 1595.0f, 80.0f };
-	mHandPositionC = { 1745.0f, 80.0f };
+	mHandPositionA = { 1540.0f, 150.0f };
+	mHandPositionB = { 1400.0f, 80.0f };
+	mHandPositionC = { 1655.0f, 80.0f };
 	
 	mSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("EnemyPicture"));
 	mSprite.setPosition(x, y);
@@ -213,10 +217,10 @@ void Enemy::Initiate(float x, float y,
 	mName.setFillColor(sf::Color::Black);
 	mName.setCharacterSize(18);
 
-	crd1.Initiate(1620.0f, 50.0f, "Dragon", Card::CardOwner::Enemy_Owned);
-	crd2.Initiate(1570.0f, 100.0f, "Planet", Card::CardOwner::Enemy_Owned);
-	crd3.Initiate(1520.0f, 150.0f, "B Hole", Card::CardOwner::Enemy_Owned);
-	crd4.Initiate(1470.0f, 200.0f, "Boss D", Card::CardOwner::Enemy_Owned);
+	crd1.Initiate(0.0f, 0.0f, "Dragon", Card::CardOwner::Enemy_Owned);
+	crd2.Initiate(0.0f, 0.0f, "Planet", Card::CardOwner::Enemy_Owned);
+	crd3.Initiate(0.0f, 0.0f, "Gemini", Card::CardOwner::Enemy_Owned);
+	crd4.Initiate(0.0f, 0.0f, "Roadie", Card::CardOwner::Enemy_Owned);
 	
 	CardDeck.push_back(&crd1);
 	CardDeck.push_back(&crd2);

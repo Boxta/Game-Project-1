@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "Game.h"
-
+#include "BoardState.h"
 
 Player::Player(Game& ref)
 	:
@@ -21,8 +21,8 @@ void Player::Initiate(float x, float y,
 	std::string name,
 	float xn, float yn)
 {
-	mHandPositionA = { 140.0f, 100.0f };
-	mHandPositionB = { 10.0f, 80.0f };
+	mHandPositionA = { 140.0f, 150.0f };
+	mHandPositionB = { 15.0f, 80.0f };
 	mHandPositionC = { 270.0f, 80.0f };
 
 	mSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("PlayerPicture"));
@@ -33,10 +33,10 @@ void Player::Initiate(float x, float y,
 	mName.setFillColor(sf::Color::Black);
 	mName.setCharacterSize(18);
 
-	crd1.Initiate(140.0f, 100.0f, "Card A", Card::CardOwner::Player_Owned);
-	crd2.Initiate(100.0f, 100.0f, "Card B", Card::CardOwner::Player_Owned);
-	crd3.Initiate(150.0f, 150.0f, "Card C", Card::CardOwner::Player_Owned);
-	crd4.Initiate(200.0f, 200.0f, "Card D", Card::CardOwner::Player_Owned);
+	crd1.Initiate(0.0f, 0.0f, "Card A", Card::CardOwner::Player_Owned);
+	crd2.Initiate(0.0f, 0.0f, "Card B", Card::CardOwner::Player_Owned);
+	crd3.Initiate(0.0f, 0.0f, "Card C", Card::CardOwner::Player_Owned);
+	crd4.Initiate(0.0f, 0.0f, "Card D", Card::CardOwner::Player_Owned);
 
 	CardDeck.push_back(&crd1);
 	CardDeck.push_back(&crd2);
@@ -121,7 +121,7 @@ Card& Player::GetTopCard()
 
 void Player::CycleDeck()
 {
-	if (mCardDeckIterator == CardDeck.size() - 1)
+	if (mCardDeckIterator >= (CardDeck.size() - 1))
 	{
 		mCardDeckIterator = 0;
 	}
@@ -133,7 +133,129 @@ void Player::CycleDeck()
 
 void Player::KillTopCard()
 {
-	CardDeck.erase(CardDeck.begin() + mCardDeckIterator);
+	if (mCardDeckIterator > 0)
+	{
+		CardDeck.erase(CardDeck.begin() + mCardDeckIterator);
+		mCardDeckIterator--;
+	}
+	else
+	{
+		CardDeck.erase(CardDeck.begin() + mCardDeckIterator);
+	}
+}
+
+void Player::Turn(BoardState& brd, float xX, float yY)
+{
+
+	bool mHasWon = false;
+
+	/*Try To Win*/
+	for (auto& u : brd.GetSlots())
+	{
+		if (u.GetCardRectangle().contains(float(xX), float(yY)) &&
+			!u.GetIsUsed())
+		{
+			/*Copy The Players Card To The Slots Card*/
+			GetTopCard().CopyCard(*u.mCard);
+
+			/*Mark the Slot As Used*/
+			u.ToogleUse();
+
+			/*Mark The Slots Card As Used*/
+			u.mCard->SetState(Card::CardState::Used);
+
+			/*Set Slots Card To Position Of The Slot*/
+			u.mCard->SetPosition(u.GetCardRectangle().left, u.GetCardRectangle().top);
+
+			//Store Postion and Potential surrounding slot positions of the slot/card
+			sf::Vector2i DeckCardPosition = u.mBoardPosition;
+			sf::Vector2i PositionAbove = sf::Vector2i(u.mBoardPosition.x, u.mBoardPosition.y - 1);
+			sf::Vector2i PositionDown = sf::Vector2i(u.mBoardPosition.x, u.mBoardPosition.y + 1);
+			sf::Vector2i PositionLeft = sf::Vector2i(u.mBoardPosition.x - 1, u.mBoardPosition.y);
+			sf::Vector2i PositionRight = sf::Vector2i(u.mBoardPosition.x + 1, u.mBoardPosition.y);
+
+			//Slot above card is free
+			if (CheckSafeBoardPosition(PositionAbove, brd.mWidth, brd.mHeight))
+			{
+				BoardState::Slot& slt = brd.GetSlot(PositionAbove.x, PositionAbove.y);
+				if (slt.GetIsUsed() &&
+					slt.mCard->GetOwner() == Card::CardOwner::Enemy_Owned &&
+					slt.mCard->mValue_Down < u.mCard->mValue_Top)
+				{
+					/*Win*/
+					slt.mCard->SetOwner(Card::CardOwner::Player_Owned);
+					mHasWon = true;
+				}
+			}
+			if (CheckSafeBoardPosition(PositionDown, brd.mWidth, brd.mHeight))
+			{
+				BoardState::Slot& slt = brd.GetSlot(PositionDown.x, PositionDown.y);
+				if (slt.GetIsUsed() &&
+					slt.mCard->GetOwner() == Card::CardOwner::Enemy_Owned &&
+					slt.mCard->mValue_Top < u.mCard->mValue_Down)
+				{
+					/*Win*/
+					slt.mCard->SetOwner(Card::CardOwner::Player_Owned);
+					mHasWon = true;
+				}
+			}
+			if (CheckSafeBoardPosition(PositionLeft, brd.mWidth, brd.mHeight))
+			{
+				BoardState::Slot& slt = brd.GetSlot(PositionLeft.x, PositionLeft.y);
+				if (slt.GetIsUsed() &&
+					slt.mCard->GetOwner() == Card::CardOwner::Enemy_Owned &&
+					slt.mCard->mValue_Right < u.mCard->mValue_Left)
+				{
+					/*Win*/
+					slt.mCard->SetOwner(Card::CardOwner::Player_Owned);
+					mHasWon = true;
+				}
+			}
+			if (CheckSafeBoardPosition(PositionRight, brd.mWidth, brd.mHeight))
+			{
+				BoardState::Slot& slt = brd.GetSlot(PositionRight.x, PositionRight.y);
+				if (slt.GetIsUsed() &&
+					slt.mCard->GetOwner() == Card::CardOwner::Enemy_Owned &&
+					slt.mCard->mValue_Left < u.mCard->mValue_Right)
+				{
+					/*Win*/
+					slt.mCard->SetOwner(Card::CardOwner::Player_Owned);
+					mHasWon = true;
+				}
+			}
+		}
+	}
+	
+	/*Remove Used Card From Players Deck*/
+	KillTopCard();
+
+	/*End Player Turn*/
+	brd.ToogleTurn();
+	
+}
+
+bool Player::CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight)
+{
+	if (vec.x < 0)
+	{
+		return false;
+	}
+	else if (vec.x > boardwidth - 1)
+	{
+		return false;
+	}
+	else if (vec.y < 0)
+	{
+		return false;
+	}
+	else if (vec.y > boardheight - 1)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 
