@@ -12,19 +12,6 @@ Game::Game()
 	mState_MainMenu(*this),
 	mPlayer(*this)
 {
-	/*Load Common Textures*/
-	mCommonStore.AddTexture("MenuBackground", "Media\\Background2.png");
-	mCommonStore.AddTexture("BoardBackground", "Media\\Background1.png");
-	mCommonStore.AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
-	mCommonStore.AddTexture("BaseButtons", "Media\\BaseButtons.png");
-	mCommonStore.AddTexture("EnemyPicture", "Media\\EnemyPortrait.png");
-	mCommonStore.AddTexture("PlayerPicture", "Media\\PlayerPortrait.png");
-	mCommonStore.AddTexture("TestCard", "Media\\TestCard0.png");
-	mCommonStore.AddTexture("SelectBoarder", "Media\\BoardSelect.png");
-	mCommonStore.AddTexture("Logo", "Media\\Logo1.png");
-	/*Load Common Fonts*/
-	mCommonStore.AddFont("System", "Media/font1.ttf");
-
 	/*Initiate Game*/
 	Initiate();						
 }

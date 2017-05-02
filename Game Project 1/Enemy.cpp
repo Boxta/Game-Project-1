@@ -174,7 +174,6 @@ void Enemy::Turn(BoardState& brd)
 	if (!mHasWon)
 	{
 		/*Setup Random Generator*/
-		
 		std::uniform_int_distribution<int> uni(0, CardDeck.size() - 1); // guaranteed unbiased
 
 		for (auto& u : brd.GetSlots())

@@ -50,36 +50,31 @@ void BoardState::HandleInput()
 
 void BoardState::Update(float dt)
 {
-	/*Check Game Win*/
-	int counterp = 0;
-	int countere = 0;
-	for (auto& R : mSlots)
+	/*Update Enemy*/
+	mEnemy.Update(dt);
+	mEnemyScoreText.setString(std::to_string(mEnemyScore));
+
+	/*Update Player*/
+	mGameReference.GetPlayer().Update(dt);
+	mPlayerScoreText.setString(std::to_string(mPlayerScore));
+
+	/*Run Turn End*/
+	if (mIsTurning)
 	{
-		if (R.GetIsUsed())
+		mTurnCounter += dt;
+		if (mTurnCounter > mTurnWait)
 		{
-			if (R.mCard->GetOwner() == Card::CardOwner::Enemy_Owned)
+			mIsTurning = false;
+			mTurnCounter = 0.0f;
+			if (mCurrentTurn == TurnState::EnemyTurn)
 			{
-				countere++;
+				mCurrentTurn = TurnState::PlayerTurn;
 			}
-			else if (R.mCard->GetOwner() == Card::CardOwner::Player_Owned)
+			else if (mCurrentTurn == TurnState::PlayerTurn)
 			{
-				counterp++;
+				mIsTurning = true; mCurrentTurn = TurnState::EnemyTurn;
+				mEnemy.Turn(*this);
 			}
-		}
-	}
-	if ((countere + counterp) >= 8)
-	{
-		if (countere < counterp)
-		{
-			mGameWinState = WinState::PlayerWin;
-		}
-		else if(countere > counterp)
-		{
-			mGameWinState = WinState::EnemyWin;
-		}
-		else if (countere == counterp)
-		{
-			mGameWinState = WinState::Tie;
 		}
 	}
 
@@ -90,9 +85,58 @@ void BoardState::Update(float dt)
 			ResetBoard();
 		}
 	}
-
 	if (mGameWinState == WinState::GameRunning)
 	{
+		/*Selected State Boarder Draw Timer*/
+		mSelectFlashCounter += dt;
+		if (mSelectFlashCounter > mSelectFlashTimer)
+		{
+			mSelectFlashCounter = 0.0f;
+
+			if (mShowSelectBoarder == false)
+			{
+				mShowSelectBoarder = true;
+			}
+			else if (mShowSelectBoarder == true)
+			{
+				mShowSelectBoarder = false;
+			}
+		}
+
+		/*Check Game Win*/
+		int counterp = 0;
+		int countere = 0;
+		for (auto& R : mSlots)
+		{
+			if (R.GetIsUsed())
+			{
+				if (R.mCard->GetOwner() == Card::CardOwner::Enemy_Owned)
+				{
+					countere++;
+				}
+				else if (R.mCard->GetOwner() == Card::CardOwner::Player_Owned)
+				{
+					counterp++;
+				}
+			}
+		}
+		/*Set Win State*/
+		if ((countere + counterp) >= 8)
+		{
+			if (countere < counterp)
+			{
+				mGameWinState = WinState::PlayerWin;
+			}
+			else if (countere > counterp)
+			{
+				mGameWinState = WinState::EnemyWin;
+			}
+			else if (countere == counterp)
+			{
+				mGameWinState = WinState::Tie;
+			}
+		}
+
 		/*Calculate Score*/
 		mPlayerScore = 0;
 		mEnemyScore = 0;
@@ -109,35 +153,7 @@ void BoardState::Update(float dt)
 			}
 		}
 
-		/*Call Enemy Turn If Its Theirs*/
-		if (mCurrentTurn == TurnState::EnemyTurn)
-		{
-			mEnemy.Turn(*this);
-		}
 
-		/*Update Enemy*/
-		mEnemy.Update(dt);
-		mEnemyScoreText.setString(std::to_string(mEnemyScore));
-
-		/*Update Player*/
-		mGameReference.GetPlayer().Update(dt);
-		mPlayerScoreText.setString(std::to_string(mPlayerScore));
-
-		/*Selected State Update Logic*/
-		mSelectFlashCounter += dt;
-		if (mSelectFlashCounter > mSelectFlashTimer)
-		{
-			mSelectFlashCounter = 0.0f;
-
-			if (mShowSelectBoarder == false)
-			{
-				mShowSelectBoarder = true;
-			}
-			else if (mShowSelectBoarder == true)
-			{
-				mShowSelectBoarder = false;
-			}
-		}
 	}
 }
 
@@ -329,14 +345,7 @@ void BoardState::ResetBoard()
 
 void BoardState::ToogleTurn()
 {
-	if (mCurrentTurn == TurnState::EnemyTurn)
-	{
-		mCurrentTurn = TurnState::PlayerTurn;
-	}
-	else if (mCurrentTurn == TurnState::PlayerTurn)
-	{
-		mCurrentTurn = TurnState::EnemyTurn;
-	}
+	mIsTurning = true;
 }
 
 BoardState::BoardState(Game& ref)
@@ -368,7 +377,6 @@ BoardState::BoardState(Game& ref)
 	C2.mCard = &Card_C2;
 	C3.mCard = &Card_C3;
 }
-
 
 BoardState::~BoardState()
 {

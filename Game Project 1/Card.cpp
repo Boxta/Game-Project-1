@@ -16,6 +16,7 @@ void Card::Initiate(float x, float y, std::string name, CardOwner own)
 	mName.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mName.setString(name);
 	mName.setPosition(x + 72, y - 5);
+	mName.setCharacterSize(30);
 	
 	/*Setup Card Position*/
 	mPosition = { x, y };
@@ -62,17 +63,13 @@ void Card::Update(const float dt)
 {
 	/*Keep Asset Positions Aligned To Object Position*/
 	/*Set Card Recatangle*/
-
 	switch (mState)
 	{
 	case CardState::Free:
-		mSprite.setColor(sf::Color::White);
 		break;
 	case CardState::Selected:
-		mSprite.setColor(sf::Color::Color(100, 0, 0, 255));
 		break;
 	case CardState::Used:
-		mSprite.setColor(sf::Color::White);
 		break;
 	default:
 		break;

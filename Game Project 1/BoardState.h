@@ -79,6 +79,10 @@ private:
 	float mSelectFlashCounter = 0.0f;
 	bool mShowSelectBoarder = false;
 
+	bool mIsTurning = false;
+	const float mTurnWait = 1.0f;
+	float mTurnCounter = 0.0f;
+
 	Game& mGameReference;
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;

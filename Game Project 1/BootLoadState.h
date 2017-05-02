@@ -23,7 +23,7 @@ private:
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mCompanyIcon;
 	sf::Text mText1;
-
+	
 	const float mWaitTime = 2.0f;
 	float mWaitTimer = 0.0f;
 	bool mInitiated = false;

@@ -12,7 +12,6 @@ crd4(ref)
 {
 }
 
-
 Player::~Player()
 {
 }
@@ -88,7 +87,6 @@ Card& Player::GetTopCard()
 {
 	return *CardDeck[mCardDeckIterator];
 }
-
 
 void Player::CycleDeck()
 {
