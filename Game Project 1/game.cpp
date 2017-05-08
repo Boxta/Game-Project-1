@@ -12,24 +12,24 @@ Game::Game()
 	mState_MainMenu(*this),
 	mPlayer(*this)
 {
-	/*Initiate Game*/
-	Initiate();						
-}
 
-void Game::ChangeGameState(GameState & ref)
-{
-	mStateManager.ChangeState(ref);
-	mStateManager.PeekState()->Initiate();
-}
+	/*Load Common Textures*/
+	GetCommonStore().AddTexture("MenuBackground", "Media\\Background2.png");
+	GetCommonStore().AddTexture("BoardBackground", "Media\\Background1.png");
+	GetCommonStore().AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
+	GetCommonStore().AddTexture("BaseButtons", "Media\\BaseButtons.png");
+	GetCommonStore().AddTexture("EnemyPicture", "Media\\EnemyPortrait.png");
+	GetCommonStore().AddTexture("PlayerPicture", "Media\\PlayerPortrait.png");
+	GetCommonStore().AddTexture("TestCard", "Media\\Cards.png");
+	GetCommonStore().AddTexture("SelectBoarder", "Media\\BoardSelect.png");
+	GetCommonStore().AddTexture("Logo", "Media\\Logo1.png");
 
-void Game::Initiate()
-{
-	/*Limit Window Max Frame Rate*/
-	mWindow.setFramerateLimit(60);	
-	
+	/*Load Common Fonts*/
+	GetCommonStore().AddFont("System", "Media/font2.ttf");
+
 	/*Initial State To State Manager*/
 	ChangeGameState(mState_BootLoad);
-	
+
 	/*Initiate States*/
 	for (auto& s : mStateManager.StateStack._Get_container())
 	{
@@ -42,6 +42,12 @@ void Game::Initiate()
 		Update();
 		Draw();
 	}
+}
+
+void Game::ChangeGameState(GameState & ref)
+{
+	mStateManager.ChangeState(ref);
+	mStateManager.PeekState()->Initiate();
 }
 
 void Game::Update()

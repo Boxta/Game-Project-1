@@ -254,7 +254,7 @@ void Enemy::Initiate(float x, float y,
 	std::string name,
 	float xn, float yn)
 {
-	mHandPositionA = { 1540.0f, 150.0f };
+	mHandPositionA = { 1530.0f, 150.0f };
 	
 	mSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("EnemyPicture"));
 	mSprite.setPosition(x, y);

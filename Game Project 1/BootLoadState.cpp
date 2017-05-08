@@ -3,25 +3,6 @@
 
 void BootLoadState::Initiate()
 {
-	/*Load Common Textures*/
-	mGameReference.GetCommonStore().AddTexture("MenuBackground", "Media\\Background2.png");
-	mGameReference.GetCommonStore().AddTexture("BoardBackground", "Media\\Background1.png");
-	mGameReference.GetCommonStore().AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
-	mGameReference.GetCommonStore().AddTexture("BaseButtons", "Media\\BaseButtons.png");
-	mGameReference.GetCommonStore().AddTexture("EnemyPicture", "Media\\EnemyPortrait.png");
-	mGameReference.GetCommonStore().AddTexture("PlayerPicture", "Media\\PlayerPortrait.png");
-	mGameReference.GetCommonStore().AddTexture("TestCard", "Media\\TestCard0.png");
-	mGameReference.GetCommonStore().AddTexture("SelectBoarder", "Media\\BoardSelect.png");
-	mGameReference.GetCommonStore().AddTexture("Logo", "Media\\Logo1.png");
-	/*Load Common Fonts*/
-	mGameReference.GetCommonStore().AddFont("System", "Media/font1.ttf");
-
-	/*Only Initiate Once*/
-	if (mInitiated)
-		return;
-	else
-		mInitiated = true;
-
 	/*Setup Text*/
 	mText1.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mText1.setString("Loading Assets..");

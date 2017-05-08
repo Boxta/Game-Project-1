@@ -2,6 +2,8 @@
 #include "GameState.h"
 #include "Enemy.h"
 #include "Card.h"
+#include <memory>
+
 class BoardState :
 	public GameState
 {
@@ -27,7 +29,6 @@ public:
 			CardRectangle = { (float(x) * 300.0f) + 535.0f, (float(y) * 350.0f) + 50.0f, 250.0f, 300.0f };
 			FullRectangle = { (float(x) * 300.0f) + 525.0f, (float(y) * 350.0f) + 40.0f, 250.0f, 300.0f };
 			mIsUsed = false;
-			mCard = nullptr;
 		}
 		sf::Vector2i mBoardPosition;
 		sf::FloatRect& GetCardRectangle() { return CardRectangle; }

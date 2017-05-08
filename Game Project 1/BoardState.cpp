@@ -1,6 +1,39 @@
 #include "BoardState.h"
 #include "Game.h"
 
+BoardState::BoardState(Game& ref)
+	:
+	mGameReference(ref),
+	mEnemy(ref),
+	Card_A1(ref),
+	Card_A2(ref),
+	Card_A3(ref),
+	Card_B1(ref),
+	Card_B2(ref),
+	Card_B3(ref),
+	Card_C1(ref),
+	Card_C2(ref),
+	Card_C3(ref)
+{
+	mBackgroundFill.setFillColor(sf::Color::White);
+	mBackgroundFill.setSize(sf::Vector2f(1920, 1080));
+	mBackgroundFill.setPosition(sf::Vector2f(0, 0));
+
+	/*Assign Card References To Slots*/
+	A1.mCard = &Card_A1;
+	A2.mCard = &Card_A2;
+	A3.mCard = &Card_A3;
+	B1.mCard = &Card_B1;
+	B2.mCard = &Card_B2;
+	B3.mCard = &Card_B3;
+	C1.mCard = &Card_C1;
+	C2.mCard = &Card_C2;
+	C3.mCard = &Card_C3;
+}
+
+BoardState::~BoardState()
+{
+}
 
 void BoardState::Initiate()
 {
@@ -160,7 +193,8 @@ void BoardState::Update(float dt)
 void BoardState::Draw()
 {
 	mGameReference.GetWindow().clear();
-	
+		/*Draw Background*/
+	mGameReference.GetWindow().draw(mBackgroundImage);
 	/*Draw Selection Boarders*/
 	if (mSelectSlotState && mShowSelectBoarder)
 	{
@@ -174,8 +208,7 @@ void BoardState::Draw()
 		}
 	}
 	
-	/*Draw Background*/
-	mGameReference.GetWindow().draw(mBackgroundImage);
+
 
 	/*Draw Scores*/
 	mGameReference.GetWindow().draw(mPlayerScoreText);
@@ -346,40 +379,6 @@ void BoardState::ResetBoard()
 void BoardState::ToogleTurn()
 {
 	mIsTurning = true;
-}
-
-BoardState::BoardState(Game& ref)
-	:
-	mGameReference(ref),
-	mEnemy(ref),
-	Card_A1(ref),
-	Card_A2(ref),
-	Card_A3(ref),
-	Card_B1(ref),
-	Card_B2(ref),
-	Card_B3(ref),
-	Card_C1(ref),
-	Card_C2(ref),
-	Card_C3(ref)
-{
-	mBackgroundFill.setFillColor(sf::Color::Black);
-	mBackgroundFill.setSize(sf::Vector2f(1920, 1080));
-	mBackgroundFill.setPosition(sf::Vector2f(0, 0));
-	
-	/*Assign Card References To Slots*/
-	A1.mCard = &Card_A1;
-	A2.mCard = &Card_A2;
-	A3.mCard = &Card_A3;
-	B1.mCard = &Card_B1;
-	B2.mCard = &Card_B2;
-	B3.mCard = &Card_B3;
-	C1.mCard = &Card_C1;
-	C2.mCard = &Card_C2;
-	C3.mCard = &Card_C3;
-}
-
-BoardState::~BoardState()
-{
 }
 
 void BoardState::Slot::ToogleUse()

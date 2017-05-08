@@ -36,7 +36,6 @@ private:
 	Player mPlayer;
 
 	/*Game Functions*/
-	void Initiate();
 	void Update();
 	void Draw();
 
@@ -46,12 +45,11 @@ public:
 
 	/*Expose Window*/
 	sf::RenderWindow& GetWindow() { return mWindow; }
+	/*Expose Common Resource Store*/
+	CmnStore& GetCommonStore() { return mCommonStore; }
 
 	/*Expose State Manager*/
 	StateManager& GetStateManager() { return mStateManager; }
-
-	/*Expose Common Resource Store*/
-	CmnStore& GetCommonStore() { return mCommonStore; }
 
 	/*Expose Game States*/
 	GameState&  GetState_BootLoad() { return mState_BootLoad; }

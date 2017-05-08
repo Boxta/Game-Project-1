@@ -15,9 +15,10 @@ void Card::Initiate(float x, float y, std::string name, CardOwner own)
 	/*Setup Card Name*/
 	mName.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mName.setString(name);
-	mName.setPosition(x + 72, y - 5);
-	mName.setCharacterSize(30);
-	
+	mName.setCharacterSize(22);
+	mName.setPosition(x + ((mName.getString().getSize() * mName.getCharacterSize()) / 2) + 20.0f, y - 4);
+	float u = mName.getString().getSize();
+	float t = mName.getCharacterSize();
 	/*Setup Card Position*/
 	mPosition = { x, y };
 	
@@ -40,6 +41,10 @@ void Card::Initiate(float x, float y, std::string name, CardOwner own)
 	mTextDown.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mTextLeft.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mTextRight.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
+	mTextTop.setCharacterSize(22);
+	mTextDown.setCharacterSize(22);
+	mTextLeft.setCharacterSize(22);
+	mTextRight.setCharacterSize(22);
 	
 	/*Assign Card Values to Value Text'*/
 	mTextTop.setString(std::to_string(mValue_Top));
@@ -48,15 +53,8 @@ void Card::Initiate(float x, float y, std::string name, CardOwner own)
 	mTextRight.setString(std::to_string(mValue_Right));
 
 	/*Set Text Position*/
-	int TopSize = int(mTextTop.getLocalBounds().width);
-	int DownSize = int(mTextDown.getLocalBounds().width);
-	int LeftSize = int(mTextLeft.getLocalBounds().width);
-	int RightSize = int(mTextRight.getLocalBounds().width);
+	SetPosition(x, y);
 
-	mTextTop.setPosition((x + (mRectangle.width / 2)) - (TopSize / 2), y + 184);
-	mTextDown.setPosition((x + (mRectangle.width / 2)) - (DownSize / 2), y + 236);
-	mTextLeft.setPosition((x + (mRectangle.width / 2)) - 40 - (LeftSize / 2), y + 210);
-	mTextRight.setPosition((x + (mRectangle.width / 2)) + 40 - (RightSize / 2), y + 210);
 }
 
 void Card::Update(const float dt)
@@ -119,21 +117,21 @@ void Card::SetPosition(float x, float y)
 	mRectangle.left = x;
 	
 	/*Set Name Position*/
-	mName.setPosition(x + 72, y + 30);
+	mName.setPosition(x + ((mName.getString().getSize() * mName.getCharacterSize()) / 2) + 20.0f, y + 4.0f);
 	
 	/*Set Sprite Position*/
 	mSprite.setPosition(x, y);
 	
 	/*Set Text Position*/
-	int TopSize = int(mTextTop.getLocalBounds().width);
-	int DownSize = int(mTextDown.getLocalBounds().width);
-	int LeftSize = int(mTextLeft.getLocalBounds().width);
-	int RightSize = int(mTextRight.getLocalBounds().width);
+	float TopSize = mTextTop.getLocalBounds().width;
+	float DownSize = mTextDown.getLocalBounds().width;
+	float LeftSize = mTextLeft.getLocalBounds().width;
+	float RightSize = mTextRight.getLocalBounds().width;
 
-	mTextTop.setPosition((x + (mRectangle.width / 2)) - (TopSize / 2), y + 184);
-	mTextDown.setPosition((x + (mRectangle.width / 2)) - (DownSize / 2), y + 236);
-	mTextLeft.setPosition((x + (mRectangle.width / 2)) - 40 - (LeftSize / 2), y + 210);
-	mTextRight.setPosition((x + (mRectangle.width / 2)) + 40 - (RightSize / 2), y + 210);
+	mTextTop.setPosition((x + (mRectangle.width / 2)) + 3.0f - (TopSize / 2.0f), y + 206.0f);
+	mTextDown.setPosition((x + (mRectangle.width / 2)) + 3.0f - (DownSize / 2.0f), y + 248.0f);
+	mTextLeft.setPosition((x + (mRectangle.width / 2)) - 17.0f - (LeftSize / 2.0f), y + 227.0f);
+	mTextRight.setPosition((x + (mRectangle.width / 2)) + 23.0f - (RightSize / 2.0f), y + 227.0f);
 }
 
 void Card::CopyCard(Card& ref)
@@ -155,5 +153,7 @@ void Card::CopyCard(Card& ref)
 	ref.mTextRight = mTextRight;
 	ref.mOwner = mOwner;
 }
+
+
 
 
