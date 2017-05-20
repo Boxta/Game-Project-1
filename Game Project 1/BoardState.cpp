@@ -145,27 +145,6 @@ void BoardState::Draw()
 	/*Draw Enemy*/
 	mEnemy.Draw();
 
-	/*Draw Player and Enemy Cards That Match Slot Rectangles*/
-	for (auto& t : mSlots)
-	{
-		if (t.GetIsUsed())
-		{
-			for (auto& P : mGameReference.GetPlayer().GetDeck())
-			{
-				if (t.GetCardRectangle() == P.GetRectangle())
-				{
-					P.Draw(mGameReference.GetWindow());
-				}
-			}
-			for (auto& P : mEnemy.GetDeck())
-			{
-				if (t.GetCardRectangle() == P.GetRectangle())
-				{
-					P.Draw(mGameReference.GetWindow());
-				}
-			}
-		}
-	}
 }
 
 void BoardState::HandleEvents(sf::Event & ev)

@@ -326,25 +326,41 @@ void Enemy::Draw()
 	if (CardDeck.size() == 0)
 		return;
 
-	/*Draw Cards*/
+	/*Draw Player Cards In Deck*/
 	for (int T = 0; T < CardDeck.size(); T++)
 	{
-		if (T < mCardDeckIterator)
+		if (T < mCardDeckIterator &&
+			CardDeck[T].GetState() != Card::CardState::Used)
 		{
 			CardDeck[T].SetPosition(mHandPositionA.x - 125.0f, mHandPositionA.y - 80.0f);
 			CardDeck[T].Draw(mGameReference.GetWindow());
 		}
 	}
-
-	for (int T = CardDeck.size() - 1; T > 0; T--)
+	for (int T = 0; T < CardDeck.size(); T++)
 	{
-		if (T > mCardDeckIterator)
+		if (T > mCardDeckIterator &&
+			CardDeck[T].GetState() != Card::CardState::Used)
 		{
 			CardDeck[T].SetPosition(mHandPositionA.x + 125.0f, mHandPositionA.y - 80.0f);
 			CardDeck[T].Draw(mGameReference.GetWindow());
 		}
 	}
+	for (int T = 0; T < CardDeck.size(); T++)
+	{
+		if (T == mCardDeckIterator &&
+			CardDeck[T].GetState() != Card::CardState::Used)
+		{
+			CardDeck[mCardDeckIterator].SetPosition(mHandPositionA.x, mHandPositionA.y);
+			CardDeck[mCardDeckIterator].Draw(mGameReference.GetWindow());
+		}
+	}
 
-	CardDeck[mCardDeckIterator].SetPosition(mHandPositionA.x, mHandPositionA.y);
-	CardDeck[mCardDeckIterator].Draw(mGameReference.GetWindow());
+	/*Draw Used Cards On Board*/
+	for (int T = 0; T < CardDeck.size(); T++)
+	{
+		if (CardDeck[T].GetState() == Card::CardState::Used)
+		{
+			CardDeck[T].Draw(mGameReference.GetWindow());
+		}
+	}
 }
