@@ -105,7 +105,7 @@ void MainMenu::HandleEvents(sf::Event& ev)
 void MainMenu::mExit_StartNewGame()
 {
 	/*Initiate Player*/
-	mGameReference.GetPlayer().Initiate(50.0f, 700.0f, "CMDR Ayna P", 133.0f, 721.0f);
+	mGameReference.GetPlayer().Initiate(50.0f, 700.0f, "CMDR Ayna P");
 	mMenuMusic.stop();
 	mMenuMusic.setLoop(false);
 	mGameReference.ChangeGameState(mGameReference.GetState_Board());

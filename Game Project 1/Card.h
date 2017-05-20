@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML\Graphics.hpp>
-#include <random>
+#include "CmnStore.h"
+
 class Game;
 
 class Card
@@ -12,46 +13,63 @@ public:
 		Free,
 		Used
 	};
-	enum CardOwner
-	{
-		Player_Owned,
-		Enemy_Owned,
-		None
-	};
 public:
-	void Initiate(float x, float y, std::string name, CardOwner own);
-	void Update(const float dt);
-	void Draw();
-	Card() = default;
-	Card(Game& ref);
+	/*Constructors*/
+	Card(float positionx, float positiony,
+		std::string name,
+		int U,
+		int D,
+		int L,
+		int R,
+		CmnStore& st
+		);
+	Card(float positionx, float positiony,
+		std::string name,
+		int U,
+		int D,
+		int L,
+		int R,
+		CmnStore& st,
+		sf::IntRect texrect
+	);
 	~Card();
-	sf::FloatRect& GetRectangle() { return mRectangle; }
-
-	/*Used to toggle color when card has been "selected" by player*/
+	
+	/*Draw Card*/
+	void Draw(sf::RenderWindow& wnd);
+	void SetDrawRectangle(sf::IntRect rect);
+	
+	/*Get Rectangle*/
+	const sf::FloatRect& GetRectangle() { return mRectangle; }
+	
+	/*Get and Set State*/
+	const CardState GetState() { return mState; }
 	void SetState(CardState st) { mState = st; }
 
-	CardState GetState() { return mState; }
+	/*Set Position*/
 	void SetPosition(float x, float y); 
+	/*Get Position*/
+	const sf::Vector2i GetPosition() { sf::Vector2i{ int(GetRectangle().left), int(GetRectangle().top) }; }
 
+	/*Get Values*/
+	const int GetUp() { return mValue_Top; }
+	const int GetDown() { return mValue_Down; }
+	const int GetLeft() { return mValue_Left; }
+	const int GetRight() { return mValue_Right; }
+
+private:
+	/*Card Values*/
 	int mValue_Top = 0;
 	int mValue_Left = 0;
 	int mValue_Right = 0;
 	int mValue_Down = 0;
-	CardOwner GetOwner() { return mOwner; }
-	void SetOwner(CardOwner k) { mOwner = k; }
-	void CopyCard(Card& ref);
-private:
 	CardState mState = CardState::Free;
 	sf::FloatRect mRectangle;
-	Game& mGameReference;
-	sf::Vector2f mPosition;
 	sf::Sprite mSprite;
 	sf::Text mName;
-	sf::Text mTextTop;
+	float mName_YOffset = 5.0f;
+	sf::Text mTextTop;						
 	sf::Text mTextDown;
 	sf::Text mTextLeft;
 	sf::Text mTextRight;
-	CardOwner mOwner;
-	std::random_device rd;     // only used once to initialise (seed) engine
 };
 

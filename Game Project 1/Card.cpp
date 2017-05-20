@@ -1,106 +1,115 @@
 #include "Card.h"
-#include "Game.h"
 
-void Card::Initiate(float x, float y, std::string name, CardOwner own)
+void Card::Draw(sf::RenderWindow& wnd)
 {
-	/*Set Owner*/
-	mOwner = own;
+	wnd.draw(mSprite);
+	wnd.draw(mName);
+	wnd.draw(mTextTop);
+	wnd.draw(mTextDown);
+	wnd.draw(mTextLeft);
+	wnd.draw(mTextRight);
+}
 
+void Card::SetDrawRectangle(sf::IntRect rect)
+{
+	mSprite.setTextureRect(rect);
+}
+
+Card::Card(float positionx, float positiony,
+	std::string name,
+	int U,
+	int D,
+	int L,
+	int R,
+	CmnStore& st)
+	:
+	mValue_Top(U),
+	mValue_Down(D),
+	mValue_Left(L),
+	mValue_Right(R)
+{
 	/*Set Card Recatangle*/
-	mRectangle.top = y;
-	mRectangle.left = x;
+	mRectangle.left = positionx;
+	mRectangle.top = positiony;
 	mRectangle.width = 250;
 	mRectangle.height = 300;
 
 	/*Setup Card Name*/
-	mName.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
+	mName.setFont(st.GetFontRef("System"));
 	mName.setString(name);
 	mName.setCharacterSize(22);
-	mName.setPosition(x + ((mName.getString().getSize() * mName.getCharacterSize()) / 2) + 20.0f, y - 4);
-	float u = mName.getString().getSize();
-	float t = mName.getCharacterSize();
-	/*Setup Card Position*/
-	mPosition = { x, y };
-	
-	/*Setup Card Sprite*/
-	mSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("TestCard"));
-	mSprite.setPosition(x, y);
 
-	/*Setup Random Generator*/
-	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-	std::uniform_int_distribution<int> uni(1, 9); // guaranteed unbiased
-	
-	/*Setup Card Values*/
-	mValue_Top = uni(rng);
-	mValue_Down = uni(rng);
-	mValue_Left = uni(rng);
-	mValue_Right = uni(rng);
+	/*Setup Card Sprite*/
+	mSprite.setTexture(st.GetTextureRef("TestCard"));
+	mSprite.setTextureRect(sf::IntRect(0, 0, 250, 300));
 
 	/*Setup Card Value Text*/
-	mTextTop.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
-	mTextDown.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
-	mTextLeft.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
-	mTextRight.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
+	mTextTop.setFont(st.GetFontRef("System"));
+	mTextDown.setFont(st.GetFontRef("System"));
+	mTextLeft.setFont(st.GetFontRef("System"));
+	mTextRight.setFont(st.GetFontRef("System"));
 	mTextTop.setCharacterSize(22);
 	mTextDown.setCharacterSize(22);
 	mTextLeft.setCharacterSize(22);
 	mTextRight.setCharacterSize(22);
-	
+
 	/*Assign Card Values to Value Text'*/
 	mTextTop.setString(std::to_string(mValue_Top));
 	mTextDown.setString(std::to_string(mValue_Down));
 	mTextLeft.setString(std::to_string(mValue_Left));
 	mTextRight.setString(std::to_string(mValue_Right));
 
-	/*Set Text Position*/
-	SetPosition(x, y);
-
+	/*Set Positions*/
+	SetPosition(positionx, positiony);
 }
 
-void Card::Update(const float dt)
-{
-	/*Keep Asset Positions Aligned To Object Position*/
-	/*Set Card Recatangle*/
-	switch (mState)
-	{
-	case CardState::Free:
-		break;
-	case CardState::Selected:
-		break;
-	case CardState::Used:
-		break;
-	default:
-		break;
-	}
-
-	switch (mOwner)
-	{
-	case CardOwner::Player_Owned:
-		mSprite.setTextureRect(sf::IntRect(0, 0, 250, 300));
-		break;
-	case CardOwner::Enemy_Owned:
-		mSprite.setTextureRect(sf::IntRect(250, 0, 250, 300));
-		break;
-	default:
-		break;
-	}
-}
-
-void Card::Draw()
-{
-	mGameReference.GetWindow().draw(mSprite);
-	mGameReference.GetWindow().draw(mName);
-	mGameReference.GetWindow().draw(mTextTop);
-	mGameReference.GetWindow().draw(mTextDown);
-	mGameReference.GetWindow().draw(mTextLeft);
-	mGameReference.GetWindow().draw(mTextRight);
-}
-
-Card::Card(Game& ref)
+Card::Card(float positionx, float positiony, 
+	std::string name, 
+	int U, 
+	int D, 
+	int L, 
+	int R, 
+	CmnStore & st, 
+	sf::IntRect texrect)
 	:
-	mGameReference(ref)
+	mValue_Top(U),
+	mValue_Down(D),
+	mValue_Left(L),
+	mValue_Right(R)
 {
-	
+	/*Set Card Recatangle*/
+	mRectangle.left = positionx;
+	mRectangle.top = positiony;
+	mRectangle.width = 250;
+	mRectangle.height = 300;
+
+	/*Setup Card Name*/
+	mName.setFont(st.GetFontRef("System"));
+	mName.setString(name);
+	mName.setCharacterSize(18);
+
+	/*Setup Card Sprite*/
+	mSprite.setTexture(st.GetTextureRef("TestCard"));
+	mSprite.setTextureRect(texrect);
+
+	/*Setup Card Value Text*/
+	mTextTop.setFont(st.GetFontRef("System"));
+	mTextDown.setFont(st.GetFontRef("System"));
+	mTextLeft.setFont(st.GetFontRef("System"));
+	mTextRight.setFont(st.GetFontRef("System"));
+	mTextTop.setCharacterSize(22);
+	mTextDown.setCharacterSize(22);
+	mTextLeft.setCharacterSize(22);
+	mTextRight.setCharacterSize(22);
+
+	/*Assign Card Values to Value Text'*/
+	mTextTop.setString(std::to_string(mValue_Top));
+	mTextDown.setString(std::to_string(mValue_Down));
+	mTextLeft.setString(std::to_string(mValue_Left));
+	mTextRight.setString(std::to_string(mValue_Right));
+
+	/*Set Positions*/
+	SetPosition(positionx, positiony);
 }
 
 
@@ -110,49 +119,26 @@ Card::~Card()
 
 void Card::SetPosition(float x, float y)
 {
-	mPosition.x = x; 
-	mPosition.y = y; 
-
 	mRectangle.top = y;
 	mRectangle.left = x;
+
+	const float CardMiddle = (mRectangle.left + (mRectangle.width / 2));
+	const float LeftRightValueSpace = 10.0f;
 	
 	/*Set Name Position*/
-	mName.setPosition(x + ((mName.getString().getSize() * mName.getCharacterSize()) / 2) + 20.0f, y + 4.0f);
+	mName.setPosition((mRectangle.left + (mRectangle.width / 2) - (mName.getLocalBounds().width / 2)), y + mName_YOffset);
 	
 	/*Set Sprite Position*/
 	mSprite.setPosition(x, y);
 	
 	/*Set Text Position*/
-	float TopSize = mTextTop.getLocalBounds().width;
-	float DownSize = mTextDown.getLocalBounds().width;
-	float LeftSize = mTextLeft.getLocalBounds().width;
-	float RightSize = mTextRight.getLocalBounds().width;
-
-	mTextTop.setPosition((x + (mRectangle.width / 2)) + 3.0f - (TopSize / 2.0f), y + 206.0f);
-	mTextDown.setPosition((x + (mRectangle.width / 2)) + 3.0f - (DownSize / 2.0f), y + 248.0f);
-	mTextLeft.setPosition((x + (mRectangle.width / 2)) - 17.0f - (LeftSize / 2.0f), y + 227.0f);
-	mTextRight.setPosition((x + (mRectangle.width / 2)) + 23.0f - (RightSize / 2.0f), y + 227.0f);
+	mTextTop.setPosition(CardMiddle - (mTextTop.getLocalBounds().width / 2), y + 206.0f);
+	mTextDown.setPosition(CardMiddle - (mTextDown.getLocalBounds().width / 2), y + 248.0f);
+	mTextLeft.setPosition(CardMiddle - (mTextLeft.getLocalBounds().width + LeftRightValueSpace), y + 227.0f);
+	mTextRight.setPosition(CardMiddle + LeftRightValueSpace, y + 227.0f);
 }
 
-void Card::CopyCard(Card& ref)
-{
-	ref.mValue_Top = mValue_Top;
-	ref.mValue_Left = mValue_Left;
-	ref.mValue_Right = mValue_Right;
-	ref.mValue_Down = mValue_Down;
 
-	ref.mState = mState;
-	ref.mRectangle = mRectangle;
-	
-	ref.mPosition = mPosition;
-	ref.mSprite = mSprite;
-	ref.mName = mName;
-	ref.mTextTop = mTextTop;
-	ref.mTextDown = mTextDown;
-	ref.mTextLeft = mTextLeft;
-	ref.mTextRight = mTextRight;
-	ref.mOwner = mOwner;
-}
 
 
 

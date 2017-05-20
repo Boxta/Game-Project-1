@@ -4,31 +4,23 @@
 BoardState::BoardState(Game& ref)
 	:
 	mGameReference(ref),
-	mEnemy(ref),
-	Card_A1(ref),
-	Card_A2(ref),
-	Card_A3(ref),
-	Card_B1(ref),
-	Card_B2(ref),
-	Card_B3(ref),
-	Card_C1(ref),
-	Card_C2(ref),
-	Card_C3(ref)
+	mEnemy(ref)
 {
+	/*Setup Background*/
 	mBackgroundFill.setFillColor(sf::Color::White);
 	mBackgroundFill.setSize(sf::Vector2f(1920, 1080));
 	mBackgroundFill.setPosition(sf::Vector2f(0, 0));
 
-	/*Assign Card References To Slots*/
-	A1.mCard = &Card_A1;
-	A2.mCard = &Card_A2;
-	A3.mCard = &Card_A3;
-	B1.mCard = &Card_B1;
-	B2.mCard = &Card_B2;
-	B3.mCard = &Card_B3;
-	C1.mCard = &Card_C1;
-	C2.mCard = &Card_C2;
-	C3.mCard = &Card_C3;
+	/*Fill Slot Array*/
+	mSlots.push_back(A1);
+	mSlots.push_back(A2);
+	mSlots.push_back(A3);
+	mSlots.push_back(B1);
+	mSlots.push_back(B2);
+	mSlots.push_back(B3);
+	mSlots.push_back(C1);
+	mSlots.push_back(C2);
+	mSlots.push_back(C3);
 }
 
 BoardState::~BoardState()
@@ -43,19 +35,8 @@ void BoardState::Initiate()
 	else
 		mInitiated = true;
 
-	/*Fill Slot Array*/
-	mSlots.push_back(A1);
-	mSlots.push_back(A2);
-	mSlots.push_back(A3);
-	mSlots.push_back(B1);
-	mSlots.push_back(B2);
-	mSlots.push_back(B3);
-	mSlots.push_back(C1);
-	mSlots.push_back(C2);
-	mSlots.push_back(C3);
-
 	/*Setup Enemy*/
-	mEnemy.Initiate(1620.0f, 700.0f, "Donald Trump", 1703.0f, 721.0f);
+	mEnemy.Initiate(1620.0f, 700.0f, "Donald Trump");
 	
 	/*Setup Text*/
 	mPlayerScoreText.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
@@ -85,13 +66,12 @@ void BoardState::Update(float dt)
 {
 	/*Update Enemy*/
 	mEnemy.Update(dt);
-	mEnemyScoreText.setString(std::to_string(mEnemyScore));
 
 	/*Update Player*/
 	mGameReference.GetPlayer().Update(dt);
-	mPlayerScoreText.setString(std::to_string(mPlayerScore));
+	
 
-	/*Run Turn End*/
+	/*Countdown Enemy Turn*/
 	if (mIsTurning)
 	{
 		mTurnCounter += dt;
@@ -113,10 +93,7 @@ void BoardState::Update(float dt)
 
 	if (mGameWinState != WinState::GameRunning)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			ResetBoard();
-		}
+		//do sumting
 	}
 	if (mGameWinState == WinState::GameRunning)
 	{
@@ -135,58 +112,6 @@ void BoardState::Update(float dt)
 				mShowSelectBoarder = false;
 			}
 		}
-
-		/*Check Game Win*/
-		int counterp = 0;
-		int countere = 0;
-		for (auto& R : mSlots)
-		{
-			if (R.GetIsUsed())
-			{
-				if (R.mCard->GetOwner() == Card::CardOwner::Enemy_Owned)
-				{
-					countere++;
-				}
-				else if (R.mCard->GetOwner() == Card::CardOwner::Player_Owned)
-				{
-					counterp++;
-				}
-			}
-		}
-		/*Set Win State*/
-		if ((countere + counterp) >= 8)
-		{
-			if (countere < counterp)
-			{
-				mGameWinState = WinState::PlayerWin;
-			}
-			else if (countere > counterp)
-			{
-				mGameWinState = WinState::EnemyWin;
-			}
-			else if (countere == counterp)
-			{
-				mGameWinState = WinState::Tie;
-			}
-		}
-
-		/*Calculate Score*/
-		mPlayerScore = 0;
-		mEnemyScore = 0;
-		for (auto& t : mSlots)
-		{
-			t.mCard->Update(dt);
-			if (t.mCard->GetOwner() == Card::CardOwner::Player_Owned)
-			{
-				mPlayerScore++;
-			}
-			if (t.mCard->GetOwner() == Card::CardOwner::Enemy_Owned)
-			{
-				mEnemyScore++;
-			}
-		}
-
-
 	}
 }
 
@@ -220,12 +145,25 @@ void BoardState::Draw()
 	/*Draw Enemy*/
 	mEnemy.Draw();
 
-	/*Draw Board Cards*/
+	/*Draw Player and Enemy Cards That Match Slot Rectangles*/
 	for (auto& t : mSlots)
 	{
 		if (t.GetIsUsed())
 		{
-			t.mCard->Draw();
+			for (auto& P : mGameReference.GetPlayer().GetDeck())
+			{
+				if (t.GetCardRectangle() == P.GetRectangle())
+				{
+					P.Draw(mGameReference.GetWindow());
+				}
+			}
+			for (auto& P : mEnemy.GetDeck())
+			{
+				if (t.GetCardRectangle() == P.GetRectangle())
+				{
+					P.Draw(mGameReference.GetWindow());
+				}
+			}
 		}
 	}
 }
@@ -274,8 +212,8 @@ void BoardState::HandleEvents(sf::Event & ev)
 						mSelectSlotState = false;
 						
 						/*Player Takes Turn*/
-						mGameReference.GetPlayer().Turn(*this, xX, yY);
-
+						mGameReference.GetPlayer().Turn(*this, c.GetCardRectangle().left, c.GetCardRectangle().top);
+						break;
 					}
 				}
 			}
@@ -303,92 +241,73 @@ BoardState::Slot& BoardState::GetSlot(int x, int y)
 {
 	for (auto& j : mSlots)
 	{
-		if (j.mBoardPosition.x == x &&
-			j.mBoardPosition.y == y)
+		if (j.GetCardRectangle().left == x &&
+			j.GetCardRectangle().top == y)
 			return j;
 	}
-}
-
-void BoardState::ResetBoard()
-{
-	mSelectSlotState = false;
-	mCurrentTurn = TurnState::PlayerTurn;
-	mSelectFlashCounter = 0.0f;
-	mShowSelectBoarder = false;
-	mGameWinState = WinState::GameRunning;
-
-
-	/*Reset Score*/
-	mPlayerScore = 0;
-	mEnemyScore = 0;
-
-	/*Clear Slot Array*/
-	mSlots.clear();
-
-	/*Create Board Cards*/
-	Card_A1.Initiate(0.0f, 0.0f, "", Card::CardOwner::None);
-	Card_A2.Initiate(0.0f, 0.0f, "", Card::CardOwner::None);
-	Card_A3.Initiate(0.0f, 0.0f, "", Card::CardOwner::None);
-	Card_B1.Initiate(0.0f, 0.0f, "", Card::CardOwner::None);
-	Card_B2.Initiate(0.0f, 0.0f, "", Card::CardOwner::None);
-	Card_B3.Initiate(0.0f, 0.0f, "", Card::CardOwner::None);
-	Card_C1.Initiate(0.0f, 0.0f, "", Card::CardOwner::None);
-	Card_C2.Initiate(0.0f, 0.0f, "", Card::CardOwner::None);
-	Card_C3.Initiate(0.0f, 0.0f, "", Card::CardOwner::None);
-	
-	/*Re-Create Slots*/
-	A1 = { 0, 0 };
-	A2 = { 1, 0 };
-	A3 = { 2, 0 };
-	B1 = { 0, 1 };
-	B2 = { 1, 1 };
-	B3 = { 2, 1 };
-	C1 = { 0, 2 };
-	C2 = { 1, 2 };
-	C3 = { 2, 2 };
-	
-	/*Assign Card References To Slots*/
-	A1.mCard = &Card_A1;
-	A2.mCard = &Card_A2;
-	A3.mCard = &Card_A3;
-	B1.mCard = &Card_B1;
-	B2.mCard = &Card_B2;
-	B3.mCard = &Card_B3;
-	C1.mCard = &Card_C1;
-	C2.mCard = &Card_C2;
-	C3.mCard = &Card_C3;
-
-	/*Fill Slot Array*/
-	mSlots.push_back(A1);
-	mSlots.push_back(A2);
-	mSlots.push_back(A3);
-	mSlots.push_back(B1);
-	mSlots.push_back(B2);
-	mSlots.push_back(B3);
-	mSlots.push_back(C1);
-	mSlots.push_back(C2);
-	mSlots.push_back(C3);
-
-	/*Setup Enemy*/
-	mEnemy.ClearDeck();
-
-	/*Setup Player*/
-	mGameReference.GetPlayer().ClearDeck();
 }
 
 void BoardState::ToogleTurn()
 {
 	mIsTurning = true;
+
+	/*Calculate Score*/
+	for (auto& R : mSlots)
+	{
+		if (R.GetIsUsed())
+		{
+			for (auto P : mGameReference.GetPlayer().GetDeck())
+			{
+				if (R.GetCardRectangle() == P.GetRectangle())
+				{
+					mPlayerScore++;
+				}
+			}
+			for (auto& P : mEnemy.GetDeck())
+			{
+				if (R.GetCardRectangle() == P.GetRectangle())
+				{
+					mEnemyScore++;
+				}
+			}
+		}
+	}
+	/*Set Win State*/
+	if ((mEnemyScore + mPlayerScore) >= 8)
+	{
+		if (mEnemyScore < mPlayerScore)
+		{
+			mGameWinState = WinState::PlayerWin;
+		}
+		else if (mEnemyScore > mPlayerScore)
+		{
+			mGameWinState = WinState::EnemyWin;
+		}
+		else if (mEnemyScore == mPlayerScore)
+		{
+			mGameWinState = WinState::Tie;
+		}
+	}
+
+	/*Convert Score Ints To Strings For Draw*/
+	mEnemyScoreText.setString(std::to_string(mEnemyScore));
+	mPlayerScoreText.setString(std::to_string(mPlayerScore));
 }
 
-void BoardState::Slot::ToogleUse()
+void BoardState::Slot::ChangeOwner(Owner own)
 {
-	if (mIsUsed)
+	switch (own)
 	{
+	case Owner::None:
 		mIsUsed = false;
-	}
-	else if (!mIsUsed)
-	{
+		break;
+	case Owner::Player_Owned:
 		mIsUsed = true;
+		break;
+	case Owner::Enemy_Owned:
+		mIsUsed = true;
+		break;
 	}
 }
+
+

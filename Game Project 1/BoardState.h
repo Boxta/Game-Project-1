@@ -21,27 +21,51 @@ public:
 	class Slot
 	{
 	public:
-		Slot() = default;
-		Slot(int x, int y)
+		enum Owner
+		{
+			Player_Owned,
+			Enemy_Owned,
+			None
+		};
+	public:
+		Slot(float x, float y)
 		{ 
-			mBoardPosition.x = x;
-			mBoardPosition.y = y;
-			CardRectangle = { (float(x) * 300.0f) + 535.0f, (float(y) * 350.0f) + 50.0f, 250.0f, 300.0f };
-			FullRectangle = { (float(x) * 300.0f) + 525.0f, (float(y) * 350.0f) + 40.0f, 250.0f, 300.0f };
-			mIsUsed = false;
+			CardRectangle = { (float(x) * XINCREMENT) + INITIAL_X_OFFSET, 
+				(float(y) * YINCREMENT) + INITIAL_Y_OFFSET, 
+				SLOTWIDTH, 
+				SLOTHEIGHT };
+			FullRectangle = { (float(x) * XINCREMENT) + INITIAL_X_OFFSET_FULL, 
+				(float(y) * YINCREMENT) + INITIAL_Y_OFFSET_FULL, 
+				SLOTWIDTH, 
+				SLOTHEIGHT };
 		}
-		sf::Vector2i mBoardPosition;
-		sf::FloatRect& GetCardRectangle() { return CardRectangle; }
-		sf::FloatRect& GetFullRectangle() { return FullRectangle; }
-		bool GetIsUsed() { return mIsUsed; }
-		void ToogleUse();
-		Card* mCard = nullptr;
+		const sf::FloatRect& GetCardRectangle() { return CardRectangle; }
+		const sf::FloatRect& GetFullRectangle() { return FullRectangle; }
+		const bool GetIsUsed() { return mIsUsed; }
+		void ChangeOwner(Owner own);
+		const Owner GetOwner() { return mOwner; }
+		void SetUse(bool id) { mIsUsed = id; }
 	private:
+		/*Constants*/
+		const float INITIAL_X_OFFSET = 535.0f;
+		const float INITIAL_X_OFFSET_FULL = 525.0f;
+		const float INITIAL_Y_OFFSET = 50.0f;
+		const float INITIAL_Y_OFFSET_FULL = 40.0f;
+		const float XINCREMENT = 300.0f;
+		const float YINCREMENT = 350.0f;
+		const float SLOTWIDTH = 250.0f;
+		const float SLOTHEIGHT = 300.0f;
+
+
 		sf::FloatRect CardRectangle;
 		sf::FloatRect FullRectangle;
+		Owner mOwner = Owner::None;
 		bool mIsUsed = false;
 	};
 public:
+	/*Constructors*/
+	BoardState(Game& ref);
+	~BoardState();
 	/*Initiate Variables and Structures*/
 	virtual void Initiate();
 	/*The States Keyboard and Mouse Handling Function*/
@@ -57,24 +81,25 @@ public:
 	std::vector<Slot>& GetSlots() { return mSlots; }
 	Slot& GetSlot(int x, int y);
 
-	/*Reset Board*/
-	void ResetBoard();
-
-	/*Slot Width and Height*/
+	/*Slots Wide and Deep*/
 	const int mWidth = 3;
 	const int mHeight = 3;
 
+	/*Change Turn*/
 	void ToogleTurn();
-	BoardState(Game& ref);
-	~BoardState();
 
+	/*Increase Scores*/
 	void PlayerScored() 
 	{ mPlayerScore++; }
 	void EnemyScored() 
 	{ mEnemyScore++; }
 
+	/*Expose Enemy*/
+	Enemy& GetEnemy() { return mEnemy; }
+
+
 private:
-	/*Setup Timer For Drawing Logic Of Selection Boarder*/
+	/*Slot Boarder Flash Animation Timer*/
 	bool mSelectSlotState = false;
 	const float mSelectFlashTimer = 0.3f;
 	float mSelectFlashCounter = 0.0f;
@@ -101,19 +126,8 @@ private:
 
 	/*Create Slot Array*/
 	std::vector<Slot> mSlots;
-
-	/*Create Board Cards*/
-	Card Card_A1;
-	Card Card_A2;
-	Card Card_A3;
-	Card Card_B1;
-	Card Card_B2;
-	Card Card_B3;
-	Card Card_C1;
-	Card Card_C2;
-	Card Card_C3;
 	
-	/*Create Slots*/
+	/*Create Slots - 2D Array*/
 	Slot A1 = { 0, 0 };
 	Slot A2 = { 1, 0 };
 	Slot A3 = { 2, 0 };
