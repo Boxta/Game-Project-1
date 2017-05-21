@@ -28,7 +28,8 @@ public:
 		int L,
 		int R,
 		CmnStore& st,
-		sf::IntRect texrect
+		sf::IntRect texrect,
+		Owner own
 	);
 	~Card();
 	

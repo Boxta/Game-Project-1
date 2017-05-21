@@ -25,10 +25,10 @@ void Player::Initiate(float x, float y,
 	mName.setFillColor(sf::Color::Black);
 	mName.setCharacterSize(18);
 	mName.setPosition(x + mName_XOffset, y + mName_YOffset);
-	AddCard(0.0f, 0.0f, "P1", 9, 9, 18, 14);
-	AddCard(0.0f, 0.0f, "Hello", 5, 5, 5, 5);
-	AddCard(0.0f, 0.0f, "Card1", 13, 1, 1, 1);
-	AddCard(0.0f, 0.0f, "Owch", 13, 14, 13, 4);
+	AddCard(0.0f, 0.0f, "P1", 2, 7, 3, 14);
+	AddCard(0.0f, 0.0f, "Hello", 15, 2, 2, 2);
+	AddCard(0.0f, 0.0f, "Card1", 2, 11, 13, 1);
+	AddCard(0.0f, 0.0f, "Owch", 1, 1, 13, 4);
 }
 
 void Player::Update(const float dt)
@@ -217,7 +217,8 @@ void Player::AddCard(float posx, float posy, std::string name, int U, int D, int
 		name,
 		U, D, L, R,
 		mGameReference.GetCommonStore(),
-		sf::IntRect(0, 0, 250, 300) };
+		sf::IntRect(0, 0, 250, 300),
+		Card::Owner::Player_Owned };
 	CardDeck.push_back(aCard);
 }
 

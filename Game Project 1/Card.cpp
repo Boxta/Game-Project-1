@@ -24,12 +24,14 @@ Card::Card(float positionx, float positiony,
 	int L, 
 	int R, 
 	CmnStore & st, 
-	sf::IntRect texrect)
+	sf::IntRect texrect,
+	Owner own)
 	:
 	mValue_Top(U),
 	mValue_Down(D),
 	mValue_Left(L),
-	mValue_Right(R)
+	mValue_Right(R),
+	mOwner(own)
 {
 	/*Set Card Recatangle*/
 	mRectangle.left = positionx;

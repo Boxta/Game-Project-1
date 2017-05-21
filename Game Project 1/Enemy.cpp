@@ -64,6 +64,7 @@ void Enemy::CycleDeck()
 
 void Enemy::Turn(BoardState& brd)
 {
+	/*Check There Is a Free Slot To Use*/
 	bool noSlotsUsed = true;
 	for (auto& r : brd.GetSlots())
 	{
@@ -80,109 +81,120 @@ void Enemy::Turn(BoardState& brd)
 	/*Try To Win*/
 	for (auto& u : brd.GetSlots())
 	{
-		//For All Slots Owner By The Player
-		if (u.GetIsUsed() && u.GetOwner() == BoardState::Slot::Owner::Player_Owned)
+		if (!u.GetIsUsed())
+			continue;
+
+		if (u.GetOwner() == BoardState::Slot::Owner::Enemy_Owned)
+			continue;
+
+		Card* tempcard = nullptr;
+
+		/*Check The Right Deck For The Slots Card*/
+		bool CardInEnemyDeck = false;
+		for (auto& mycard : CardDeck)
 		{
-			//Get The Card Reference
-			Card& tempcard = mGameReference.GetPlayer().GetCard(u.GetCardRectangle());
-
-			//Store Potential surrounding slot positions of the slot/card
-			const sf::Vector2i DeckCardPosition = { u.GetGridPosition().x, u.GetGridPosition().y };
-			const sf::Vector2i PositionAbove = sf::Vector2i(DeckCardPosition.x, DeckCardPosition.y - 1);
-			const sf::Vector2i PositionDown = sf::Vector2i(DeckCardPosition.x, DeckCardPosition.y + 1);
-			const sf::Vector2i PositionLeft = sf::Vector2i(DeckCardPosition.x - 1, DeckCardPosition.y);
-			const sf::Vector2i PositionRight = sf::Vector2i(DeckCardPosition.x + 1, DeckCardPosition.y);
-
-			for (auto& mycard : CardDeck)
+			if (mycard.GetRectangle() == u.GetCardRectangle())
 			{
-				//Slot above card is free
-				if (CheckSafeBoardPosition(PositionAbove, brd.mWidth, brd.mHeight))
-				{
-					BoardState::Slot& slt = brd.GetSlot(PositionAbove.x, PositionAbove.y);
-					if (!slt.GetIsUsed() &&
-						mycard.GetDown() > tempcard.GetUp())
-					{
-						/*Change Enemy Card Values*/
-						mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
-						mycard.SetState(Card::CardState::Used);
-						
-						/*Take Players Slot/Card*/
-						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, tempcard);
-						
-						/*Tell Enemy Not To Try and Handle A Loss Scenario*/
-						mHasWon = true;
-
-						/*Tell The Board Its Turn Over*/
-						brd.ToogleTurn();
-						break;
-					}
-				}
-				else if (CheckSafeBoardPosition(PositionDown, brd.mWidth, brd.mHeight))
-				{
-					BoardState::Slot& slt = brd.GetSlot(PositionDown.x, PositionDown.y);
-					if (!slt.GetIsUsed() &&
-						mycard.GetUp() > tempcard.GetDown())
-					{
-						/*Change Enemy Card Values*/
-						mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
-						mycard.SetState(Card::CardState::Used);
-
-						/*Take Players Slot/Card*/
-						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, tempcard);
-
-						/*Tell Enemy Not To Try and Handle A Loss Scenario*/
-						mHasWon = true;
-
-						/*Tell The Board Its Turn Over*/
-						brd.ToogleTurn();
-						break;
-					}
-				}
-				else if (CheckSafeBoardPosition(PositionLeft, brd.mWidth, brd.mHeight))
-				{
-					BoardState::Slot& slt = brd.GetSlot(PositionLeft.x, PositionLeft.y);
-					if (!slt.GetIsUsed() &&
-						mycard.GetRight() > tempcard.GetLeft())
-					{
-						/*Change Enemy Card Values*/
-						mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
-						mycard.SetState(Card::CardState::Used);
-
-						/*Take Players Slot/Card*/
-						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, tempcard);
-
-						/*Tell Enemy Not To Try and Handle A Loss Scenario*/
-						mHasWon = true;
-
-						/*Tell The Board Its Turn Over*/
-						brd.ToogleTurn();
-						break;
-					}
-				}
-				else if (CheckSafeBoardPosition(PositionRight, brd.mWidth, brd.mHeight))
-				{
-					BoardState::Slot& slt = brd.GetSlot(PositionRight.x, PositionRight.y);
-					if (!slt.GetIsUsed() &&
-						mycard.GetLeft() > tempcard.GetRight())
-					{
-						/*Change Enemy Card Values*/
-						mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
-						mycard.SetState(Card::CardState::Used);
-
-						/*Take Players Slot/Card*/
-						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, tempcard);
-
-						/*Tell Enemy Not To Try and Handle A Loss Scenario*/
-						mHasWon = true;
-
-						/*Tell The Board Its Turn Over*/
-						brd.ToogleTurn();
-						break;
-					}
-				}
-
+				CardInEnemyDeck = true;
+				tempcard = &GetCard(u.GetCardRectangle());
 			}
 		}
+		if (!CardInEnemyDeck)
+		{
+			tempcard = &mGameReference.GetPlayer().GetCard(u.GetCardRectangle());
+		}
+
+		//Store Potential surrounding slot positions of the slot/card
+		const sf::Vector2i DeckCardPosition = { u.GetGridPosition().x, u.GetGridPosition().y };
+		const sf::Vector2i PositionAbove = sf::Vector2i(DeckCardPosition.x, DeckCardPosition.y - 1);
+		const sf::Vector2i PositionDown = sf::Vector2i(DeckCardPosition.x, DeckCardPosition.y + 1);
+		const sf::Vector2i PositionLeft = sf::Vector2i(DeckCardPosition.x - 1, DeckCardPosition.y);
+		const sf::Vector2i PositionRight = sf::Vector2i(DeckCardPosition.x + 1, DeckCardPosition.y);
+
+		/*Find A Card To Beat The Players Card*/
+		for (auto& mycard : CardDeck)
+		{
+			if (mHasWon)
+				continue;
+
+			/*Cycle Until An Unused Card Is Found*/
+			if (mycard.GetState() == Card::CardState::Used)
+				continue;
+
+			/*Check Surrounding Slot Positions Are Valid Board Slot Positions*/
+			if (CheckSafeBoardPosition(PositionAbove, brd.mWidth, brd.mHeight))
+			{
+				/*Get Board Slot At Safe Position*/
+				BoardState::Slot& slt = brd.GetSlot(PositionAbove.x, PositionAbove.y);
+
+				if (!slt.GetIsUsed() &&
+					mycard.GetDown() > tempcard->GetUp())
+				{
+					/*Set My Card Into Free Slot*/
+					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+					mycard.SetState(Card::CardState::Used);
+						
+					/*Take Primary Player Card*/
+					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, *tempcard);
+						
+					/*Set Win State To True*/
+					mHasWon = true;
+				}
+			}
+			else if (CheckSafeBoardPosition(PositionDown, brd.mWidth, brd.mHeight))
+			{
+				BoardState::Slot& slt = brd.GetSlot(PositionDown.x, PositionDown.y);
+				if (!slt.GetIsUsed() &&
+					mycard.GetUp() > tempcard->GetDown())
+				{
+					/*Set My Card Into Free Slot*/
+					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+					mycard.SetState(Card::CardState::Used);
+
+					/*Take Primary Player Card*/
+					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, *tempcard);
+
+					/*Set Win State To True*/
+					mHasWon = true;
+				}
+			}
+			else if (CheckSafeBoardPosition(PositionLeft, brd.mWidth, brd.mHeight))
+			{
+				BoardState::Slot& slt = brd.GetSlot(PositionLeft.x, PositionLeft.y);
+				if (!slt.GetIsUsed() &&
+					mycard.GetRight() > tempcard->GetLeft())
+				{
+					/*Set My Card Into Free Slot*/
+					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+					mycard.SetState(Card::CardState::Used);
+
+					/*Take Primary Player Card*/
+					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, *tempcard);
+
+					/*Set Win State To True*/
+					mHasWon = true;
+				}
+			}
+			else if (CheckSafeBoardPosition(PositionRight, brd.mWidth, brd.mHeight))
+			{
+				BoardState::Slot& slt = brd.GetSlot(PositionRight.x, PositionRight.y);
+				if (!slt.GetIsUsed() &&
+					mycard.GetLeft() > tempcard->GetRight())
+				{
+					/*Set My Card Into Free Slot*/
+					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+					mycard.SetState(Card::CardState::Used);
+
+					/*Take Primary Player Card*/
+					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, *tempcard);
+
+					/*Set Win State To True*/
+					mHasWon = true;
+				}
+			}
+		}
+
+		/*Find Player Cards Around My Played Card And Try To Take It*/
 	}
 	
 	/*If No Win Then Handle Loss*/
@@ -225,11 +237,12 @@ void Enemy::ClearDeck()
 
 void Enemy::AddCard(float posx, float posy, std::string name, int U, int D, int L, int R)
 {
-	Card aCard = { posx, posy, 
-		name, 
-		U, D, L, R, 
+	Card aCard = { posx, posy,
+		name,
+		U, D, L, R,
 		mGameReference.GetCommonStore(),
-		sf::IntRect(250, 300, 250, 300) };
+		sf::IntRect(250, 300, 250, 300),
+		Card::Owner::Enemy_Owned};
 	CardDeck.push_back(aCard);
 }
 
