@@ -35,7 +35,7 @@ private:
 	std::vector<Card> CardDeck;
 	std::vector<Card>::iterator CardDeckIterator;
 	Card& GetWorstCard();
-	int mCardDeckIterator = 0;
+	unsigned int mCardDeckIterator = 0;
 	bool CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight);
 	bool mIterateDirection = true;
 	std::random_device rd;     

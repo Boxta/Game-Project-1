@@ -38,13 +38,15 @@ public:
 				(float(y) * YINCREMENT) + INITIAL_Y_OFFSET_FULL, 
 				SLOTWIDTH, 
 				SLOTHEIGHT };
+			GridPosition.x = int(x);
+			GridPosition.y = int(y);
 		}
 		const sf::FloatRect& GetCardRectangle() { return CardRectangle; }
 		const sf::FloatRect& GetFullRectangle() { return FullRectangle; }
 		const bool GetIsUsed() { return mIsUsed; }
-		void ChangeOwner(Owner own);
+		void ChangeOwner(Owner own, Card& card);
 		const Owner GetOwner() { return mOwner; }
-		void SetUse(bool id) { mIsUsed = id; }
+		const sf::Vector2i GetGridPosition() { return GridPosition; }
 	private:
 		/*Constants*/
 		const float INITIAL_X_OFFSET = 535.0f;
@@ -56,7 +58,7 @@ public:
 		const float SLOTWIDTH = 250.0f;
 		const float SLOTHEIGHT = 300.0f;
 
-
+		sf::Vector2i GridPosition;
 		sf::FloatRect CardRectangle;
 		sf::FloatRect FullRectangle;
 		Owner mOwner = Owner::None;

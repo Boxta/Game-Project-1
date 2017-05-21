@@ -9,7 +9,6 @@ Enemy::Enemy(Game& ref)
 {
 }
 
-
 Enemy::~Enemy()
 {
 }
@@ -88,7 +87,7 @@ void Enemy::Turn(BoardState& brd)
 			Card& tempcard = mGameReference.GetPlayer().GetCard(u.GetCardRectangle());
 
 			//Store Potential surrounding slot positions of the slot/card
-			const sf::Vector2i DeckCardPosition = { int(u.GetCardRectangle().left), int(u.GetCardRectangle().top) };
+			const sf::Vector2i DeckCardPosition = { u.GetGridPosition().x, u.GetGridPosition().y };
 			const sf::Vector2i PositionAbove = sf::Vector2i(DeckCardPosition.x, DeckCardPosition.y - 1);
 			const sf::Vector2i PositionDown = sf::Vector2i(DeckCardPosition.x, DeckCardPosition.y + 1);
 			const sf::Vector2i PositionLeft = sf::Vector2i(DeckCardPosition.x - 1, DeckCardPosition.y);
@@ -107,11 +106,8 @@ void Enemy::Turn(BoardState& brd)
 						mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
 						mycard.SetState(Card::CardState::Used);
 						
-						/*Change Board Slot Values*/
-						slt.SetUse(true);
-						
 						/*Take Players Slot/Card*/
-						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
+						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, tempcard);
 						
 						/*Tell Enemy Not To Try and Handle A Loss Scenario*/
 						mHasWon = true;
@@ -131,11 +127,8 @@ void Enemy::Turn(BoardState& brd)
 						mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
 						mycard.SetState(Card::CardState::Used);
 
-						/*Change Board Slot Values*/
-						slt.SetUse(true);
-
 						/*Take Players Slot/Card*/
-						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
+						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, tempcard);
 
 						/*Tell Enemy Not To Try and Handle A Loss Scenario*/
 						mHasWon = true;
@@ -155,11 +148,8 @@ void Enemy::Turn(BoardState& brd)
 						mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
 						mycard.SetState(Card::CardState::Used);
 
-						/*Change Board Slot Values*/
-						slt.SetUse(true);
-
 						/*Take Players Slot/Card*/
-						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
+						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, tempcard);
 
 						/*Tell Enemy Not To Try and Handle A Loss Scenario*/
 						mHasWon = true;
@@ -179,11 +169,8 @@ void Enemy::Turn(BoardState& brd)
 						mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
 						mycard.SetState(Card::CardState::Used);
 
-						/*Change Board Slot Values*/
-						slt.SetUse(true);
-
 						/*Take Players Slot/Card*/
-						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
+						u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, tempcard);
 
 						/*Tell Enemy Not To Try and Handle A Loss Scenario*/
 						mHasWon = true;
@@ -221,8 +208,8 @@ void Enemy::Turn(BoardState& brd)
 			CardDeck[p].SetPosition(u.GetCardRectangle().left, u.GetCardRectangle().top);
 			CardDeck[p].SetState(Card::CardState::Used);
 
-			/*Change Board Slot Values*/
-			u.SetUse(true);
+			/*Take Players Slot/Card*/
+			u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, CardDeck[p]);
 
 			/*Tell The Board Its Turn Over*/
 			brd.ToogleTurn();
@@ -245,7 +232,6 @@ void Enemy::AddCard(float posx, float posy, std::string name, int U, int D, int 
 		sf::IntRect(250, 300, 250, 300) };
 	CardDeck.push_back(aCard);
 }
-
 
 Card& Enemy::GetWorstCard()
 {
@@ -327,7 +313,7 @@ void Enemy::Draw()
 		return;
 
 	/*Draw Player Cards In Deck*/
-	for (int T = 0; T < CardDeck.size(); T++)
+	for (unsigned int T = 0; T < CardDeck.size(); T++)
 	{
 		if (T < mCardDeckIterator &&
 			CardDeck[T].GetState() != Card::CardState::Used)
@@ -336,7 +322,7 @@ void Enemy::Draw()
 			CardDeck[T].Draw(mGameReference.GetWindow());
 		}
 	}
-	for (int T = 0; T < CardDeck.size(); T++)
+	for (unsigned int T = 0; T < CardDeck.size(); T++)
 	{
 		if (T > mCardDeckIterator &&
 			CardDeck[T].GetState() != Card::CardState::Used)
@@ -345,7 +331,7 @@ void Enemy::Draw()
 			CardDeck[T].Draw(mGameReference.GetWindow());
 		}
 	}
-	for (int T = 0; T < CardDeck.size(); T++)
+	for (unsigned int T = 0; T < CardDeck.size(); T++)
 	{
 		if (T == mCardDeckIterator &&
 			CardDeck[T].GetState() != Card::CardState::Used)
@@ -356,7 +342,7 @@ void Enemy::Draw()
 	}
 
 	/*Draw Used Cards On Board*/
-	for (int T = 0; T < CardDeck.size(); T++)
+	for (unsigned int T = 0; T < CardDeck.size(); T++)
 	{
 		if (CardDeck[T].GetState() == Card::CardState::Used)
 		{

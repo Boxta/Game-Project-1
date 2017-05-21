@@ -32,7 +32,7 @@ private:
 	sf::Sprite mSprite;
 	std::vector<Card> CardDeck;
 	std::vector<Card>::iterator DeckIterator;
-	int mCardDeckIterator = 0;
+	unsigned int mCardDeckIterator = 0;
 	bool mIterateDirection = true;
 	bool CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight);
 	std::random_device rd;  

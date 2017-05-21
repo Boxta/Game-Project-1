@@ -18,8 +18,8 @@ void MainMenu::Initiate()
 	mBackgroundImage.setPosition(sf::Vector2f(0, 0));
 
 	mLogoImage.setTexture(mGameReference.GetCommonStore().GetTextureRef("Logo"));
-	mLogoImage.setPosition(mGameReference.GetWindow().getSize().x / 2 - 333,
-		mGameReference.GetWindow().getSize().y / 2 - 350);
+	mLogoImage.setPosition(float(mGameReference.GetWindow().getSize().x / 2 - 333),
+		float(mGameReference.GetWindow().getSize().y / 2 - 350));
 
 	mStartGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - (UIButton::WIDTH / 2),
 		mGameReference.GetWindow().getSize().y / 2,

@@ -15,53 +15,7 @@ void Card::SetDrawRectangle(sf::IntRect rect)
 	mSprite.setTextureRect(rect);
 }
 
-Card::Card(float positionx, float positiony,
-	std::string name,
-	int U,
-	int D,
-	int L,
-	int R,
-	CmnStore& st)
-	:
-	mValue_Top(U),
-	mValue_Down(D),
-	mValue_Left(L),
-	mValue_Right(R)
-{
-	/*Set Card Recatangle*/
-	mRectangle.left = positionx;
-	mRectangle.top = positiony;
-	mRectangle.width = 250;
-	mRectangle.height = 300;
 
-	/*Setup Card Name*/
-	mName.setFont(st.GetFontRef("System"));
-	mName.setString(name);
-	mName.setCharacterSize(22);
-
-	/*Setup Card Sprite*/
-	mSprite.setTexture(st.GetTextureRef("TestCard"));
-	mSprite.setTextureRect(sf::IntRect(0, 0, 250, 300));
-
-	/*Setup Card Value Text*/
-	mTextTop.setFont(st.GetFontRef("System"));
-	mTextDown.setFont(st.GetFontRef("System"));
-	mTextLeft.setFont(st.GetFontRef("System"));
-	mTextRight.setFont(st.GetFontRef("System"));
-	mTextTop.setCharacterSize(22);
-	mTextDown.setCharacterSize(22);
-	mTextLeft.setCharacterSize(22);
-	mTextRight.setCharacterSize(22);
-
-	/*Assign Card Values to Value Text'*/
-	mTextTop.setString(std::to_string(mValue_Top));
-	mTextDown.setString(std::to_string(mValue_Down));
-	mTextLeft.setString(std::to_string(mValue_Left));
-	mTextRight.setString(std::to_string(mValue_Right));
-
-	/*Set Positions*/
-	SetPosition(positionx, positiony);
-}
 
 Card::Card(float positionx, float positiony, 
 	std::string name, 
@@ -82,6 +36,9 @@ Card::Card(float positionx, float positiony,
 	mRectangle.top = positiony;
 	mRectangle.width = 250;
 	mRectangle.height = 300;
+
+	/*Set Texture Y Value*/
+	mTextureYValue = texrect.top;
 
 	/*Setup Card Name*/
 	mName.setFont(st.GetFontRef("System"));
@@ -136,6 +93,24 @@ void Card::SetPosition(float x, float y)
 	mTextDown.setPosition(CardMiddle - (mTextDown.getLocalBounds().width / 2), y + 248.0f);
 	mTextLeft.setPosition(CardMiddle - (mTextLeft.getLocalBounds().width + LeftRightValueSpace), y + 227.0f);
 	mTextRight.setPosition(CardMiddle + LeftRightValueSpace, y + 227.0f);
+}
+
+void Card::ChangeOwner(Owner own)
+{
+	switch (own)
+	{
+	case Owner::None:
+		mOwner = Owner::None;
+		break;
+	case Owner::Player_Owned:
+		SetDrawRectangle(sf::IntRect(0, mTextureYValue, 250, 300));
+		mOwner = Owner::Player_Owned;
+		break;
+	case Owner::Enemy_Owned:
+		SetDrawRectangle(sf::IntRect(250, mTextureYValue, 250, 300));
+		mOwner = Owner::Enemy_Owned;
+		break;
+	}
 }
 
 

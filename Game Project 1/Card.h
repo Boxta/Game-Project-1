@@ -13,16 +13,14 @@ public:
 		Free,
 		Used
 	};
+	enum Owner
+	{
+		Player_Owned,
+		Enemy_Owned,
+		None
+	};
 public:
 	/*Constructors*/
-	Card(float positionx, float positiony,
-		std::string name,
-		int U,
-		int D,
-		int L,
-		int R,
-		CmnStore& st
-		);
 	Card(float positionx, float positiony,
 		std::string name,
 		int U,
@@ -56,8 +54,13 @@ public:
 	const int GetLeft() { return mValue_Left; }
 	const int GetRight() { return mValue_Right; }
 
+	/*Ownership Functions*/
+	void ChangeOwner(Owner own);
+	const Owner GetOwner() { return mOwner; }
+
 private:
 	/*Card Values*/
+	Owner mOwner = Owner::None;
 	int mValue_Top = 0;
 	int mValue_Left = 0;
 	int mValue_Right = 0;
@@ -71,5 +74,6 @@ private:
 	sf::Text mTextDown;
 	sf::Text mTextLeft;
 	sf::Text mTextRight;
+	int mTextureYValue = 0;
 };
 

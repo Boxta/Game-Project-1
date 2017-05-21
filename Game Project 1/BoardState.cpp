@@ -191,7 +191,7 @@ void BoardState::HandleEvents(sf::Event & ev)
 						mSelectSlotState = false;
 						
 						/*Player Takes Turn*/
-						mGameReference.GetPlayer().Turn(*this, c.GetCardRectangle().left, c.GetCardRectangle().top);
+						mGameReference.GetPlayer().Turn(*this, float(c.GetGridPosition().x), float(c.GetGridPosition().y));
 						break;
 					}
 				}
@@ -220,8 +220,8 @@ BoardState::Slot& BoardState::GetSlot(int x, int y)
 {
 	for (auto& j : mSlots)
 	{
-		if (j.GetCardRectangle().left == x &&
-			j.GetCardRectangle().top == y)
+		if (j.GetGridPosition().x == x &&
+			j.GetGridPosition().y == y)
 			return j;
 	}
 }
@@ -229,26 +229,19 @@ BoardState::Slot& BoardState::GetSlot(int x, int y)
 void BoardState::ToogleTurn()
 {
 	mIsTurning = true;
+	mPlayerScore = 0;
+	mEnemyScore = 0;
 
 	/*Calculate Score*/
 	for (auto& R : mSlots)
 	{
-		if (R.GetIsUsed())
+		if (R.GetIsUsed() && R.GetOwner() == Slot::Owner::Player_Owned)
 		{
-			for (auto P : mGameReference.GetPlayer().GetDeck())
-			{
-				if (R.GetCardRectangle() == P.GetRectangle())
-				{
-					mPlayerScore++;
-				}
-			}
-			for (auto& P : mEnemy.GetDeck())
-			{
-				if (R.GetCardRectangle() == P.GetRectangle())
-				{
-					mEnemyScore++;
-				}
-			}
+			mPlayerScore++;
+		}
+		if(R.GetIsUsed() && R.GetOwner() == Slot::Owner::Enemy_Owned)
+		{
+			mEnemyScore++;
 		}
 	}
 	/*Set Win State*/
@@ -273,18 +266,24 @@ void BoardState::ToogleTurn()
 	mPlayerScoreText.setString(std::to_string(mPlayerScore));
 }
 
-void BoardState::Slot::ChangeOwner(Owner own)
+void BoardState::Slot::ChangeOwner(Owner own, Card& crd)
 {
 	switch (own)
 	{
 	case Owner::None:
 		mIsUsed = false;
+		mOwner = Owner::None;
+		crd.ChangeOwner(Card::Owner::None);
 		break;
 	case Owner::Player_Owned:
 		mIsUsed = true;
+		mOwner = Owner::Player_Owned;
+		crd.ChangeOwner(Card::Owner::Player_Owned);
 		break;
 	case Owner::Enemy_Owned:
 		mIsUsed = true;
+		mOwner = Owner::Enemy_Owned;
+		crd.ChangeOwner(Card::Owner::Enemy_Owned);
 		break;
 	}
 }
