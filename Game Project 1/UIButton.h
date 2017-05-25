@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML\Graphics.hpp>
 #include "CmnStore.h"
+#include "AnimatedSprite.h"
 
 class UIButton
 {
@@ -21,14 +22,26 @@ public:
 	void SetPressedState(bool to) { mIsPressed = to; }
 
 	/*Initiate Button*/
-	void Initiate(int x, int y, sf::String txt);
+	void Initiate(int x, int y,
+		sf::String txt,
+		int textSize,
+		sf::String texName,
+		const int frameCount,
+		const int frameWidth,
+		const int frameHeight);
+
+	/*Update Sprite*/
+	void Update(float dt);
 
 	/*The States Draw Function*/
 	void Draw(sf::RenderWindow& wnd);
 
-	/*Size Should Equal Pixel Image Size Of Button*/
-	static const int WIDTH = 250;
-	static const int HEIGHT = 80;
+	/*Frame Size*/
+	int mWidth = 250;
+	int mHeight = 80;
+
+	/*Toggle Animation*/
+	void AnimationToggle(bool val);
 
 private:
 	/*Common Texture Store Reference*/
@@ -37,19 +50,8 @@ private:
 	/*The Buttons Sprite*/
 	sf::Sprite mButtonSprite;
 
-	/*Pixel Position In Screen Space*/
-	int mXPosition = 0;
-	int mYPosition = 0;
-
 	/*Button Screen Rectangle*/
 	sf::IntRect mRectangle;
-
-	/*Texture Position In Image Coordinates*/
-	int mTextureXPosition = 0;
-	int mTextureYPosition = 0;
-
-	/*Button Texture Rectangle*/
-	sf::IntRect mTextureRectangle;
 
 	/*Track Button Pressed State*/
 	bool mIsPressed = false;
@@ -57,5 +59,11 @@ private:
 	/*Text*/
 	sf::String mString1;
 	sf::Text mText1;
+
+	/*Frame Count*/
+	int mFrameCount = 0;
+
+	/*Animated Sprite*/
+	AnimatedSprite *mAnimatedSprite = nullptr;
 };
 

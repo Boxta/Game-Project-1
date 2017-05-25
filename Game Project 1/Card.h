@@ -22,7 +22,7 @@ public:
 public:
 	/*Constructors*/
 	Card(float positionx, float positiony,
-		std::string name,
+		sf::String name,
 		int U,
 		int D,
 		int L,
@@ -44,10 +44,15 @@ public:
 	const CardState GetState() { return mState; }
 	void SetState(CardState st) { mState = st; }
 
+	/*Get Name*/
+	const sf::String GetName() { return mName.getString(); }
+
 	/*Set Position*/
 	void SetPosition(float x, float y); 
 	/*Get Position*/
-	const sf::Vector2i GetPosition() { sf::Vector2i{ int(GetRectangle().left), int(GetRectangle().top) }; }
+	const sf::Vector2f GetPosition() {
+		return sf::Vector2f(GetRectangle().left, GetRectangle().top);
+	}
 
 	/*Get Values*/
 	const int GetUp() { return mValue_Top; }
@@ -58,6 +63,9 @@ public:
 	/*Ownership Functions*/
 	void ChangeOwner(Owner own);
 	const Owner GetOwner() { return mOwner; }
+
+	/*Get Texture Rectangle*/
+	const sf::IntRect GetTextureRectangle() { return mSprite.getTextureRect(); }
 
 private:
 	/*Card Values*/

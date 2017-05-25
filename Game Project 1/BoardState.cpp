@@ -4,7 +4,8 @@
 BoardState::BoardState(Game& ref)
 	:
 	mGameReference(ref),
-	mEnemy(ref)
+	mEnemy(ref),
+	mBatButton(mGameReference.GetCommonStore())
 {
 	/*Setup Background*/
 	mBackgroundFill.setFillColor(sf::Color::White);
@@ -25,6 +26,13 @@ BoardState::BoardState(Game& ref)
 
 BoardState::~BoardState()
 {
+	if (mBoardCards.size() > 0)
+	{
+		for (auto *t : mBoardCards)
+		{
+			delete t;
+		}
+	}
 }
 
 void BoardState::Initiate()
@@ -57,7 +65,8 @@ void BoardState::Initiate()
 
 	mSelectionBoarder.setTexture(mGameReference.GetCommonStore().GetTextureRef("SelectBoarder"));
 
-	mBatButton.setTexture(mGameReference.GetCommonStore().GetTextureRef("BatButtons"));
+	mBatButton.Initiate(50, 370, "Deal Card", 22 , "BatButtons", 2, 180, 120);
+	mBatButton.AnimationToggle(true);
 }
 
 void BoardState::HandleInput()
@@ -66,6 +75,8 @@ void BoardState::HandleInput()
 
 void BoardState::Update(float dt)
 {
+	mBatButton.Update(dt);
+
 	/*Update Enemy*/
 	mEnemy.Update(dt);
 
@@ -171,7 +182,7 @@ void BoardState::Draw()
 		}
 	}
 	
-
+	mBatButton.Draw(mGameReference.GetWindow());
 
 	/*Draw Scores*/
 	mGameReference.GetWindow().draw(mPlayerScoreText);
@@ -182,7 +193,6 @@ void BoardState::Draw()
 
 	/*Draw Enemy*/
 	mEnemy.Draw();
-
 }
 
 void BoardState::HandleEvents(sf::Event & ev)
@@ -198,25 +208,6 @@ void BoardState::HandleEvents(sf::Event & ev)
 			const int xX = sf::Mouse::getPosition(mGameReference.GetWindow()).x;
 			const int yY = sf::Mouse::getPosition(mGameReference.GetWindow()).y;
 
-			/*If Player Has Cards In Their Deck
-			and Click Was On One Of Said Cards*/
-			if (mGameReference.GetPlayer().GetDeckCount() > 0 &&
-				mGameReference.GetPlayer().GetTopCard().GetRectangle().contains(float(xX), float(yY)))
-			{
-				if (mGameReference.GetPlayer().GetTopCard().GetState() == Card::CardState::Free)
-				{
-					/*Select Card and Set Board To Selected State*/
-					mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Selected);
-					mSelectSlotState = true;
-				}
-				else
-				{
-					/*Free Card and Set Board To Free State*/
-					mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Free);
-					mSelectSlotState = false;
-				}
-			}
-
 			/*Process Clicks Unique to Board being in Select State*/
 			if (mSelectSlotState)
 			{
@@ -227,12 +218,38 @@ void BoardState::HandleEvents(sf::Event & ev)
 					{
 						/*Turn off the boards selection state*/
 						mSelectSlotState = false;
-						
+
 						/*Player Takes Turn*/
 						mGameReference.GetPlayer().Turn(*this, float(c.GetGridPosition().x), float(c.GetGridPosition().y));
 						break;
 					}
 				}
+			}
+			else
+			{
+				/*Check Click For Button*/
+				if (mBatButton.GetRectangle().contains(xX, yY))
+				{
+					mBatButton.AnimationToggle(false);
+				}
+				/*
+				if (mGameReference.GetPlayer().GetDeckCount() > 0 &&
+					mGameReference.GetPlayer().GetTopCard().GetRectangle().contains(float(xX), float(yY)))
+				{
+					if (mGameReference.GetPlayer().GetTopCard().GetState() == Card::CardState::Free)
+					{
+						/*Select Card and Set Board To Selected State
+						mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Selected);
+						mSelectSlotState = true;
+					}
+					else
+					{
+						/*Free Card and Set Board To Free State
+						mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Free);
+						mSelectSlotState = false;
+					}
+				}
+				*/
 			}
 		}
 
@@ -267,6 +284,18 @@ BoardState::Slot& BoardState::GetSlot(int x, int y)
 void BoardState::ToogleTurn()
 {
 	mIsTurning = true;
+}
+
+void BoardState::AddCard(Card& card, Slot& slt)
+{
+	Card *temp = new Card(int(slt.GetCardRectangle().left), int(slt.GetCardRectangle().top),
+		card.GetName(),
+		card.GetUp(), card.GetDown(), card.GetLeft(), card.GetRight(),
+		mGameReference.GetCommonStore(),
+		card.GetTextureRectangle(), card.GetOwner());
+	slt.SetCardReference(temp);
+	mBoardCards.push_back(temp);
+	//Consider Slot ChangeOwner
 }
 
 void BoardState::Slot::ChangeOwner(Owner own, Card& crd)

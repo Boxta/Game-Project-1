@@ -21,15 +21,18 @@ void MainMenu::Initiate()
 	mLogoImage.setPosition(float(mGameReference.GetWindow().getSize().x / 2 - 333),
 		float(mGameReference.GetWindow().getSize().y / 2 - 350));
 
-	mStartGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - (UIButton::WIDTH / 2),
+	mStartGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - 125,
 		mGameReference.GetWindow().getSize().y / 2,
-		"Start");
-	mLoadGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - (UIButton::WIDTH / 2),
-		mGameReference.GetWindow().getSize().y / 2 + (mButtonSpacing + UIButton::HEIGHT),
-		"Load");
-	mTutorialGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - (UIButton::WIDTH / 2),
-		mGameReference.GetWindow().getSize().y / 2 + ((mButtonSpacing + UIButton::HEIGHT) * 2),
-		"Tutorial");
+		"Start", 30 , "BaseButtons", 1, 250, 80);
+	mStartGame_Button.AnimationToggle(false);
+	mLoadGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - 125,
+		mGameReference.GetWindow().getSize().y / 2 + (mButtonSpacing + 80),
+		"Load", 30 , "BaseButtons", 1, 250, 80);
+	mLoadGame_Button.AnimationToggle(false);
+	mTutorialGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - 125,
+		mGameReference.GetWindow().getSize().y / 2 + (mButtonSpacing * 2) + 160,
+		"Tutorial", 30 , "BaseButtons", 1, 250, 80);
+	mTutorialGame_Button.AnimationToggle(false);
 }
 
 void MainMenu::HandleInput()

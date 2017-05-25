@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Card.h"
 #include <memory>
+#include "UIButton.h"
 
 class BoardState :
 	public GameState
@@ -28,18 +29,18 @@ public:
 			None
 		};
 	public:
-		Slot(float x, float y)
+		Slot(int x, int y)
 		{ 
-			CardRectangle = { (float(x) * XINCREMENT) + INITIAL_X_OFFSET, 
-				(float(y) * YINCREMENT) + INITIAL_Y_OFFSET, 
+			CardRectangle = { (x * XINCREMENT) + INITIAL_X_OFFSET, 
+				(y * YINCREMENT) + INITIAL_Y_OFFSET, 
 				SLOTWIDTH, 
 				SLOTHEIGHT };
-			FullRectangle = { (float(x) * XINCREMENT) + INITIAL_X_OFFSET_FULL, 
-				(float(y) * YINCREMENT) + INITIAL_Y_OFFSET_FULL, 
+			FullRectangle = { (x * XINCREMENT) + INITIAL_X_OFFSET_FULL, 
+				(y * YINCREMENT) + INITIAL_Y_OFFSET_FULL, 
 				SLOTWIDTH, 
 				SLOTHEIGHT };
-			GridPosition.x = int(x);
-			GridPosition.y = int(y);
+			GridPosition.x = x;
+			GridPosition.y = y;
 		}
 		const sf::FloatRect& GetCardRectangle() { return CardRectangle; }
 		const sf::FloatRect& GetFullRectangle() { return FullRectangle; }
@@ -47,6 +48,9 @@ public:
 		void ChangeOwner(Owner own, Card& card);
 		const Owner GetOwner() { return mOwner; }
 		const sf::Vector2i GetGridPosition() { return GridPosition; }
+		void SetCardReference(Card* cd) {
+			mSlotsCard = cd;
+		}
 	private:
 		/*Constants*/
 		const float INITIAL_X_OFFSET = 535.0f;
@@ -57,7 +61,7 @@ public:
 		const float YINCREMENT = 350.0f;
 		const float SLOTWIDTH = 250.0f;
 		const float SLOTHEIGHT = 300.0f;
-
+		Card* mSlotsCard = nullptr;
 		sf::Vector2i GridPosition;
 		sf::FloatRect CardRectangle;
 		sf::FloatRect FullRectangle;
@@ -99,6 +103,8 @@ public:
 	/*Expose Enemy*/
 	Enemy& GetEnemy() { return mEnemy; }
 
+	/*Add Card To Board List*/
+	void AddCard(Card& card, Slot& slt);
 
 private:
 	/*Slot Boarder Flash Animation Timer*/
@@ -115,7 +121,7 @@ private:
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
 	sf::Sprite mSelectionBoarder;
-	sf::Sprite mBatButton;
+	UIButton mBatButton;
 	int mPlayerScore = 0;
 	int mEnemyScore = 0;
 	sf::Text mPlayerScoreText;
@@ -140,6 +146,9 @@ private:
 	Slot C1 = { 0, 2 };
 	Slot C2 = { 1, 2 };
 	Slot C3 = { 2, 2 };
+
+	/*Boards Card List*/
+	std::vector<Card*> mBoardCards;
 
 	WinState mGameWinState = WinState::GameRunning;
 

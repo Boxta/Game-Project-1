@@ -15,10 +15,8 @@ void Card::SetDrawRectangle(sf::IntRect rect)
 	mSprite.setTextureRect(rect);
 }
 
-
-
 Card::Card(float positionx, float positiony, 
-	std::string name, 
+	sf::String name, 
 	int U, 
 	int D, 
 	int L, 

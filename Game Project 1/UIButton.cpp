@@ -1,17 +1,15 @@
 #include "UIButton.h"
 
-
-
 UIButton::UIButton(CmnStore& str)
 	:
 	mCmnStore(str)
 {
-	
 }
 
 
 UIButton::~UIButton()
 {
+	delete mAnimatedSprite;
 }
 
 bool UIButton::CheckIfClicked(int xpos, int ypos)
@@ -19,52 +17,50 @@ bool UIButton::CheckIfClicked(int xpos, int ypos)
 	return mRectangle.contains(xpos, ypos);
 }
 
-void UIButton::Initiate(int x, int y, sf::String txt)
+void UIButton::Initiate(int x, int y, 
+	sf::String txt, 
+	int textSize,
+	sf::String texName,
+	const int frameCount,
+	const int frameWidth,
+	const int frameHeight)
 {
-	/*Set Initial Position*/
-	mXPosition = x;
-	mYPosition = y;
-
 	/*Set Text*/
 	mText1.setString(txt);
 	mText1.setFont(mCmnStore.GetFontRef("System"));
-	mText1.setPosition(
-		sf::Vector2f((float(mXPosition) + (WIDTH / 2) - 
-			(mText1.getString().getSize() * 9)),
-		(float(mYPosition) + HEIGHT / 2) - 16));
-	mText1.setColor(sf::Color::White);
 	mText1.setStyle(mText1.Bold);
+	mText1.setCharacterSize(textSize);
+	mText1.setPosition((x + (frameWidth / 2)) - (mText1.getLocalBounds().width / 2), 
+		(y + (frameHeight / 2)) - (mText1.getLocalBounds().height));
 
-	/*Set Initial Texture Rectangle*/
-	mTextureRectangle.left = mTextureXPosition * WIDTH;
-	mTextureRectangle.top = mTextureYPosition * HEIGHT;
-	mTextureRectangle.width = WIDTH;
-	mTextureRectangle.height = HEIGHT;
+	/*Set Click Rectangle*/
+	mRectangle.left = x;
+	mRectangle.top = y;
+	mRectangle.width = frameWidth;
+	mRectangle.height = frameHeight;
 
-	/*Set Initial Screen Rectangle*/
-	mRectangle.left = mXPosition;
-	mRectangle.top = mYPosition;
-	mRectangle.width = WIDTH;
-	mRectangle.height = HEIGHT;
+	/*Animation*/
+	AnimatedSprite::Animation Animation1 = { 0 , frameCount - 1, 0.5f };
+	std::vector<AnimatedSprite::Animation> mAnimations;
+	mAnimations.push_back(Animation1);
 
-	/*Setup Button Sprite Using Initial Rectangles*/
-	mButtonSprite.setTexture(mCmnStore.GetTextureRef("BaseButtons"));
-	mButtonSprite.setTextureRect(mTextureRectangle);
-	mButtonSprite.setPosition(float(mXPosition), float(mYPosition));
+	/*Setup Animated Sprite*/
+	mAnimatedSprite = new AnimatedSprite( mCmnStore.GetTextureRef(texName),
+		frameWidth, frameHeight, x, y, mAnimations, 0, 0);
+}
 
+void UIButton::Update(float dt)
+{
+	mAnimatedSprite->Update(dt);
 }
 
 void UIButton::Draw(sf::RenderWindow & wnd)
 {
-	if (mIsPressed)
-	{
-		mButtonSprite.setColor(sf::Color::Red);
-		wnd.draw(mButtonSprite);
-	}
-	else
-	{
-		mButtonSprite.setColor(sf::Color::White);
-		wnd.draw(mButtonSprite);
-	}
+	mAnimatedSprite->Draw(wnd);
 	wnd.draw(mText1);
+}
+
+void UIButton::AnimationToggle(bool val)
+{
+	mAnimatedSprite->setAnimation(val);
 }
