@@ -30,6 +30,7 @@ private:
 	const float mName_XOffset = 80.0f;
 	const float mName_YOffset = 20.0f;
 	sf::Sprite mSprite;
+	sf::Sprite mCardBackSprite;
 	std::vector<Card> CardDeck;
 	std::vector<Card>::iterator DeckIterator;
 	unsigned int mCardDeckIterator = 0;

@@ -115,6 +115,7 @@ private:
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
 	sf::Sprite mSelectionBoarder;
+	sf::Sprite mBatButton;
 	int mPlayerScore = 0;
 	int mEnemyScore = 0;
 	sf::Text mPlayerScoreText;

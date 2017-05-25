@@ -23,6 +23,8 @@ Game::Game()
 	GetCommonStore().AddTexture("TestCard", "Media\\Cards.png");
 	GetCommonStore().AddTexture("SelectBoarder", "Media\\BoardSelect.png");
 	GetCommonStore().AddTexture("Logo", "Media\\Logo1.png");
+	GetCommonStore().AddTexture("CardBack", "Media\\CardBack.png");
+	GetCommonStore().AddTexture("BatButtons", "Media\\BatButtons.png");
 
 	/*Load Common Fonts*/
 	GetCommonStore().AddFont("System", "Media/font2.ttf");

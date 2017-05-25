@@ -56,6 +56,8 @@ void BoardState::Initiate()
 	mBackgroundImage.setPosition(0.0f, 0.0f);
 
 	mSelectionBoarder.setTexture(mGameReference.GetCommonStore().GetTextureRef("SelectBoarder"));
+
+	mBatButton.setTexture(mGameReference.GetCommonStore().GetTextureRef("BatButtons"));
 }
 
 void BoardState::HandleInput()
@@ -113,6 +115,42 @@ void BoardState::Update(float dt)
 			}
 		}
 	}
+
+	mPlayerScore = 0;
+	mEnemyScore = 0;
+
+	/*Calculate Score*/
+	for (auto& R : mSlots)
+	{
+		if (R.GetIsUsed() && R.GetOwner() == Slot::Owner::Player_Owned)
+		{
+			mPlayerScore++;
+		}
+		if (R.GetIsUsed() && R.GetOwner() == Slot::Owner::Enemy_Owned)
+		{
+			mEnemyScore++;
+		}
+	}
+	/*Set Win State*/
+	if ((mEnemyScore + mPlayerScore) >= 8)
+	{
+		if (mEnemyScore < mPlayerScore)
+		{
+			mGameWinState = WinState::PlayerWin;
+		}
+		else if (mEnemyScore > mPlayerScore)
+		{
+			mGameWinState = WinState::EnemyWin;
+		}
+		else if (mEnemyScore == mPlayerScore)
+		{
+			mGameWinState = WinState::Tie;
+		}
+	}
+
+	/*Convert Score Ints To Strings For Draw*/
+	mEnemyScoreText.setString(std::to_string(mEnemyScore));
+	mPlayerScoreText.setString(std::to_string(mPlayerScore));
 }
 
 void BoardState::Draw()
@@ -229,41 +267,6 @@ BoardState::Slot& BoardState::GetSlot(int x, int y)
 void BoardState::ToogleTurn()
 {
 	mIsTurning = true;
-	mPlayerScore = 0;
-	mEnemyScore = 0;
-
-	/*Calculate Score*/
-	for (auto& R : mSlots)
-	{
-		if (R.GetIsUsed() && R.GetOwner() == Slot::Owner::Player_Owned)
-		{
-			mPlayerScore++;
-		}
-		if(R.GetIsUsed() && R.GetOwner() == Slot::Owner::Enemy_Owned)
-		{
-			mEnemyScore++;
-		}
-	}
-	/*Set Win State*/
-	if ((mEnemyScore + mPlayerScore) >= 8)
-	{
-		if (mEnemyScore < mPlayerScore)
-		{
-			mGameWinState = WinState::PlayerWin;
-		}
-		else if (mEnemyScore > mPlayerScore)
-		{
-			mGameWinState = WinState::EnemyWin;
-		}
-		else if (mEnemyScore == mPlayerScore)
-		{
-			mGameWinState = WinState::Tie;
-		}
-	}
-
-	/*Convert Score Ints To Strings For Draw*/
-	mEnemyScoreText.setString(std::to_string(mEnemyScore));
-	mPlayerScoreText.setString(std::to_string(mPlayerScore));
 }
 
 void BoardState::Slot::ChangeOwner(Owner own, Card& crd)
