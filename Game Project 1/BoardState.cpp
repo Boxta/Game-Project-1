@@ -208,9 +208,18 @@ void BoardState::HandleEvents(sf::Event & ev)
 			const int xX = sf::Mouse::getPosition(mGameReference.GetWindow()).x;
 			const int yY = sf::Mouse::getPosition(mGameReference.GetWindow()).y;
 
-			/*Process Clicks Unique to Board being in Select State*/
+			/*Process Clicks When Board Is In Select State*/
 			if (mSelectSlotState)
 			{
+				/*Process Player Clicking Their Selected ard Again*/
+				if (mGameReference.GetPlayer().GetTopCard().GetRectangle().contains(float(xX), float(yY)))
+				{
+					mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Free);
+					mSelectSlotState = false;
+					return;
+				}
+
+				/*Process Player Clicking A Board Slot*/
 				for (auto& c : mSlots)
 				{
 					if (c.GetCardRectangle().contains(float(xX), float(yY)) &&
@@ -230,42 +239,16 @@ void BoardState::HandleEvents(sf::Event & ev)
 				/*Check Click For Button*/
 				if (mBatButton.GetRectangle().contains(xX, yY))
 				{
-					mBatButton.AnimationToggle(false);
+					mGameReference.GetPlayer().CycleDeck();
 				}
-				/*
-				if (mGameReference.GetPlayer().GetDeckCount() > 0 &&
-					mGameReference.GetPlayer().GetTopCard().GetRectangle().contains(float(xX), float(yY)))
+				else if (mGameReference.GetPlayer().GetDeckCount() > 0 &&
+					mGameReference.GetPlayer().GetTopCard().GetRectangle().contains(float(xX), float(yY)) &&
+						mGameReference.GetPlayer().GetTopCard().GetState() == Card::CardState::Free)
 				{
-					if (mGameReference.GetPlayer().GetTopCard().GetState() == Card::CardState::Free)
-					{
-						/*Select Card and Set Board To Selected State
+						/*Select Card and Set Board To Selected State*/
 						mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Selected);
 						mSelectSlotState = true;
-					}
-					else
-					{
-						/*Free Card and Set Board To Free State
-						mGameReference.GetPlayer().GetTopCard().SetState(Card::CardState::Free);
-						mSelectSlotState = false;
-					}
 				}
-				*/
-			}
-		}
-
-		/*Handle Right Mouse Clicks*/
-		if (ev.type == sf::Event::MouseButtonPressed &&
-			ev.mouseButton.button == sf::Mouse::Right)
-		{
-			/*Capture Mouse Coords*/
-			const int xX = sf::Mouse::getPosition(mGameReference.GetWindow()).x;
-			const int yY = sf::Mouse::getPosition(mGameReference.GetWindow()).y;
-
-			if (mGameReference.GetPlayer().GetDeckCount() > 0 &&
-				mGameReference.GetPlayer().GetTopCard().GetRectangle().contains(float(xX), float(yY)))
-			{
-				mSelectSlotState = false;
-				mGameReference.GetPlayer().CycleDeck();
 			}
 		}
 	}
@@ -288,7 +271,7 @@ void BoardState::ToogleTurn()
 
 void BoardState::AddCard(Card& card, Slot& slt)
 {
-	Card *temp = new Card(int(slt.GetCardRectangle().left), int(slt.GetCardRectangle().top),
+	Card *temp = new Card(slt.GetCardRectangle().left, slt.GetCardRectangle().top,
 		card.GetName(),
 		card.GetUp(), card.GetDown(), card.GetLeft(), card.GetRight(),
 		mGameReference.GetCommonStore(),
@@ -298,24 +281,21 @@ void BoardState::AddCard(Card& card, Slot& slt)
 	//Consider Slot ChangeOwner
 }
 
-void BoardState::Slot::ChangeOwner(Owner own, Card& crd)
+void BoardState::Slot::ChangeOwner(Owner own)
 {
 	switch (own)
 	{
 	case Owner::None:
 		mIsUsed = false;
 		mOwner = Owner::None;
-		crd.ChangeOwner(Card::Owner::None);
 		break;
 	case Owner::Player_Owned:
 		mIsUsed = true;
 		mOwner = Owner::Player_Owned;
-		crd.ChangeOwner(Card::Owner::Player_Owned);
 		break;
 	case Owner::Enemy_Owned:
 		mIsUsed = true;
 		mOwner = Owner::Enemy_Owned;
-		crd.ChangeOwner(Card::Owner::Enemy_Owned);
 		break;
 	}
 }

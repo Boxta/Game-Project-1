@@ -96,10 +96,10 @@ void Enemy::Turn(BoardState& brd)
 					/*Set My Card Into Free Slot*/
 					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
 					mycard.SetState(Card::CardState::Used);
-					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, mycard);
+					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
 						
 					/*Take Primary Player Card*/
-					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, *tempcard);
+					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
 						
 					/*Set Win State To True*/
 					mHasWon = true;
@@ -114,10 +114,10 @@ void Enemy::Turn(BoardState& brd)
 					/*Set My Card Into Free Slot*/
 					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
 					mycard.SetState(Card::CardState::Used);
-					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, mycard);
+					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
 
 					/*Take Primary Player Card*/
-					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, *tempcard);
+					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
 
 					/*Set Win State To True*/
 					mHasWon = true;
@@ -132,10 +132,10 @@ void Enemy::Turn(BoardState& brd)
 					/*Set My Card Into Free Slot*/
 					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
 					mycard.SetState(Card::CardState::Used);
-					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, mycard);
+					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
 
 					/*Take Primary Player Card*/
-					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, *tempcard);
+					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
 
 					/*Set Win State To True*/
 					mHasWon = true;
@@ -150,10 +150,10 @@ void Enemy::Turn(BoardState& brd)
 					/*Set My Card Into Free Slot*/
 					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
 					mycard.SetState(Card::CardState::Used);
-					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, mycard);
+					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
 
 					/*Take Primary Player Card*/
-					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, *tempcard);
+					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
 
 					/*Set Win State To True*/
 					mHasWon = true;
@@ -186,7 +186,7 @@ void Enemy::Turn(BoardState& brd)
 			CardDeck[p].SetState(Card::CardState::Used);
 
 			/*Take Players Slot/Card*/
-			u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, CardDeck[p]);
+			u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
 
 			/*Tell The Board Its Turn Over*/
 			brd.ToogleTurn();

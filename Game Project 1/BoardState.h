@@ -45,7 +45,7 @@ public:
 		const sf::FloatRect& GetCardRectangle() { return CardRectangle; }
 		const sf::FloatRect& GetFullRectangle() { return FullRectangle; }
 		const bool GetIsUsed() { return mIsUsed; }
-		void ChangeOwner(Owner own, Card& card);
+		void ChangeOwner(Owner own);
 		const Owner GetOwner() { return mOwner; }
 		const sf::Vector2i GetGridPosition() { return GridPosition; }
 		void SetCardReference(Card* cd) {
@@ -105,6 +105,9 @@ public:
 
 	/*Add Card To Board List*/
 	void AddCard(Card& card, Slot& slt);
+
+	/*Expose Card Deck*/
+	std::vector<Card*> GetCardDeck() { return mBoardCards; }
 
 private:
 	/*Slot Boarder Flash Animation Timer*/
