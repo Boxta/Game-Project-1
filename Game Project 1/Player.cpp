@@ -11,13 +11,7 @@ rng(rd())
 
 Player::~Player()
 {
-	if (CardDeck.size() > 0)
-	{
-		for (auto& P : CardDeck)
-		{
-			delete P;
-		}
-	}
+
 }
 
 void Player::Initiate(float x, float y, 
@@ -101,7 +95,8 @@ void Player::CycleDeck()
 	AddCard(CardDeck.front()->GetPosition().x, CardDeck.front()->GetPosition().y,
 		CardDeck.front()->GetName(),
 		CardDeck.front()->GetUp(), CardDeck.front()->GetDown(), CardDeck.front()->GetLeft(), CardDeck.front()->GetRight());
-
+	
+	delete *CardDeck.begin();
 	CardDeck.erase(CardDeck.begin());
 
 	mCardIsDrawn = true;

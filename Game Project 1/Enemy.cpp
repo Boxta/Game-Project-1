@@ -11,6 +11,7 @@ Enemy::Enemy(Game& ref)
 
 Enemy::~Enemy()
 {
+
 }
 
 Card& Enemy::GetCard(const sf::FloatRect id)
@@ -80,6 +81,7 @@ void Enemy::Turn(BoardState& brd)
 				mHasWon = true;
 
 				/*Remove Card From Deck*/
+				delete *CardDeck.begin();
 				CardDeck.erase(CardDeck.begin());
 				break;
 			}
@@ -103,6 +105,7 @@ void Enemy::Turn(BoardState& brd)
 				mHasWon = true;
 
 				/*Remove Card From Deck*/
+				delete *CardDeck.begin();
 				CardDeck.erase(CardDeck.begin());
 				break;
 			}
@@ -126,6 +129,7 @@ void Enemy::Turn(BoardState& brd)
 				mHasWon = true;
 
 				/*Remove Card From Deck*/
+				delete *CardDeck.begin();
 				CardDeck.erase(CardDeck.begin());
 				break;
 			}
@@ -149,6 +153,7 @@ void Enemy::Turn(BoardState& brd)
 				mHasWon = true;
 
 				/*Remove Card From Deck*/
+				delete *CardDeck.begin();
 				CardDeck.erase(CardDeck.begin());
 				break;
 			}
@@ -177,6 +182,7 @@ void Enemy::Turn(BoardState& brd)
 			brd.AddCard((*CardDeck[p]), u);
 
 			/*Remove Card From Deck*/
+			delete *CardDeck.begin();
 			CardDeck.erase(CardDeck.begin());
 
 			/*Tell The Board Its Turn Over*/
@@ -211,6 +217,7 @@ void Enemy::CycleDeck()
 		CardDeck.front()->GetName(),
 		CardDeck.front()->GetUp(), CardDeck.front()->GetDown(), CardDeck.front()->GetLeft(), CardDeck.front()->GetRight());
 
+	delete *CardDeck.begin();
 	CardDeck.erase(CardDeck.begin());
 }
 
