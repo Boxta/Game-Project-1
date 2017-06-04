@@ -23,7 +23,9 @@ public:
 	void ClearDeck();
 	std::vector<Card>& GetDeck() { return CardDeck; }
 	void AddCard(float posx, float posy, std::string name, int U, int D, int L, int R);
+	const bool IsCardDrawn() { return mCardIsDrawn; }
 private:
+	bool mCardIsDrawn = false;
 	sf::Vector2f mHandPositionA;
 	Game& mGameReference;
 	sf::Text mName;
@@ -31,8 +33,10 @@ private:
 	const float mName_YOffset = 20.0f;
 	sf::Sprite mSprite;
 	sf::Sprite mCardBackSprite;
+
+	/*Player Card Deck*/
 	std::vector<Card> CardDeck;
-	std::vector<Card>::iterator DeckIterator;
+
 	unsigned int mCardDeckIterator = 0;
 	bool mIterateDirection = true;
 	bool CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight);

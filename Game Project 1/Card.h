@@ -10,8 +10,7 @@ public:
 	enum CardState
 	{
 		Selected,
-		Free,
-		Used
+		Free
 	};
 	enum Owner
 	{

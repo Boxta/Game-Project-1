@@ -41,7 +41,7 @@ void Enemy::Turn(BoardState& brd)
 
 	bool mHasWon = false;
 
-	/*Try To Win*/
+	/*Find Player Card On The Board (Enemy MUST take second turn currently.)*/
 	for (auto& u : brd.GetSlots())
 	{
 		if (!u.GetIsUsed())
@@ -50,122 +50,116 @@ void Enemy::Turn(BoardState& brd)
 		if (u.GetOwner() == BoardState::Slot::Owner::Enemy_Owned)
 			continue;
 
-		Card* tempcard = nullptr;
-
-		/*Check The Right Deck For The Slots Card*/
-		bool CardInEnemyDeck = false;
-		for (auto& mycard : CardDeck)
-		{
-			if (mycard.GetRectangle() == u.GetCardRectangle())
-			{
-				CardInEnemyDeck = true;
-				tempcard = &GetCard(u.GetCardRectangle());
-			}
-		}
-		if (!CardInEnemyDeck)
-		{
-			tempcard = &mGameReference.GetPlayer().GetCard(u.GetCardRectangle());
-		}
-
-		//Store Potential surrounding slot positions of the slot/card
+		//Create Potential Surrounding Slot Positions
 		const sf::Vector2i DeckCardPosition = { u.GetGridPosition().x, u.GetGridPosition().y };
 		const sf::Vector2i PositionAbove = sf::Vector2i(DeckCardPosition.x, DeckCardPosition.y - 1);
 		const sf::Vector2i PositionDown = sf::Vector2i(DeckCardPosition.x, DeckCardPosition.y + 1);
 		const sf::Vector2i PositionLeft = sf::Vector2i(DeckCardPosition.x - 1, DeckCardPosition.y);
 		const sf::Vector2i PositionRight = sf::Vector2i(DeckCardPosition.x + 1, DeckCardPosition.y);
 
-		/*Find A Card To Beat The Players Card*/
-		for (auto& mycard : CardDeck)
+
+		/*Check Surrounding Slot Positions Are Valid Board Slot Positions*/
+		if (CheckSafeBoardPosition(PositionAbove, brd.mWidth, brd.mHeight))
 		{
-			if (mHasWon)
-				continue;
+			/*Catch Board Slot*/
+			BoardState::Slot& slt = brd.GetSlot(PositionAbove.x, PositionAbove.y);
 
-			/*Cycle Until An Unused Card Is Found*/
-			if (mycard.GetState() == Card::CardState::Used)
-				continue;
-
-			/*Check Surrounding Slot Positions Are Valid Board Slot Positions*/
-			if (CheckSafeBoardPosition(PositionAbove, brd.mWidth, brd.mHeight) && !mHasWon)
+			if (!slt.GetIsUsed() &&
+				GetTopCard().GetDown() > u.GetCardReference()->GetUp())
 			{
-				/*Get Board Slot At Safe Position*/
-				BoardState::Slot& slt = brd.GetSlot(PositionAbove.x, PositionAbove.y);
+				/*Set My Card Into Free Slot*/
+				GetTopCard().SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
 
-				if (!slt.GetIsUsed() &&
-					mycard.GetDown() > tempcard->GetUp())
-				{
-					/*Set My Card Into Free Slot*/
-					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
-					mycard.SetState(Card::CardState::Used);
-					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
-						
-					/*Take Primary Player Card*/
-					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
-						
-					/*Set Win State To True*/
-					mHasWon = true;
-				}
-			}
-			if (CheckSafeBoardPosition(PositionDown, brd.mWidth, brd.mHeight) && !mHasWon)
-			{
-				BoardState::Slot& slt = brd.GetSlot(PositionDown.x, PositionDown.y);
-				if (!slt.GetIsUsed() &&
-					mycard.GetUp() > tempcard->GetDown())
-				{
-					/*Set My Card Into Free Slot*/
-					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
-					mycard.SetState(Card::CardState::Used);
-					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
+				/*Add Enemies Player Card To Board Card Deck*/
+				brd.AddCard(GetTopCard(), slt);
 
-					/*Take Primary Player Card*/
-					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
+				/*Take Primary Player Card*/
+				u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, u.GetCardReference());
 
-					/*Set Win State To True*/
-					mHasWon = true;
-				}
-			}
-			if (CheckSafeBoardPosition(PositionLeft, brd.mWidth, brd.mHeight) && !mHasWon)
-			{
-				BoardState::Slot& slt = brd.GetSlot(PositionLeft.x, PositionLeft.y);
-				if (!slt.GetIsUsed() &&
-					mycard.GetRight() > tempcard->GetLeft())
-				{
-					/*Set My Card Into Free Slot*/
-					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
-					mycard.SetState(Card::CardState::Used);
-					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
+				/*Set Win State To True*/
+				mHasWon = true;
 
-					/*Take Primary Player Card*/
-					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
-
-					/*Set Win State To True*/
-					mHasWon = true;
-				}
-			}
-			if (CheckSafeBoardPosition(PositionRight, brd.mWidth, brd.mHeight) && !mHasWon)
-			{
-				BoardState::Slot& slt = brd.GetSlot(PositionRight.x, PositionRight.y);
-				if (!slt.GetIsUsed() &&
-					mycard.GetLeft() > tempcard->GetRight())
-				{
-					/*Set My Card Into Free Slot*/
-					mycard.SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
-					mycard.SetState(Card::CardState::Used);
-					slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
-
-					/*Take Primary Player Card*/
-					u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
-
-					/*Set Win State To True*/
-					mHasWon = true;
-				}
+				/*Remove Card From Deck*/
+				CardDeck.erase(CardDeck.begin());
+				break;
 			}
 		}
+		if (CheckSafeBoardPosition(PositionDown, brd.mWidth, brd.mHeight))
+		{
+			BoardState::Slot& slt = brd.GetSlot(PositionDown.x, PositionDown.y);
+			if (!slt.GetIsUsed() &&
+				GetTopCard().GetUp() > u.GetCardReference()->GetDown())
+			{
+				/*Set My Card Into Free Slot*/
+				GetTopCard().SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+					
+				/*Add Enemies Player Card To Board Card Deck*/
+				brd.AddCard(GetTopCard(), slt);
+
+				/*Take Primary Player Card*/
+				u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, u.GetCardReference());
+
+				/*Set Win State To True*/
+				mHasWon = true;
+
+				/*Remove Card From Deck*/
+				CardDeck.erase(CardDeck.begin());
+				break;
+			}
+		}
+		if (CheckSafeBoardPosition(PositionLeft, brd.mWidth, brd.mHeight))
+		{
+			BoardState::Slot& slt = brd.GetSlot(PositionLeft.x, PositionLeft.y);
+			if (!slt.GetIsUsed() &&
+				GetTopCard().GetRight() > u.GetCardReference()->GetLeft())
+			{
+				/*Set My Card Into Free Slot*/
+				GetTopCard().SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+					
+				/*Add Enemies Player Card To Board Card Deck*/
+				brd.AddCard(GetTopCard(), slt);
+
+				/*Take Primary Player Card*/
+				u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, u.GetCardReference());
+
+				/*Set Win State To True*/
+				mHasWon = true;
+
+				/*Remove Card From Deck*/
+				CardDeck.erase(CardDeck.begin());
+				break;
+			}
+		}
+		if (CheckSafeBoardPosition(PositionRight, brd.mWidth, brd.mHeight))
+		{
+			BoardState::Slot& slt = brd.GetSlot(PositionRight.x, PositionRight.y);
+			if (!slt.GetIsUsed() &&
+				GetTopCard().GetLeft() > u.GetCardReference()->GetRight())
+			{
+				/*Set My Card Into Free Slot*/
+				GetTopCard().SetPosition(slt.GetCardRectangle().left, slt.GetCardRectangle().top);
+					
+				/*Add Enemies Player Card To Board Card Deck*/
+				brd.AddCard(GetTopCard(), slt);
+
+				/*Take Primary Player Card*/
+				u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, u.GetCardReference());
+
+				/*Set Win State To True*/
+				mHasWon = true;
+
+				/*Remove Card From Deck*/
+				CardDeck.erase(CardDeck.begin());
+				break;
+			}
+		}
+		
 	}
 	
 	/*If No Win Then Handle Loss*/
 	if (!mHasWon)
 	{
-		/*Setup Random Generator*/
+		/*Set Range To Remaining Cards Available*/
 		std::uniform_int_distribution<int> uni(0, CardDeck.size() - 1); // guaranteed unbiased
 
 		for (auto& u : brd.GetSlots())
@@ -174,25 +168,26 @@ void Enemy::Turn(BoardState& brd)
 			if (u.GetIsUsed())
 				continue;
 
-			Card* tempcard = nullptr;
-			int p = uni(rng);
-			do
-			{
-				p = uni(rng);
-			} while (CardDeck[p].GetState() == Card::CardState::Used);
+			const int p = uni(rng);
 
-			/*Change Enemy Card Values*/
+			/*Set My Card Into Free Slot*/
 			CardDeck[p].SetPosition(u.GetCardRectangle().left, u.GetCardRectangle().top);
-			CardDeck[p].SetState(Card::CardState::Used);
 
-			/*Take Players Slot/Card*/
-			u.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned);
+			/*Add Enemies Player Card To Board Card Deck*/
+			brd.AddCard(CardDeck[p], u);
+
+			/*Remove Card From Deck*/
+			CardDeck.erase(CardDeck.begin());
 
 			/*Tell The Board Its Turn Over*/
 			brd.ToogleTurn();
 			break;
 		}
 	}
+	
+	mCardIsDrawn = false;
+	brd.ToogleTurn();
+
 }
 
 void Enemy::AddCard(float posx, float posy, std::string name, int U, int D, int L, int R)
@@ -204,6 +199,20 @@ void Enemy::AddCard(float posx, float posy, std::string name, int U, int D, int 
 		sf::IntRect(250, 300, 250, 300),
 		Card::Owner::Enemy_Owned };
 	CardDeck.push_back(aCard);
+}
+
+void Enemy::CycleDeck()
+{
+	Card temp = GetTopCard();
+	CardDeck.erase(CardDeck.begin());
+	CardDeck.push_back(temp);
+	GetTopCard().SetPosition(1520.0f, 150.0f);
+	mCardIsDrawn = true;
+}
+
+Card& Enemy::GetTopCard()
+{
+	return CardDeck.front();
 }
 
 bool Enemy::CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight)
@@ -233,12 +242,14 @@ bool Enemy::CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardhe
 void Enemy::Initiate(float x, float y,
 	std::string name)
 {
-	mHandPositionA = { 1530.0f, 150.0f };
-	
 	mSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("EnemyPicture"));
 	mSprite.setPosition(x, y);
 	mName.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mName.setString(name);
+
+	/*Setup Card Back*/
+	mCardBackSprite.setTexture(mGameReference.GetCommonStore().GetTextureRef("CardBack"));
+	mCardBackSprite.setPosition(1620.0f, 50.0f);
 
 	mName.setFillColor(sf::Color::Black);
 	mName.setCharacterSize(18);
@@ -247,6 +258,9 @@ void Enemy::Initiate(float x, float y,
 	AddCard(0.0f, 0.0f, "Planet", 3, 4, 3, 4);
 	AddCard(0.0f, 0.0f, "Gemini", 3, 4, 3, 4);
 	AddCard(0.0f, 0.0f, "Roadie", 3, 4, 3, 4);
+
+	/*Set Initial Top Card Position*/
+	GetTopCard().SetPosition(1520.0f, 150.0f);
 }
 
 void Enemy::Update(const float dt)
@@ -262,41 +276,17 @@ void Enemy::Draw()
 	if (CardDeck.size() == 0)
 		return;
 
-	/*Draw Player Cards In Deck*/
-	for (unsigned int T = 0; T < CardDeck.size(); T++)
+	if (CardDeck.size() == 1 && !mCardIsDrawn)
 	{
-		if (T < mCardDeckIterator &&
-			CardDeck[T].GetState() != Card::CardState::Used)
-		{
-			CardDeck[T].SetPosition(mHandPositionA.x - 125.0f, mHandPositionA.y - 80.0f);
-			CardDeck[T].Draw(mGameReference.GetWindow());
-		}
+			mGameReference.GetWindow().draw(mCardBackSprite);
 	}
-	for (unsigned int T = 0; T < CardDeck.size(); T++)
+	else if (CardDeck.size() > 1)
 	{
-		if (T > mCardDeckIterator &&
-			CardDeck[T].GetState() != Card::CardState::Used)
-		{
-			CardDeck[T].SetPosition(mHandPositionA.x + 125.0f, mHandPositionA.y - 80.0f);
-			CardDeck[T].Draw(mGameReference.GetWindow());
-		}
+		mGameReference.GetWindow().draw(mCardBackSprite);
 	}
-	for (unsigned int T = 0; T < CardDeck.size(); T++)
-	{
-		if (T == mCardDeckIterator &&
-			CardDeck[T].GetState() != Card::CardState::Used)
-		{
-			CardDeck[mCardDeckIterator].SetPosition(mHandPositionA.x, mHandPositionA.y);
-			CardDeck[mCardDeckIterator].Draw(mGameReference.GetWindow());
-		}
-	}
+		
 
-	/*Draw Used Cards On Board*/
-	for (unsigned int T = 0; T < CardDeck.size(); T++)
-	{
-		if (CardDeck[T].GetState() == Card::CardState::Used)
-		{
-			CardDeck[T].Draw(mGameReference.GetWindow());
-		}
-	}
+	/*Draw Top Card*/
+	if (mCardIsDrawn)
+		GetTopCard().Draw(mGameReference.GetWindow());
 }

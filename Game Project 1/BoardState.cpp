@@ -85,22 +85,22 @@ void BoardState::Update(float dt)
 	
 
 	/*Countdown Enemy Turn*/
-	if (mIsTurning)
+	if (mIsTurning && mCurrentTurn == TurnState::EnemyTurn)
+	{
+		mIsTurning = false;
+		mCurrentTurn = TurnState::PlayerTurn;
+	}
+	else if (mIsTurning && mCurrentTurn == TurnState::PlayerTurn)
 	{
 		mTurnCounter += dt;
+		mEnemy.CycleDeck();
+		mEnemy.SetCardDrawn(true);
 		if (mTurnCounter > mTurnWait)
 		{
 			mIsTurning = false;
 			mTurnCounter = 0.0f;
-			if (mCurrentTurn == TurnState::EnemyTurn)
-			{
-				mCurrentTurn = TurnState::PlayerTurn;
-			}
-			else if (mCurrentTurn == TurnState::PlayerTurn)
-			{
-				mIsTurning = true; mCurrentTurn = TurnState::EnemyTurn;
-				mEnemy.Turn(*this);
-			}
+			mCurrentTurn = TurnState::EnemyTurn;
+			mEnemy.Turn(*this);
 		}
 	}
 
@@ -184,6 +184,11 @@ void BoardState::Draw()
 	
 	mBatButton.Draw(mGameReference.GetWindow());
 
+	for (iterator = mBoardCards.begin(), end = mBoardCards.end(); iterator != end; ++iterator)
+	{
+		(*iterator)->Draw(mGameReference.GetWindow());
+	}
+
 	/*Draw Scores*/
 	mGameReference.GetWindow().draw(mPlayerScoreText);
 	mGameReference.GetWindow().draw(mEnemyScoreText);
@@ -237,7 +242,7 @@ void BoardState::HandleEvents(sf::Event & ev)
 			else
 			{
 				/*Check Click For Button*/
-				if (mBatButton.GetRectangle().contains(xX, yY))
+				if (mBatButton.GetRectangle().contains(xX, yY) && !mGameReference.GetPlayer().IsCardDrawn())
 				{
 					mGameReference.GetPlayer().CycleDeck();
 				}
@@ -271,31 +276,52 @@ void BoardState::ToogleTurn()
 
 void BoardState::AddCard(Card& card, Slot& slt)
 {
+	/*Create New Board Card From fValue*/
 	Card *temp = new Card(slt.GetCardRectangle().left, slt.GetCardRectangle().top,
 		card.GetName(),
 		card.GetUp(), card.GetDown(), card.GetLeft(), card.GetRight(),
 		mGameReference.GetCommonStore(),
 		card.GetTextureRectangle(), card.GetOwner());
+	
+	/*Associate the Slot and the Card*/
 	slt.SetCardReference(temp);
+	
+	/*Ensure the Slot and Card Owner are Set*/
+	if (card.GetOwner() == Card::Owner::None)
+	{
+		slt.ChangeOwner(BoardState::Slot::Owner::None, temp);
+	}
+	else if (card.GetOwner() == Card::Owner::Player_Owned)
+	{
+		slt.ChangeOwner(BoardState::Slot::Owner::Player_Owned, temp);
+	}
+	else if (card.GetOwner() == Card::Owner::Enemy_Owned)
+	{
+		slt.ChangeOwner(BoardState::Slot::Owner::Enemy_Owned, temp);
+	}
+
+	/*Push the new card into the board card deck*/
 	mBoardCards.push_back(temp);
-	//Consider Slot ChangeOwner
 }
 
-void BoardState::Slot::ChangeOwner(Owner own)
+void BoardState::Slot::ChangeOwner(Owner own, Card* ref)
 {
 	switch (own)
 	{
 	case Owner::None:
 		mIsUsed = false;
 		mOwner = Owner::None;
+		ref->ChangeOwner(Card::Owner::None);
 		break;
 	case Owner::Player_Owned:
 		mIsUsed = true;
 		mOwner = Owner::Player_Owned;
+		ref->ChangeOwner(Card::Owner::Player_Owned);
 		break;
 	case Owner::Enemy_Owned:
 		mIsUsed = true;
 		mOwner = Owner::Enemy_Owned;
+		ref->ChangeOwner(Card::Owner::Enemy_Owned);
 		break;
 	}
 }

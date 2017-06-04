@@ -21,15 +21,22 @@ public:
 	void Turn(BoardState& brd);
 	std::vector<Card>& GetDeck() { return CardDeck; }
 	void AddCard(float posx, float posy, std::string name, int U, int D, int L, int R);
+	void SetCardDrawn(bool tmp) { mCardIsDrawn = tmp; }
+	void CycleDeck();
 private:
+	
+	bool mCardIsDrawn = false;
 	sf::Vector2f mHandPositionA;
 	Game& mGameReference;
 	sf::Text mName;
 	const float mName_XOffset = 80.0f;
 	const float mName_YOffset = 20.0f;
 	sf::Sprite mSprite;
+	sf::Sprite mCardBackSprite;
+	/*Player Card Deck*/
 	std::vector<Card> CardDeck;
-	std::vector<Card>::iterator CardDeckIterator;
+
+	Card& GetTopCard();
 	unsigned int mCardDeckIterator = 0;
 	bool CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight);
 	bool mIterateDirection = true;
