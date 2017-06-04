@@ -11,6 +11,13 @@ rng(rd())
 
 Player::~Player()
 {
+	if (CardDeck.size() > 0)
+	{
+		for (auto& P : CardDeck)
+		{
+			delete P;
+		}
+	}
 }
 
 void Player::Initiate(float x, float y, 
@@ -32,13 +39,10 @@ void Player::Initiate(float x, float y,
 	mCardBackSprite.setPosition(50.0f, 50.0f);
 
 	/*Create Player Cards*/
-	AddCard(0.0f, 0.0f, "P1", 5, 7, 3, 14);
-	AddCard(0.0f, 0.0f, "Hello", 15, 7, 2, 2);
-	AddCard(0.0f, 0.0f, "Card1", 2, 5, 13, 8);
-	AddCard(0.0f, 0.0f, "Owch", 1, 6, 9, 4);
-
-	/*Set Initial Top Card Position*/
-	GetTopCard().SetPosition(250.0f, 150.0f);
+	AddCard(250.0f, 150.0f, "P1", 5, 7, 3, 14);
+	AddCard(250.0f, 150.0f, "Hello", 15, 7, 2, 2);
+	AddCard(250.0f, 150.0f, "Card1", 2, 5, 13, 8);
+	AddCard(250.0f, 150.0f, "Owch", 1, 6, 9, 4);
 }
 
 void Player::Update(const float dt)
@@ -75,26 +79,31 @@ void Player::Draw()
 
 Card& Player::GetTopCard()
 {
-	return CardDeck.front();
+	return (*CardDeck.front());
 }
 
 Card& Player::GetCard(const sf::FloatRect id)
 {
-	for (auto& U : CardDeck)
+	for (auto U : CardDeck)
 	{
-		if (U.GetRectangle() == id)
+		if ((*U).GetRectangle() == id)
 		{
-			return U;
+			return (*U);
 		}
 	}
 }
 
 void Player::CycleDeck()
 {
-	Card temp = GetTopCard();
+	if (CardDeck.size() == 0)
+		return;
+
+	AddCard(CardDeck.front()->GetPosition().x, CardDeck.front()->GetPosition().y,
+		CardDeck.front()->GetName(),
+		CardDeck.front()->GetUp(), CardDeck.front()->GetDown(), CardDeck.front()->GetLeft(), CardDeck.front()->GetRight());
+
 	CardDeck.erase(CardDeck.begin());
-	CardDeck.push_back(temp);
-	GetTopCard().SetPosition(250.0f, 150.0f);
+
 	mCardIsDrawn = true;
 }
 
@@ -195,12 +204,12 @@ void Player::ClearDeck()
 
 void Player::AddCard(float posx, float posy, std::string name, int U, int D, int L, int R)
 {
-	Card aCard = { posx, posy,
+	Card* aCard = new Card(posx, posy,
 		name,
 		U, D, L, R,
 		mGameReference.GetCommonStore(),
 		sf::IntRect(0, 0, 250, 300),
-		Card::Owner::Player_Owned };
+		Card::Owner::Player_Owned );
 	CardDeck.push_back(aCard);
 }
 

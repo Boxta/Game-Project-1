@@ -21,9 +21,10 @@ public:
 	void CycleDeck();
 	void Turn(BoardState& brd, float xX, float yY);
 	void ClearDeck();
-	std::vector<Card>& GetDeck() { return CardDeck; }
+	std::vector<Card*>& GetDeck() { return CardDeck; }
 	void AddCard(float posx, float posy, std::string name, int U, int D, int L, int R);
 	const bool IsCardDrawn() { return mCardIsDrawn; }
+	void SetCardDrawn(bool tmp) { mCardIsDrawn = tmp; }
 private:
 	bool mCardIsDrawn = false;
 	sf::Vector2f mHandPositionA;
@@ -35,7 +36,7 @@ private:
 	sf::Sprite mCardBackSprite;
 
 	/*Player Card Deck*/
-	std::vector<Card> CardDeck;
+	std::vector<Card*> CardDeck;
 
 	unsigned int mCardDeckIterator = 0;
 	bool mIterateDirection = true;

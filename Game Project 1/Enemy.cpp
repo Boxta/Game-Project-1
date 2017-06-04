@@ -13,13 +13,13 @@ Enemy::~Enemy()
 {
 }
 
-Card & Enemy::GetCard(const sf::FloatRect id)
+Card& Enemy::GetCard(const sf::FloatRect id)
 {
-	for (auto& U : CardDeck)
+	for (auto U : CardDeck)
 	{
-		if (U.GetRectangle() == id)
+		if ((*U).GetRectangle() == id)
 		{
-			return U;
+			return (*U);
 		}
 	}
 }
@@ -171,10 +171,10 @@ void Enemy::Turn(BoardState& brd)
 			const int p = uni(rng);
 
 			/*Set My Card Into Free Slot*/
-			CardDeck[p].SetPosition(u.GetCardRectangle().left, u.GetCardRectangle().top);
+			(*CardDeck[p]).SetPosition(u.GetCardRectangle().left, u.GetCardRectangle().top);
 
 			/*Add Enemies Player Card To Board Card Deck*/
-			brd.AddCard(CardDeck[p], u);
+			brd.AddCard((*CardDeck[p]), u);
 
 			/*Remove Card From Deck*/
 			CardDeck.erase(CardDeck.begin());
@@ -185,6 +185,7 @@ void Enemy::Turn(BoardState& brd)
 		}
 	}
 	
+	CycleDeck();
 	mCardIsDrawn = false;
 	brd.ToogleTurn();
 
@@ -192,27 +193,30 @@ void Enemy::Turn(BoardState& brd)
 
 void Enemy::AddCard(float posx, float posy, std::string name, int U, int D, int L, int R)
 {
-	Card aCard = { posx, posy,
+	Card* aCard = new Card(posx, posy,
 		name,
 		U, D, L, R,
 		mGameReference.GetCommonStore(),
 		sf::IntRect(250, 300, 250, 300),
-		Card::Owner::Enemy_Owned };
+		Card::Owner::Enemy_Owned);
 	CardDeck.push_back(aCard);
 }
 
 void Enemy::CycleDeck()
 {
-	Card temp = GetTopCard();
+	if (CardDeck.size() == 0)
+		return;
+
+	AddCard(CardDeck.front()->GetPosition().x, CardDeck.front()->GetPosition().y,
+		CardDeck.front()->GetName(),
+		CardDeck.front()->GetUp(), CardDeck.front()->GetDown(), CardDeck.front()->GetLeft(), CardDeck.front()->GetRight());
+
 	CardDeck.erase(CardDeck.begin());
-	CardDeck.push_back(temp);
-	GetTopCard().SetPosition(1520.0f, 150.0f);
-	mCardIsDrawn = true;
 }
 
 Card& Enemy::GetTopCard()
 {
-	return CardDeck.front();
+	return (*CardDeck.front());
 }
 
 bool Enemy::CheckSafeBoardPosition(sf::Vector2i vec, int boardwidth, int boardheight)
@@ -254,13 +258,13 @@ void Enemy::Initiate(float x, float y,
 	mName.setFillColor(sf::Color::Black);
 	mName.setCharacterSize(18);
 	mName.setPosition(x + mName_XOffset, y + mName_YOffset);
-	AddCard(0.0f, 0.0f, "Dragon", 3, 4, 3, 4);
-	AddCard(0.0f, 0.0f, "Planet", 3, 4, 3, 4);
-	AddCard(0.0f, 0.0f, "Gemini", 3, 4, 3, 4);
-	AddCard(0.0f, 0.0f, "Roadie", 3, 4, 3, 4);
+	AddCard(1520.0f, 150.0f, "Dragon", 3, 4, 3, 4);
+	AddCard(1520.0f, 150.0f, "Planet", 3, 4, 3, 4);
+	AddCard(1520.0f, 150.0f, "Gemini", 3, 4, 3, 4);
+	AddCard(1520.0f, 150.0f, "Roadie", 3, 4, 3, 4);
 
 	/*Set Initial Top Card Position*/
-	GetTopCard().SetPosition(1520.0f, 150.0f);
+	CycleDeck();
 }
 
 void Enemy::Update(const float dt)

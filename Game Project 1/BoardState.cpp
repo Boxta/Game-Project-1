@@ -93,7 +93,6 @@ void BoardState::Update(float dt)
 	else if (mIsTurning && mCurrentTurn == TurnState::PlayerTurn)
 	{
 		mTurnCounter += dt;
-		mEnemy.CycleDeck();
 		mEnemy.SetCardDrawn(true);
 		if (mTurnCounter > mTurnWait)
 		{

@@ -19,7 +19,7 @@ public:
 	Card& GetCard(const sf::FloatRect id);
 	int GetDeckCount() { return CardDeck.size(); }
 	void Turn(BoardState& brd);
-	std::vector<Card>& GetDeck() { return CardDeck; }
+	std::vector<Card*>& GetDeck() { return CardDeck; }
 	void AddCard(float posx, float posy, std::string name, int U, int D, int L, int R);
 	void SetCardDrawn(bool tmp) { mCardIsDrawn = tmp; }
 	void CycleDeck();
@@ -34,7 +34,7 @@ private:
 	sf::Sprite mSprite;
 	sf::Sprite mCardBackSprite;
 	/*Player Card Deck*/
-	std::vector<Card> CardDeck;
+	std::vector<Card*> CardDeck;
 
 	Card& GetTopCard();
 	unsigned int mCardDeckIterator = 0;
