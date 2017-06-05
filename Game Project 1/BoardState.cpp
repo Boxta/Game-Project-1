@@ -88,8 +88,16 @@ void BoardState::Update(float dt)
 	/*Update Player*/
 	mGameReference.GetPlayer().Update(dt);
 
+	/*Game Over Logic*/
+	if (mGameWinState != WinState::GameRunning)
+	{
+		mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60));
+	}
+	
+	/*Game Is Running Logic*/
 	if (mGameWinState == WinState::GameRunning)
 	{
+		/*Update Draw Button Texture*/
 		if (mCurrentTurn == TurnState::PlayerTurn)
 		{
 			if (!mGameReference.GetPlayer().IsCardDrawn())
@@ -113,44 +121,34 @@ void BoardState::Update(float dt)
 		{
 			mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60));
 		}
-	}
-	else
-	{
-		mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60));
-	}
-	/*Countdown Enemy Turn*/
-	if (mIsTurning && mCurrentTurn == TurnState::EnemyTurn)
-	{
-		mTurnIndicator.setTextureRect(sf::IntRect(173, 0, 173, 256));
-		mIsTurning = false;
-		mCurrentTurn = TurnState::PlayerTurn;
-	}
-	else if (mIsTurning && mCurrentTurn == TurnState::PlayerTurn)
-	{
-		/*Turn Counter Increments*/
-		mTurnCounter += dt;
-		
-		/*Alter Objects During Enemy Turn Countdown*/
-		mEnemy.SetCardDrawn(true);
-		mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60)); 
-		mTurnIndicator.setTextureRect(sf::IntRect(0, 0, 173, 256));
 
-		/*Execute Enemy Turn*/
-		if (mTurnCounter > mTurnWait)
+		/*Switch Turns*/
+		if (mIsTurning && mCurrentTurn == TurnState::EnemyTurn)
 		{
-			mCurrentTurn = TurnState::EnemyTurn;
+			mTurnIndicator.setTextureRect(sf::IntRect(173, 0, 173, 256));
 			mIsTurning = false;
-			mTurnCounter = 0.0f;
-			mEnemy.Turn(*this);
+			mCurrentTurn = TurnState::PlayerTurn;
 		}
-	}
+		else if (mIsTurning && mCurrentTurn == TurnState::PlayerTurn)
+		{
+			/*Turn Counter Increments*/
+			mTurnCounter += dt;
 
-	if (mGameWinState != WinState::GameRunning)
-	{
-		//do sumting
-	}
-	if (mGameWinState == WinState::GameRunning)
-	{
+			/*Alter Objects During Enemy Turn Countdown*/
+			mEnemy.SetCardDrawn(true);
+			mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60));
+			mTurnIndicator.setTextureRect(sf::IntRect(0, 0, 173, 256));
+
+			/*Execute Enemy Turn*/
+			if (mTurnCounter > mTurnWait)
+			{
+				mCurrentTurn = TurnState::EnemyTurn;
+				mIsTurning = false;
+				mTurnCounter = 0.0f;
+				mEnemy.Turn(*this);
+			}
+		}
+
 		/*Selected State Boarder Draw Timer*/
 		mSelectFlashCounter += dt;
 		if (mSelectFlashCounter > mSelectFlashTimer)
@@ -166,43 +164,44 @@ void BoardState::Update(float dt)
 				mShowSelectBoarder = false;
 			}
 		}
-	}
 
-	mPlayerScore = 0;
-	mEnemyScore = 0;
+		/*Calculate Score*/
+		mPlayerScore = 0;
+		mEnemyScore = 0;
 
-	/*Calculate Score*/
-	for (auto& R : mSlots)
-	{
-		if (R.GetIsUsed() && R.GetOwner() == Slot::Owner::Player_Owned)
+		for (auto& R : mSlots)
 		{
-			mPlayerScore++;
+			if (R.GetIsUsed() && R.GetOwner() == Slot::Owner::Player_Owned)
+			{
+				mPlayerScore++;
+			}
+			if (R.GetIsUsed() && R.GetOwner() == Slot::Owner::Enemy_Owned)
+			{
+				mEnemyScore++;
+			}
 		}
-		if (R.GetIsUsed() && R.GetOwner() == Slot::Owner::Enemy_Owned)
+
+		/*Convert Score Ints To Strings For Draw*/
+		mEnemyScoreText.setString(std::to_string(mEnemyScore));
+		mPlayerScoreText.setString(std::to_string(mPlayerScore));
+
+		/*Set Win State*/
+		if ((mEnemyScore + mPlayerScore) >= 8)
 		{
-			mEnemyScore++;
+			if (mEnemyScore < mPlayerScore)
+			{
+				mGameWinState = WinState::PlayerWin;
+			}
+			else if (mEnemyScore > mPlayerScore)
+			{
+				mGameWinState = WinState::EnemyWin;
+			}
+			else if (mEnemyScore == mPlayerScore)
+			{
+				mGameWinState = WinState::Tie;
+			}
 		}
 	}
-	/*Set Win State*/
-	if ((mEnemyScore + mPlayerScore) >= 8)
-	{
-		if (mEnemyScore < mPlayerScore)
-		{
-			mGameWinState = WinState::PlayerWin;
-		}
-		else if (mEnemyScore > mPlayerScore)
-		{
-			mGameWinState = WinState::EnemyWin;
-		}
-		else if (mEnemyScore == mPlayerScore)
-		{
-			mGameWinState = WinState::Tie;
-		}
-	}
-
-	/*Convert Score Ints To Strings For Draw*/
-	mEnemyScoreText.setString(std::to_string(mEnemyScore));
-	mPlayerScoreText.setString(std::to_string(mPlayerScore));
 }
 
 void BoardState::Draw()
