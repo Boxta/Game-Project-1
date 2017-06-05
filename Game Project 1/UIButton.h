@@ -43,6 +43,8 @@ public:
 	/*Toggle Animation*/
 	void AnimationToggle(bool val);
 
+	void SetFrame(const int f);
+
 private:
 	/*Common Texture Store Reference*/
 	CmnStore& mCmnStore;

@@ -33,10 +33,10 @@ void Player::Initiate(float x, float y,
 	mCardBackSprite.setPosition(50.0f, 50.0f);
 
 	/*Create Player Cards*/
-	AddCard(250.0f, 150.0f, "P1", 5, 7, 3, 14);
-	AddCard(250.0f, 150.0f, "Hello", 15, 7, 2, 2);
-	AddCard(250.0f, 150.0f, "Card1", 2, 5, 13, 8);
-	AddCard(250.0f, 150.0f, "Owch", 1, 6, 9, 4);
+	AddCard(445.0f, 40.0f, "P1", 5, 7, 3, 14);
+	AddCard(445.0f, 40.0f, "Hello", 15, 7, 2, 2);
+	AddCard(445.0f, 40.0f, "Card1", 2, 5, 13, 8);
+	AddCard(445.0f, 40.0f, "Owch", 1, 6, 9, 4);
 }
 
 void Player::Update(const float dt)
@@ -54,16 +54,6 @@ void Player::Draw()
 	/*If No Cards In Deck Exit*/
 	if (CardDeck.size() == 0)
 		return;
-
-	/*Draw Card Back*/
-	if (CardDeck.size() == 1 && !mCardIsDrawn)
-	{
-			mGameReference.GetWindow().draw(mCardBackSprite);
-	}
-	else if (CardDeck.size() > 1)
-	{
-		mGameReference.GetWindow().draw(mCardBackSprite);
-	}
 
 	/*Draw Top Card*/
 	if(mCardIsDrawn)

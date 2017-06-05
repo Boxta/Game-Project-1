@@ -64,3 +64,8 @@ void UIButton::AnimationToggle(bool val)
 {
 	mAnimatedSprite->setAnimation(val);
 }
+
+void UIButton::SetFrame(const int f)
+{
+	mAnimatedSprite->setFrame(f);
+}

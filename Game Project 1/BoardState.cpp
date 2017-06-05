@@ -4,8 +4,7 @@
 BoardState::BoardState(Game& ref)
 	:
 	mGameReference(ref),
-	mEnemy(ref),
-	mBatButton(mGameReference.GetCommonStore())
+	mEnemy(ref)
 {
 	/*Setup Background*/
 	mBackgroundFill.setFillColor(sf::Color::White);
@@ -16,12 +15,15 @@ BoardState::BoardState(Game& ref)
 	mSlots.push_back(A1);
 	mSlots.push_back(A2);
 	mSlots.push_back(A3);
+	mSlots.push_back(A4);
 	mSlots.push_back(B1);
 	mSlots.push_back(B2);
 	mSlots.push_back(B3);
+	mSlots.push_back(B4);
 	mSlots.push_back(C1);
 	mSlots.push_back(C2);
 	mSlots.push_back(C3);
+	mSlots.push_back(C4);
 }
 
 BoardState::~BoardState()
@@ -44,7 +46,7 @@ void BoardState::Initiate()
 		mInitiated = true;
 
 	/*Setup Enemy*/
-	mEnemy.Initiate(1620.0f, 700.0f, "Donald Trump");
+	mEnemy.Initiate(455.0f, 520.0f, "Donald Trump");
 	
 	/*Setup Text*/
 	mPlayerScoreText.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
@@ -65,8 +67,13 @@ void BoardState::Initiate()
 
 	mSelectionBoarder.setTexture(mGameReference.GetCommonStore().GetTextureRef("SelectBoarder"));
 
-	mBatButton.Initiate(50, 370, "Deal Card", 22 , "BatButtons", 2, 180, 120);
-	mBatButton.AnimationToggle(true);
+	mTurnIndicator.setTexture(mGameReference.GetCommonStore().GetTextureRef("TurnIcons"));
+	mTurnIndicator.setPosition(278.0f, 405.0f);
+	mTurnIndicator.setTextureRect(sf::IntRect(173, 0, 173, 256));
+	// turn xy 173, 256
+	mDrawButton.setTexture(mGameReference.GetCommonStore().GetTextureRef("DrawButtons"));
+	mDrawButton.setPosition(265.0f, 40.0f); 
+	mDrawButton.setTextureRect(sf::IntRect(0, 0, 150, 60));
 }
 
 void BoardState::HandleInput()
@@ -75,30 +82,65 @@ void BoardState::HandleInput()
 
 void BoardState::Update(float dt)
 {
-	mBatButton.Update(dt);
-
 	/*Update Enemy*/
 	mEnemy.Update(dt);
 
 	/*Update Player*/
 	mGameReference.GetPlayer().Update(dt);
-	
 
+	if (mGameWinState == WinState::GameRunning)
+	{
+		if (mCurrentTurn == TurnState::PlayerTurn)
+		{
+			if (!mGameReference.GetPlayer().IsCardDrawn())
+			{
+				if (mDrawButton.getGlobalBounds().contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y))
+				{
+					mDrawButton.setTextureRect(sf::IntRect(300, 0, 150, 60));
+				}
+				else
+				{
+					mDrawButton.setTextureRect(sf::IntRect(0, 0, 150, 60));
+				}
+			}
+			else
+			{
+				mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60));
+			}
+
+		}
+		else if (mCurrentTurn == TurnState::EnemyTurn)
+		{
+			mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60));
+		}
+	}
+	else
+	{
+		mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60));
+	}
 	/*Countdown Enemy Turn*/
 	if (mIsTurning && mCurrentTurn == TurnState::EnemyTurn)
 	{
+		mTurnIndicator.setTextureRect(sf::IntRect(173, 0, 173, 256));
 		mIsTurning = false;
 		mCurrentTurn = TurnState::PlayerTurn;
 	}
 	else if (mIsTurning && mCurrentTurn == TurnState::PlayerTurn)
 	{
+		/*Turn Counter Increments*/
 		mTurnCounter += dt;
+		
+		/*Alter Objects During Enemy Turn Countdown*/
 		mEnemy.SetCardDrawn(true);
+		mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60)); 
+		mTurnIndicator.setTextureRect(sf::IntRect(0, 0, 173, 256));
+
+		/*Execute Enemy Turn*/
 		if (mTurnCounter > mTurnWait)
 		{
+			mCurrentTurn = TurnState::EnemyTurn;
 			mIsTurning = false;
 			mTurnCounter = 0.0f;
-			mCurrentTurn = TurnState::EnemyTurn;
 			mEnemy.Turn(*this);
 		}
 	}
@@ -181,7 +223,8 @@ void BoardState::Draw()
 		}
 	}
 	
-	mBatButton.Draw(mGameReference.GetWindow());
+	mGameReference.GetWindow().draw(mTurnIndicator);
+	mGameReference.GetWindow().draw(mDrawButton);
 
 	for (iterator = mBoardCards.begin(), end = mBoardCards.end(); iterator != end; ++iterator)
 	{
@@ -189,8 +232,8 @@ void BoardState::Draw()
 	}
 
 	/*Draw Scores*/
-	mGameReference.GetWindow().draw(mPlayerScoreText);
-	mGameReference.GetWindow().draw(mEnemyScoreText);
+	//mGameReference.GetWindow().draw(mPlayerScoreText);
+	//mGameReference.GetWindow().draw(mEnemyScoreText);
 
 	/*Draw Player*/
 	mGameReference.GetPlayer().Draw();
@@ -241,7 +284,7 @@ void BoardState::HandleEvents(sf::Event & ev)
 			else
 			{
 				/*Check Click For Button*/
-				if (mBatButton.GetRectangle().contains(xX, yY) && !mGameReference.GetPlayer().IsCardDrawn())
+				if (mDrawButton.getGlobalBounds().contains(xX, yY) && !mGameReference.GetPlayer().IsCardDrawn())
 				{
 					mGameReference.GetPlayer().CycleDeck();
 				}

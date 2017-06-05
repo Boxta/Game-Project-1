@@ -4,7 +4,7 @@ using namespace sf;
 
 Game::Game()
 	:
-	mWindow(VideoMode(1920, 1080), "Card Battle"),
+	mWindow(sf::VideoMode(1920, 1080), "Battle Cards", sf::Style::Fullscreen),
 	mCommonStore(),
 	mStateManager(*this),
 	mState_BootLoad(*this),
@@ -12,7 +12,6 @@ Game::Game()
 	mState_MainMenu(*this),
 	mPlayer(*this)
 {
-
 	/*Load Common Textures*/
 	GetCommonStore().AddTexture("MenuBackground", "Media\\Background2.png");
 	GetCommonStore().AddTexture("BoardBackground", "Media\\Background1.png");
@@ -24,7 +23,8 @@ Game::Game()
 	GetCommonStore().AddTexture("SelectBoarder", "Media\\BoardSelect.png");
 	GetCommonStore().AddTexture("Logo", "Media\\Logo1.png");
 	GetCommonStore().AddTexture("CardBack", "Media\\CardBack.png");
-	GetCommonStore().AddTexture("BatButtons", "Media\\BatButtons.png");
+	GetCommonStore().AddTexture("DrawButtons", "Media\\DrawButtons.png");
+	GetCommonStore().AddTexture("TurnIcons", "Media\\TurnIcons.png");
 
 	/*Load Common Fonts*/
 	GetCommonStore().AddFont("System", "Media/font2.ttf");

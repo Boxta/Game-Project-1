@@ -3,7 +3,6 @@
 #include "Enemy.h"
 #include "Card.h"
 #include <memory>
-#include "UIButton.h"
 
 class BoardState :
 	public GameState
@@ -54,10 +53,10 @@ public:
 		Card* GetCardReference() { return mSlotsCard; }
 	private:
 		/*Constants*/
-		const float INITIAL_X_OFFSET = 535.0f;
-		const float INITIAL_X_OFFSET_FULL = 525.0f;
-		const float INITIAL_Y_OFFSET = 50.0f;
-		const float INITIAL_Y_OFFSET_FULL = 40.0f;
+		const float INITIAL_X_OFFSET = 740.0f;
+		const float INITIAL_X_OFFSET_FULL = 730.0f;
+		const float INITIAL_Y_OFFSET = 40.0f;
+		const float INITIAL_Y_OFFSET_FULL = 30.0f;
 		const float XINCREMENT = 300.0f;
 		const float YINCREMENT = 350.0f;
 		const float SLOTWIDTH = 250.0f;
@@ -89,7 +88,7 @@ public:
 	Slot& GetSlot(int x, int y);
 
 	/*Slots Wide and Deep*/
-	const int mWidth = 3;
+	const int mWidth = 4;
 	const int mHeight = 3;
 
 	/*Change Turn*/
@@ -122,7 +121,8 @@ private:
 	sf::RectangleShape mBackgroundFill;
 	sf::Sprite mBackgroundImage;
 	sf::Sprite mSelectionBoarder;
-	UIButton mBatButton;
+	sf::Sprite mTurnIndicator;
+	sf::Sprite mDrawButton;
 	int mPlayerScore = 0;
 	int mEnemyScore = 0;
 	sf::Text mPlayerScoreText;
@@ -141,12 +141,15 @@ private:
 	Slot A1 = { 0, 0 };
 	Slot A2 = { 1, 0 };
 	Slot A3 = { 2, 0 };
+	Slot A4 = { 3, 0 };
 	Slot B1 = { 0, 1 };
 	Slot B2 = { 1, 1 };
 	Slot B3 = { 2, 1 };
+	Slot B4 = { 3, 1 };
 	Slot C1 = { 0, 2 };
 	Slot C2 = { 1, 2 };
 	Slot C3 = { 2, 2 };
+	Slot C4 = { 3, 2 };
 
 	/*Boards Card List*/
 	std::vector<Card*> mBoardCards;

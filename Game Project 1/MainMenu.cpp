@@ -10,8 +10,9 @@ void MainMenu::Initiate()
 		mInitiated = true;
 
 	/*Setup Music*/
+	sf::Music mMenuMusic;
 	mMenuMusic.openFromFile("Media/MenuMusic.wav");
-	mMenuMusic.setLoop(true);
+	mMenuMusic.play();
 
 	/*Setup Sprites*/
 	mBackgroundImage.setTexture(mGameReference.GetCommonStore().GetTextureRef("MenuBackground"));
@@ -41,13 +42,7 @@ void MainMenu::HandleInput()
 
 void MainMenu::Update(float dt)
 {
-	if (!mMusicIsPlaying)
-	{
-		mMusicIsPlaying = true;
-		mMenuMusic.play();
-	}
-	else
-	{ }
+
 }
 
 void MainMenu::Draw()
@@ -108,9 +103,8 @@ void MainMenu::HandleEvents(sf::Event& ev)
 void MainMenu::mExit_StartNewGame()
 {
 	/*Initiate Player*/
-	mGameReference.GetPlayer().Initiate(50.0f, 700.0f, "CMDR Ayna P");
-	mMenuMusic.stop();
-	mMenuMusic.setLoop(false);
+	mGameReference.GetPlayer().Initiate(30.0f, 265.0f, "CMDR Ayna P");
+	
 	mGameReference.ChangeGameState(mGameReference.GetState_Board());
 }
 
@@ -121,6 +115,7 @@ MainMenu::MainMenu(Game& ref)
 	mLoadGame_Button(ref.GetCommonStore()),
 	mTutorialGame_Button(ref.GetCommonStore())
 {
+
 }
 
 

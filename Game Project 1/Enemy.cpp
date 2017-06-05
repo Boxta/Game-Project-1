@@ -265,10 +265,10 @@ void Enemy::Initiate(float x, float y,
 	mName.setFillColor(sf::Color::Black);
 	mName.setCharacterSize(18);
 	mName.setPosition(x + mName_XOffset, y + mName_YOffset);
-	AddCard(1520.0f, 150.0f, "Dragon", 3, 4, 3, 4);
-	AddCard(1520.0f, 150.0f, "Planet", 3, 4, 3, 4);
-	AddCard(1520.0f, 150.0f, "Gemini", 3, 4, 3, 4);
-	AddCard(1520.0f, 150.0f, "Roadie", 3, 4, 3, 4);
+	AddCard(50.0f, 735.0f, "Dragon", 3, 4, 3, 4);
+	AddCard(50.0f, 735.0f, "Planet", 3, 4, 3, 4);
+	AddCard(50.0f, 735.0f, "Gemini", 3, 4, 3, 4);
+	AddCard(50.0f, 735.0f, "Roadie", 3, 4, 3, 4);
 
 	/*Set Initial Top Card Position*/
 	CycleDeck();
@@ -281,21 +281,14 @@ void Enemy::Update(const float dt)
 
 void Enemy::Draw()
 {
+	/*Draw Profile Picture*/
 	mGameReference.GetWindow().draw(mSprite);
+
+	/*Draw Enemy Name*/
 	mGameReference.GetWindow().draw(mName);
 	
 	if (CardDeck.size() == 0)
 		return;
-
-	if (CardDeck.size() == 1 && !mCardIsDrawn)
-	{
-			mGameReference.GetWindow().draw(mCardBackSprite);
-	}
-	else if (CardDeck.size() > 1)
-	{
-		mGameReference.GetWindow().draw(mCardBackSprite);
-	}
-		
 
 	/*Draw Top Card*/
 	if (mCardIsDrawn)
