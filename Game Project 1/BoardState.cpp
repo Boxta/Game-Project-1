@@ -70,7 +70,7 @@ void BoardState::Initiate()
 	mTurnIndicator.setTexture(mGameReference.GetCommonStore().GetTextureRef("TurnIcons"));
 	mTurnIndicator.setPosition(278.0f, 405.0f);
 	mTurnIndicator.setTextureRect(sf::IntRect(173, 0, 173, 256));
-	// turn xy 173, 256
+	
 	mDrawButton.setTexture(mGameReference.GetCommonStore().GetTextureRef("DrawButtons"));
 	mDrawButton.setPosition(265.0f, 40.0f); 
 	mDrawButton.setTextureRect(sf::IntRect(0, 0, 150, 60));

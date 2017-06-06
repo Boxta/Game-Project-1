@@ -2,6 +2,7 @@
 
 #include <stack>
 #include <SFML/Graphics.hpp>
+#include <SFML\Audio.hpp>
 #include "CmnStore.h"
 #include "StateManager.h"
 

@@ -7,11 +7,11 @@ void BootLoadState::Initiate()
 	mText1.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
 	mText1.setString("Loading Assets..");
 	mText1.setCharacterSize(24);
-	mText1.setPosition(sf::Vector2f(mGameReference.GetWindow().getSize().x / 2 - 100, mGameReference.GetWindow().getSize().y / 2 - 300));
+	mText1.setPosition(sf::Vector2f(float(mGameReference.GetWindow().getSize().x / 2 - 100), float(mGameReference.GetWindow().getSize().y / 2 - 300)));
 	
 	/*Setup Sprites*/
 	mCompanyIcon.setTexture(mGameReference.GetCommonStore().GetTextureRef("BootLoadImage"));
-	mCompanyIcon.setPosition(sf::Vector2f(mGameReference.GetWindow().getSize().x / 2 - 170, mGameReference.GetWindow().getSize().y / 2 - 250));
+	mCompanyIcon.setPosition(sf::Vector2f(float(mGameReference.GetWindow().getSize().x / 2 - 170), float(mGameReference.GetWindow().getSize().y / 2 - 250)));
 }
 
 void BootLoadState::HandleInput()

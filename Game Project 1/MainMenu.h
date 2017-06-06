@@ -26,7 +26,8 @@ private:
 	sf::Sprite mBackgroundImage;
 	sf::Sprite mLogoImage;
 
-	bool mMusicIsPlaying = false;
+	sf::Music mMusic;
+
 	UIButton mStartGame_Button;
 	UIButton mLoadGame_Button;
 	UIButton mTutorialGame_Button;

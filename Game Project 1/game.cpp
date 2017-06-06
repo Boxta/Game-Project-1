@@ -4,7 +4,7 @@ using namespace sf;
 
 Game::Game()
 	:
-	mWindow(sf::VideoMode(1920, 1080), "Battle Cards", sf::Style::Fullscreen),
+	mWindow(sf::VideoMode(1920, 1080), "Battle Cards", sf::Style::Default),
 	mCommonStore(),
 	mStateManager(*this),
 	mState_BootLoad(*this),
@@ -31,6 +31,8 @@ Game::Game()
 
 	/*Initial State To State Manager*/
 	ChangeGameState(mState_BootLoad);
+
+	/*Create Music Object For States*/
 
 	/*Initiate States*/
 	for (auto& s : mStateManager.StateStack._Get_container())
