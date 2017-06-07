@@ -94,7 +94,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\Boxta\Documents\Libraries and Headers\64Bit\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>flac.lib;freetype.lib;jpeg.lib;ogg.lib;openal32.lib;opengl32.lib;sfml-audio-s-d.lib;sfml-graphics-s-d.lib;sfml-network-s-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;winmm.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-s-d.lib;sfml-graphics-s-d.lib;sfml-network-s-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;flac.lib;freetype.lib;jpeg.lib;ogg.lib;openal32.lib;opengl32.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;winmm.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
@@ -110,7 +110,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\Boxta\Documents\Libraries and Headers\64Bit\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>flac.lib;freetype.lib;jpeg.lib;ogg.lib;openal32.lib;opengl32.lib;sfml-audio-s-d.lib;sfml-graphics-s-d.lib;sfml-network-s-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;winmm.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-s-d.lib;sfml-graphics-s-d.lib;sfml-network-s-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;flac.lib;freetype.lib;jpeg.lib;ogg.lib;openal32.lib;opengl32.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;winmm.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
