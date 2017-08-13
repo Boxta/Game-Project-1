@@ -1,4 +1,4 @@
-#include "BoardState.h"
+#include "GamingState.h"
 #include "Game.h"
 
 BoardState::BoardState(Game& ref)
@@ -102,7 +102,7 @@ void BoardState::Update(float dt)
 		{
 			if (!mGameReference.GetPlayer().IsCardDrawn())
 			{
-				if (mDrawButton.getGlobalBounds().contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y))
+				if (mDrawButton.getGlobalBounds().contains(float(sf::Mouse::getPosition().x), float(sf::Mouse::getPosition().y)))
 				{
 					mDrawButton.setTextureRect(sf::IntRect(300, 0, 150, 60));
 				}
@@ -115,7 +115,6 @@ void BoardState::Update(float dt)
 			{
 				mDrawButton.setTextureRect(sf::IntRect(150, 0, 150, 60));
 			}
-
 		}
 		else if (mCurrentTurn == TurnState::EnemyTurn)
 		{
@@ -283,7 +282,7 @@ void BoardState::HandleEvents(sf::Event & ev)
 			else
 			{
 				/*Check Click For Button*/
-				if (mDrawButton.getGlobalBounds().contains(xX, yY) && !mGameReference.GetPlayer().IsCardDrawn())
+				if (mDrawButton.getGlobalBounds().contains(float(xX), float(yY)) && !mGameReference.GetPlayer().IsCardDrawn())
 				{
 					mGameReference.GetPlayer().CycleDeck();
 				}

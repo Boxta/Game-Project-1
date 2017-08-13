@@ -17,7 +17,7 @@ public:
 	void Draw();
 	Card& GetTopCard();
 	Card& GetCard(const sf::FloatRect id);
-	int GetDeckCount() { return CardDeck.size(); }
+	size_t GetDeckCount() { return CardDeck.size(); }
 	void CycleDeck();
 	void Turn(BoardState& brd, float xX, float yY);
 	void ClearDeck();

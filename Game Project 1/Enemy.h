@@ -17,7 +17,7 @@ public:
 	void Update(const float dt);
 	void Draw();
 	Card& GetCard(const sf::FloatRect id);
-	int GetDeckCount() { return CardDeck.size(); }
+	size_t GetDeckCount() { return CardDeck.size(); }
 	void Turn(BoardState& brd);
 	std::vector<Card*>& GetDeck() { return CardDeck; }
 	void AddCard(float posx, float posy, std::string name, int U, int D, int L, int R);

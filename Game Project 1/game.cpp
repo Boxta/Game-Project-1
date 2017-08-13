@@ -4,7 +4,7 @@ using namespace sf;
 
 Game::Game()
 	:
-	mWindow(sf::VideoMode(1920, 1080), "Battle Cards", sf::Style::Default),
+	mWindow(sf::VideoMode(1920, 1080), "Battle Cards", sf::Style::Fullscreen),
 	mCommonStore(),
 	mStateManager(*this),
 	mState_BootLoad(*this),
@@ -12,27 +12,8 @@ Game::Game()
 	mState_MainMenu(*this),
 	mPlayer(*this)
 {
-	/*Load Common Textures*/
-	GetCommonStore().AddTexture("MenuBackground", "Media\\Background2.png");
-	GetCommonStore().AddTexture("BoardBackground", "Media\\Background1.png");
-	GetCommonStore().AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
-	GetCommonStore().AddTexture("BaseButtons", "Media\\BaseButtons.png");
-	GetCommonStore().AddTexture("EnemyPicture", "Media\\EnemyPortrait.png");
-	GetCommonStore().AddTexture("PlayerPicture", "Media\\PlayerPortrait.png");
-	GetCommonStore().AddTexture("TestCard", "Media\\Cards.png");
-	GetCommonStore().AddTexture("SelectBoarder", "Media\\BoardSelect.png");
-	GetCommonStore().AddTexture("Logo", "Media\\Logo1.png");
-	GetCommonStore().AddTexture("CardBack", "Media\\CardBack.png");
-	GetCommonStore().AddTexture("DrawButtons", "Media\\DrawButtons.png");
-	GetCommonStore().AddTexture("TurnIcons", "Media\\TurnIcons.png");
-
-	/*Load Common Fonts*/
-	GetCommonStore().AddFont("System", "Media/font2.ttf");
-
-	/*Initial State To State Manager*/
+	/*Set Initial State To State Manager*/
 	ChangeGameState(mState_BootLoad);
-
-	/*Create Music Object For States*/
 
 	/*Initiate States*/
 	for (auto& s : mStateManager.StateStack._Get_container())

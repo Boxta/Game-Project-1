@@ -8,7 +8,7 @@
 #include <chrono>
 #include "Frametimer.h"
 #include "MainMenu.h"
-#include "BoardState.h"
+#include "GamingState.h"
 #include "Player.h"
 
 class Game
@@ -52,7 +52,7 @@ public:
 	StateManager& GetStateManager() { return mStateManager; }
 
 	/*Expose Game States*/
-	GameState&  GetState_BootLoad() { return mState_BootLoad; }
+	GameState& GetState_BootLoad() { return mState_BootLoad; }
 	GameState& GetState_MainMenu() { return mState_MainMenu; }
 	GameState& GetState_Board() { return mState_Board; }
 

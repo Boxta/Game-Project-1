@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "Game.h"
-#include "BoardState.h"
+#include "GamingState.h"
 
 Enemy::Enemy(Game& ref)
 	:
@@ -165,7 +165,7 @@ void Enemy::Turn(BoardState& brd)
 	if (!mHasWon)
 	{
 		/*Set Range To Remaining Cards Available*/
-		std::uniform_int_distribution<int> uni(0, CardDeck.size() - 1); // guaranteed unbiased
+		std::uniform_int_distribution<int> uni(0, int(CardDeck.size()) - 1); // guaranteed unbiased
 
 		for (auto& u : brd.GetSlots())
 		{

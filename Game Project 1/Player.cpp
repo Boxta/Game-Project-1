@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "Game.h"
-#include "BoardState.h"
+#include "GamingState.h"
 
 Player::Player(Game& ref)
 	:

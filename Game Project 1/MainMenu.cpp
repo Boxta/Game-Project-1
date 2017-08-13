@@ -24,10 +24,12 @@ void MainMenu::Initiate()
 		mGameReference.GetWindow().getSize().y / 2,
 		"Start", 30 , "BaseButtons", 1, 250, 80);
 	mStartGame_Button.AnimationToggle(false);
+
 	mLoadGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - 125,
 		mGameReference.GetWindow().getSize().y / 2 + (mButtonSpacing + 80),
 		"Load", 30 , "BaseButtons", 1, 250, 80);
 	mLoadGame_Button.AnimationToggle(false);
+
 	mTutorialGame_Button.Initiate((mGameReference.GetWindow().getSize().x / 2) - 125,
 		mGameReference.GetWindow().getSize().y / 2 + (mButtonSpacing * 2) + 160,
 		"Tutorial", 30 , "BaseButtons", 1, 250, 80);
@@ -101,6 +103,7 @@ void MainMenu::mExit_StartNewGame()
 {
 	/*Initiate Player*/
 	mGameReference.GetPlayer().Initiate(30.0f, 265.0f, "CMDR Ayna P");
+	mMusic.stop();
 	mGameReference.ChangeGameState(mGameReference.GetState_Board());
 }
 

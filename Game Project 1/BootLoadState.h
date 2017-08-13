@@ -2,7 +2,7 @@
 #include "GameState.h"
 #include <SFML\Graphics.hpp>
 #include "CmnStore.h"
-
+#include <thread>
 
 class BootLoadState :
 	public GameState
@@ -19,14 +19,9 @@ public:
 	/*Handle Events*/
 	virtual void HandleEvents(sf::Event& ev);
 private:
+	sf::Sprite mBootImage;
+	void LoadCommonStoreAssets();
 	Game& mGameReference;
-	sf::RectangleShape mBackgroundFill;
-	sf::Sprite mCompanyIcon;
-	sf::Text mText1;
-	
-	const float mWaitTime = 2.0f;
-	float mWaitTimer = 0.0f;
-	bool mInitiated = false;
 public:
 	BootLoadState(Game& ref);
 	~BootLoadState();

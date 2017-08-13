@@ -3,15 +3,12 @@
 
 void BootLoadState::Initiate()
 {
-	/*Setup Text*/
-	mText1.setFont(mGameReference.GetCommonStore().GetFontRef("System"));
-	mText1.setString("Loading Assets..");
-	mText1.setCharacterSize(24);
-	mText1.setPosition(sf::Vector2f(float(mGameReference.GetWindow().getSize().x / 2 - 100), float(mGameReference.GetWindow().getSize().y / 2 - 300)));
-	
-	/*Setup Sprites*/
-	mCompanyIcon.setTexture(mGameReference.GetCommonStore().GetTextureRef("BootLoadImage"));
-	mCompanyIcon.setPosition(sf::Vector2f(float(mGameReference.GetWindow().getSize().x / 2 - 170), float(mGameReference.GetWindow().getSize().y / 2 - 250)));
+	mGameReference.GetCommonStore().AddTexture("BootLoadImage", "Media\\LoadingIcon.png");
+	mBootImage.setTexture(mGameReference.GetCommonStore().GetTextureRef("BootLoadImage"));
+	mBootImage.setPosition(sf::Vector2f(100.0f, 100.0f));
+	/*Add Assets To Common Store*/
+	std::thread LoadThread(&BootLoadState::LoadCommonStoreAssets, this);
+	LoadThread.join(); 
 }
 
 void BootLoadState::HandleInput()
@@ -20,38 +17,44 @@ void BootLoadState::HandleInput()
 
 void BootLoadState::Update(float dt)
 {
-	mWaitTimer += dt;
-	if (mWaitTimer > mWaitTime)
-	{
-		/*Reset Timer*/
-		mWaitTimer = 0;
-
-		/*Call Next State*/
-		mGameReference.ChangeGameState(mGameReference.GetState_MainMenu());
-	}
+	mBootImage.setPosition(sf::Vector2f(mBootImage.getPosition().x + 30.0f, 100.0f));
 }
 
 void BootLoadState::Draw()
 {
-	mGameReference.GetWindow().clear();
-	mGameReference.GetWindow().draw(mBackgroundFill);
-	mGameReference.GetWindow().draw(mCompanyIcon);
-	mGameReference.GetWindow().draw(mText1);
+	mGameReference.GetWindow().draw(mBootImage);
 }
 
 void BootLoadState::HandleEvents(sf::Event& ev)
 {
 }
 
+void BootLoadState::LoadCommonStoreAssets()
+{
+	/*Add Common Store Assets*/
+	mGameReference.GetCommonStore().AddTexture("MenuBackground", "Media\\Background2.png");
+	mGameReference.GetCommonStore().AddTexture("BoardBackground", "Media\\Background1.png");
+	mGameReference.GetCommonStore().AddTexture("BaseButtons", "Media\\BaseButtons.png");
+	mGameReference.GetCommonStore().AddTexture("EnemyPicture", "Media\\EnemyPortrait.png");
+	mGameReference.GetCommonStore().AddTexture("PlayerPicture", "Media\\PlayerPortrait.png");
+	mGameReference.GetCommonStore().AddTexture("TestCard", "Media\\Cards.png");
+	mGameReference.GetCommonStore().AddTexture("SelectBoarder", "Media\\BoardSelect.png");
+	mGameReference.GetCommonStore().AddTexture("Logo", "Media\\Logo1.png");
+	mGameReference.GetCommonStore().AddTexture("CardBack", "Media\\CardBack.png");
+	mGameReference.GetCommonStore().AddTexture("DrawButtons", "Media\\DrawButtons.png");
+	mGameReference.GetCommonStore().AddTexture("TurnIcons", "Media\\TurnIcons.png");
+
+	/*Load Common Fonts*/
+	mGameReference.GetCommonStore().AddFont("System", "Media/MainFont.ttf");
+
+	/*Change to Main Menu State*/
+	mGameReference.ChangeGameState(mGameReference.GetState_MainMenu());
+}
+
 BootLoadState::BootLoadState(Game& ref)
 	:
-	mBackgroundFill(),
-	mCompanyIcon(),
 	mGameReference(ref)
 {
-	mBackgroundFill.setFillColor(sf::Color::Black);
-	mBackgroundFill.setSize(sf::Vector2f(1920, 1080));
-	mBackgroundFill.setPosition(sf::Vector2f(0, 0));
 }
 
 
